@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAVE - O Futuro Começa Aqui</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nave: {
+              bg: '#07090e',
+              card: '#0e131f',
+              border: '#1e293b',
+              cyan: '#00f0ff',
+              cyanGlow: 'rgba(0, 240, 255, 0.25)',
+              blue: '#3b82f6',
+              purple: '#8b5cf6',
+              accent: '#0ea5e9'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Space Mono', 'monospace'],
+            display: ['Space Grotesk', 'sans-serif']
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glow-line': 'glowLine 3s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            },
+            glowLine: {
+              '0%, 100%': { opacity: '0.3', transform: 'scaleX(0.95)' },
+              '50%': { opacity: '0.9', transform: 'scaleX(1.05)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #07090e;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .font-mono-code {
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Custom Glassmorphism */
+    .glass-panel {
+      background: rgba(14, 19, 31, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-panel-cyan {
+      background: rgba(14, 19, 31, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.05);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f0ff;
+    }
+
+    /* Subtle Scanline Effect */
+    .scanlines {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.2)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Grid overlay */
+    .cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+
+    /* Scroll trigger initial states */
+    .reveal-element {
+      opacity: 0;
+      transform: translateY(30px) scale(0.96);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+
+    .reveal-element.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  </style>
+</head>
+<body class="relative selection:bg-nave-cyan selection:text-black">
+
+  <!-- 7. LOADING / INTRO SCREEN -->
+  <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#05070a] transition-opacity duration-700">
+    <div class="relative flex flex-col items-center max-w-sm w-full px-6 text-center">
+      <!-- Glow effect -->
+      <div class="absolute -inset-4 bg-nave-cyan/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Tech HUD Loader -->
+      <div class="relative mb-6 flex items-center justify-center">
+        <svg class="w-20 h-20 animate-spin text-nave-cyan/30" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="60 120" />
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center font-display font-bold text-2xl tracking-wider text-white">
+          NAVE
+        </div>
+      </div>
+
+      <div class="w-full bg-slate-900/80 rounded-full h-1.5 mb-3 overflow-hidden border border-slate-800">
+        <div id="loader-bar" class="bg-gradient-to-r from-nave-blue via-nave-cyan to-white h-full w-0 transition-all duration-300 ease-out"></div>
+      </div>
+
+      <div class="flex items-center justify-between w-full font-mono-code text-xs text-slate-400">
+        <span id="loader-status" class="tracking-widest">INITIALIZING EXPERIENCE...</span>
+        <span id="loader-percent" class="text-nave-cyan font-semibold">0%</span>
+      </div>
+
+      <button id="skip-loader" class="mt-8 text-xs font-mono-code text-slate-500 hover:text-slate-300 transition-colors underline decoration-slate-700 underline-offset-4">
+        [ pular introdução ]
+      </button>
+    </div>
+  </div>
+
+  <!-- 18. HEADER & 19. NAVEGAÇÃO -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-5 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="relative w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center overflow-hidden transition-border duration-300 group-hover:border-nave-cyan">
+          <div class="absolute inset-0 bg-gradient-to-tr from-nave-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <span class="font-display font-black text-lg text-white tracking-tighter">N</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display font-bold text-lg tracking-widest text-white leading-none">NAVE</span>
+          <span class="font-mono-code text-[9px] tracking-widest text-slate-400 uppercase mt-0.5">Ecosistema Tech</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-1 glass-panel px-4 py-2 rounded-full border border-slate-800">
+        <a href="#hero" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">INÍCIO</a>
+        <span class="text-slate-700 text-xs">•</span>
+        <a href="#video-1-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">VÍDEO 01</a>
+        <span class="text-slate-700 text-xs">•</span>
+        <a href="#transition-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">TRANSIÇÃO</a>
+        <span class="text-slate-700 text-xs">•</span>
+        <a href="#video-2-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">VÍDEO 02</a>
+      </nav>
+
+      <!-- Status Pill / CTA -->
+      <div class="hidden sm:flex items-center gap-2">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-mono-code text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>SYSTEM ONLINE</span>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg bg-slate-900/80 border border-slate-800" aria-label="Abrir Menu">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-drawer" class="hidden md:hidden absolute top-full left-0 right-0 glass-panel border-b border-slate-800 p-6 flex flex-col gap-4 shadow-2xl">
+      <a href="#hero" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+        <span>01 // INÍCIO</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+      </a>
+      <a href="#video-1-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+        <span>02 // Apresentação</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+      </a>
+      <a href="#transition-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+        <span>03 // TRANSIÇÃO</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+      </a>
+      <a href="#video-2-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+        <span>04 // Tutorial</span>
+        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+      </a>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+
+    <!-- 8. HERO & 9. ENERGY BEAM ANIMATION -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden cyber-grid">
+      
+      <!-- Energy Beam WebGL / Canvas Background -->
+      <canvas id="energy-beam-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-60"></canvas>
+
+      <!-- Gradient Light Flares for Ambient Aesthetics -->
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-nave-cyan/15 via-blue-600/10 to-transparent blur-[120px] pointer-events-none rounded-full"></div>
+      <div class="absolute bottom-10 left-10 w-72 h-72 bg-nave-purple/10 blur-[100px] pointer-events-none rounded-full"></div>
+
+      <!-- Hero Main Content Box -->
+      <div class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
+        
+        <!-- Tag / Pill Indicator -->
+        <div class="reveal-element active inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-nave-cyan/30 mb-8 shadow-lg shadow-nave-cyan/5">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-nave-cyan opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-nave-cyan"></span>
+          </span>
+          <span class="font-mono-code text-xs tracking-wider text-nave-cyan uppercase font-semibold">NAVE EXPERIENCE // VIRTUAL HUB</span>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="reveal-element active font-display text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
+          O FUTURO <br class="hidden sm:inline" />
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-nave-cyan">
+            COMEÇA AQUI.
+          </span>
+        </h1>
+
+        <!-- Supporting Subtitle -->
+        <p class="reveal-element active max-w-2xl text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-10">
+          Tecnologia, criatividade e experiências que transformam a forma como imaginamos o amanhã.
+        </p>
+
+        <!-- 10. CTA BUTTON "EXPLORAR EXPERIÊNCIA" -->
+        <div class="reveal-element active flex flex-col sm:flex-row items-center gap-4">
+          <a id="explore-cta" href="#video-1-section" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-display font-semibold text-sm tracking-wider text-black bg-nave-cyan hover:bg-white transition-all duration-300 shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:shadow-[0_0_35px_rgba(255,255,255,0.6)] hover:scale-105 active:scale-95">
+            <span>EXPLORAR EXPERIÊNCIA</span>
+            <i data-lucide="arrow-down" class="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1"></i>
+          </a>
+        </div>
+
+        <!-- Tech Indicators / Mini Stats -->
+        <div class="reveal-element active grid grid-cols-3 gap-6 sm:gap-12 mt-20 pt-10 border-t border-slate-800/80 w-full max-w-2xl">
+          <div class="text-center">
+            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1">02</div>
+            <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Vídeos Core</div>
+          </div>
+          <div class="text-center">
+            <div class="font-mono-code text-xl sm:text-2xl font-bold text-nave-cyan mb-1">100%</div>
+            <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Imersão</div>
+          </div>
+          <div class="text-center">
+            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1">4K</div>
+            <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Qualidade</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Scroll Indicator Chevron -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-500 animate-bounce">
+        <span class="text-[10px] font-mono-code tracking-widest uppercase">SCROLL</span>
+        <i data-lucide="chevron-down" class="w-4 h-4 text-nave-cyan"></i>
+      </div>
+    </section>
+
+    <!-- 11. SEÇÃO VÍDEO 01 & 12. ANIMAÇÕES DE SCROLL -->
+    <section id="video-1-section" class="relative py-24 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="reveal-element flex flex-col items-start mb-10 border-l-2 border-nave-cyan pl-4">
+        <span class="font-mono-code text-xs text-nave-cyan tracking-widest uppercase mb-1">01 // APRESENTAÇÃO INICIAL</span>
+        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">IMERSÃO INSTITUCIONAL</h2>
+      </div>
+
+      <!-- Video Player Frame / Canvas Overlay -->
+      <div id="video-1-container" class="reveal-element relative rounded-2xl overflow-hidden glass-panel-cyan shadow-2xl transition-all duration-700 transform">
+        
+        <!-- Top HUD Header Bar -->
+        <div class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between font-mono-code text-xs text-slate-400">
+          <div class="flex items-center gap-3">
+            <div class="flex gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+            </div>
+            <span class="text-slate-300 font-semibold tracking-wider">NAVE_DEMO_STREAM_01.MP4</span>
+          </div>
+          <div class="hidden sm:flex items-center gap-4 text-[10px]">
+            <span>FORMAT: H.264</span>
+            <span class="text-nave-cyan">BITRATE: HIGH</span>
+          </div>
+        </div>
+
+        <!-- Video Wrapper -->
+        <div class="relative aspect-video w-full bg-black group overflow-hidden">
+          
+          <!-- Local Video 1 Asset Tag -->
+          <video 
+            id="video-player-1"
+            class="w-full h-full object-cover"
+            playsinline
+            preload="metadata"
+          >
+            <!-- Pasta assets/ com o arquivo video 1.mp4 ou video1.mp4 -->
+            <source src="assets/video 1.mp4" type="video/mp4" />
+            <source src="assets/video1.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeos HTML5.
+          </video>
+
+          <!-- Custom HUD Play Overlay (Center Button) -->
+          <button id="v1-overlay-play" class="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/20">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-nave-cyan/90 hover:bg-nave-cyan text-black flex items-center justify-center transition-all duration-300 shadow-[0_0_40px_rgba(0,240,255,0.6)] transform group-hover:scale-110">
+              <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
+            </div>
+            <span class="mt-4 font-mono-code text-xs text-white tracking-widest uppercase bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-700">INICIAR VÍDEO 01</span>
+          </button>
+
+          <!-- Bottom Floating HUD Controls Bar -->
+          <div id="v1-controls" class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex flex-col gap-2">
+            
+            <!-- Progress Bar -->
+            <div class="relative w-full h-1.5 bg-slate-800 rounded cursor-pointer overflow-hidden group/bar" id="v1-progress-container">
+              <div id="v1-progress-bar" class="absolute top-0 left-0 bottom-0 bg-nave-cyan w-0 transition-all duration-100"></div>
+            </div>
+
+            <!-- Controls Buttons -->
+            <div class="flex items-center justify-between text-white font-mono-code text-xs pt-1">
+              <div class="flex items-center gap-4">
+                <button id="v1-play-btn" class="hover:text-nave-cyan transition-colors" aria-label="Play/Pause">
+                  <i data-lucide="play" class="w-5 h-5"></i>
+                </button>
+                <button id="v1-mute-btn" class="hover:text-nave-cyan transition-colors" aria-label="Mute/Unmute">
+                  <i data-lucide="volume-2" class="w-5 h-5"></i>
+                </button>
+                <span id="v1-time-display" class="text-slate-400 text-[11px]">00:00 / 00:00</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <button id="v1-fullscreen-btn" class="hover:text-nave-cyan transition-colors" aria-label="Tela Cheia">
+                  <i data-lucide="maximize" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Video Footer Context -->
+        <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-display text-lg font-bold text-white">CONCEITO E VISÃO GERAL</h3>
+            <p class="text-sm text-slate-400 mt-1">Conheça as bases fundamentais do NAVE e como conectamos inovação ao futuro.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">VISUAL EXPERIENTIAL</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 13. TRANSIÇÃO ENTRE OS VÍDEOS & 14. COMPORTAMENTO DAS WAVES & 15. TEXTO DA TRANSIÇÃO -->
+    <section id="transition-section" class="relative py-32 px-6 overflow-hidden border-y border-slate-800/60 bg-[#05070c]">
+      
+      <!-- Canvas Canvas Interactive Waves -->
+      <canvas id="waves-canvas" class="absolute inset-0 w-full h-full object-cover z-0"></canvas>
+      
+      <!-- Overlay Gradient for contrast -->
+      <div class="absolute inset-0 bg-gradient-to-b from-[#07090e] via-transparent to-[#07090e] pointer-events-none"></div>
+
+      <!-- Center Transition Text Banner -->
+      <div class="relative z-10 max-w-3xl mx-auto text-center py-16">
+        <div class="reveal-element">
+          <span class="inline-block px-3 py-1 rounded-full font-mono-code text-[11px] text-nave-cyan bg-nave-cyan/10 border border-nave-cyan/20 mb-6 uppercase tracking-widest">
+            // INTERACTION NODE
+          </span>
+          
+          <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+            O FUTURO JÁ ESTÁ <br class="hidden sm:inline" />
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-nave-cyan via-blue-400 to-nave-purple">
+              EM MOVIMENTO.
+            </span>
+          </h2>
+
+          <p class="text-slate-400 text-sm sm:text-base font-light max-w-lg mx-auto">
+            Mova o cursor para interagir com o fluxo digital da transição entre experiências.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16. VÍDEO 02 SECTION -->
+    <section id="video-2-section" class="relative py-24 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="reveal-element flex flex-col items-start mb-10 border-l-2 border-nave-purple pl-4">
+        <span class="font-mono-code text-xs text-nave-purple tracking-widest uppercase mb-1">02 // NAVE EXPERIENCE</span>
+        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">IMERSÃO PRÁTICA E FUTURO</h2>
+      </div>
+
+      <!-- Video Player Container -->
+      <div id="video-2-container" class="reveal-element relative rounded-2xl overflow-hidden glass-panel border border-nave-purple/30 shadow-2xl transition-all duration-700 transform">
+        
+        <!-- Top HUD Header Bar -->
+        <div class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between font-mono-code text-xs text-slate-400">
+          <div class="flex items-center gap-3">
+            <div class="flex gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-500/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500/80"></span>
+            </div>
+            <span class="text-slate-300 font-semibold tracking-wider">NAVE_EXPERIENCE_MODULE.MP4</span>
+          </div>
+          <div class="hidden sm:flex items-center gap-4 text-[10px]">
+            <span class="text-nave-purple">MODE: IMMERSIVE</span>
+            <span>AUDIO: STEREO</span>
+          </div>
+        </div>
+
+        <!-- Video Wrapper -->
+        <div class="relative aspect-video w-full bg-black group overflow-hidden">
+          
+          <!-- Local Video 2 Asset Tag -->
+          <video 
+            id="video-player-2"
+            class="w-full h-full object-cover"
+            playsinline
+            preload="metadata"
+          >
+            <!-- Pasta assets/ com o arquivo video 2.mp4 ou video2.mp4 -->
+            <source src="assets/video 2.mp4" type="video/mp4" />
+            <source src="assets/video2.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeos HTML5.
+          </video>
+
+          <!-- Custom HUD Play Overlay -->
+          <button id="v2-overlay-play" class="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/20">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-nave-purple/90 hover:bg-nave-purple text-white flex items-center justify-center transition-all duration-300 shadow-[0_0_40px_rgba(139,92,246,0.6)] transform group-hover:scale-110">
+              <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
+            </div>
+            <span class="mt-4 font-mono-code text-xs text-white tracking-widest uppercase bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-700">INICIAR VÍDEO 02</span>
+          </button>
+
+          <!-- Bottom Floating HUD Controls Bar -->
+          <div id="v2-controls" class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex flex-col gap-2">
+            
+            <!-- Progress Bar -->
+            <div class="relative w-full h-1.5 bg-slate-800 rounded cursor-pointer overflow-hidden" id="v2-progress-container">
+              <div id="v2-progress-bar" class="absolute top-0 left-0 bottom-0 bg-nave-purple w-0 transition-all duration-100"></div>
+            </div>
+
+            <!-- Controls Buttons -->
+            <div class="flex items-center justify-between text-white font-mono-code text-xs pt-1">
+              <div class="flex items-center gap-4">
+                <button id="v2-play-btn" class="hover:text-nave-purple transition-colors" aria-label="Play/Pause">
+                  <i data-lucide="play" class="w-5 h-5"></i>
+                </button>
+                <button id="v2-mute-btn" class="hover:text-nave-purple transition-colors" aria-label="Mute/Unmute">
+                  <i data-lucide="volume-2" class="w-5 h-5"></i>
+                </button>
+                <span id="v2-time-display" class="text-slate-400 text-[11px]">00:00 / 00:00</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <button id="v2-fullscreen-btn" class="hover:text-nave-purple transition-colors" aria-label="Tela Cheia">
+                  <i data-lucide="maximize" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Video Footer Context -->
+        <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-display text-lg font-bold text-white">ECOSSISTEMA & IMPACTO</h3>
+            <p class="text-sm text-slate-400 mt-1">Descubra as infinitas possibilidades de criação dentro do ambiente NAVE.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">FUTURE READY</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 17. ENCERRAMENTO -->
+    <section id="encerramento" class="relative py-28 px-6 bg-[#040508] border-t border-slate-900 text-center overflow-hidden">
+      
+      <!-- Background Ambient Glow -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-nave-cyan/10 blur-[150px] rounded-full pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+        
+        <!-- Brand Core Identity -->
+        <div class="reveal-element inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700/60 mb-8 shadow-xl">
+          <span class="font-display font-black text-3xl text-nave-cyan">N</span>
+        </div>
+
+        <h2 class="reveal-element font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-4">
+          NAVE
+        </h2>
+
+        <p class="reveal-element font-display text-xl sm:text-2xl font-light text-slate-300 tracking-wide mb-12">
+          O FUTURO COMEÇA AQUI.
+        </p>
+
+        <!-- Key Pillars Grid -->
+        <div class="reveal-element grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 w-full max-w-2xl mb-16">
+          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-colors">
+            <i data-lucide="cpu" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
+            <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">TECNOLOGIA</h4>
+            <p class="text-xs text-slate-400">Infraestrutura digital e inovação constante.</p>
+          </div>
+
+          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-colors">
+            <i data-lucide="sparkles" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
+            <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">CRIATIVIDADE</h4>
+            <p class="text-xs text-slate-400">Espaço para explorar novas ideias e narrativas.</p>
+          </div>
+
+          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-colors">
+            <i data-lucide="rocket" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
+            <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">INOVAÇÃO</h4>
+            <p class="text-xs text-slate-400">Experiências visuais voltadas para o amanhã.</p>
+          </div>
+        </div>
+
+        <!-- Back to Top Button -->
+        <a href="#hero" class="reveal-element group flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-all text-xs font-mono-code mb-12">
+          <i data-lucide="arrow-up" class="w-4 h-4 text-nave-cyan transition-transform group-hover:-translate-y-1"></i>
+          <span>VOLTAR AO TOPO</span>
+        </a>
+
+        <div class="w-full pt-8 border-t border-slate-900 text-slate-600 font-mono-code text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span>&copy; 2026 NAVE. Todos os direitos reservados.</span>
+          <span class="text-slate-500">EXPERIÊNCIA DIGITAL INTERATIVA</span>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    /* ==========================================================================
+       1. HERO CANVA - ENERGY BEAM ANIMATION
+       ========================================================================== */
+    (function initEnergyBeam() {
+      const canvas = document.getElementById('energy-beam-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      // Stream particles
+      const particleCount = 45;
+      const particles = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          length: Math.random() * 120 + 80,
+          speed: Math.random() * 2 + 0.8,
+          width: Math.random() * 2 + 0.5,
+          alpha: Math.random() * 0.6 + 0.2,
+          color: Math.random() > 0.4 ? '#00f0ff' : '#3b82f6'
+        });
+      }
+
+      function drawBeam() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Radial beam gradient in center background
+        const bgGradient = ctx.createRadialGradient(
+          width / 2, height / 2, 50,
+          width / 2, height / 2, Math.max(width, height) / 1.5
+        );
+        bgGradient.addColorStop(0, 'rgba(0, 240, 255, 0.05)');
+        bgGradient.addColorStop(0.5, 'rgba(14, 19, 31, 0.2)');
+        bgGradient.addColorStop(1, 'rgba(7, 9, 14, 0)');
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, width, height);
+
+        // Render rising glowing energy beams
+        particles.forEach((p) => {
+          ctx.beginPath();
+          const gradient = ctx.createLinearGradient(p.x, p.y, p.x, p.y - p.length);
+          gradient.addColorStop(0, 'rgba(0,0,0,0)');
+          gradient.addColorStop(0.5, p.color);
+          gradient.addColorStop(1, 'rgba(255,255,255,0.8)');
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = p.width;
+          ctx.lineCap = 'round';
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x, p.y - p.length);
+          ctx.stroke();
+
+          // Movement
+          p.y -= p.speed;
+          if (p.y - p.length < 0) {
+            p.y = height + p.length;
+            p.x = Math.random() * width;
+          }
+        });
+
+        requestAnimationFrame(drawBeam);
+      }
+
+      drawBeam();
+    })();
+
+    /* ==========================================================================
+       2. INTERACTIVE WAVES TRANSITION CANVAS
+       ========================================================================== */
+    (function initInteractiveWaves() {
+      const canvas = document.getElementById('waves-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = canvas.parentElement.clientWidth);
+      let height = (canvas.height = canvas.parentElement.clientHeight);
+
+      let mouse = {
+        x: width / 2,
+        y: height / 2,
+        targetX: width / 2,
+        targetY: height / 2
+      };
+
+      window.addEventListener('resize', () => {
+        if (!canvas.parentElement) return;
+        width = canvas.width = canvas.parentElement.clientWidth;
+        height = canvas.height = canvas.parentElement.clientHeight;
+      });
+
+      canvas.parentElement.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.targetX = e.clientX - rect.left;
+        mouse.targetY = e.clientY - rect.top;
+      });
+
+      canvas.parentElement.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          const rect = canvas.getBoundingClientRect();
+          mouse.targetX = e.touches[0].clientX - rect.left;
+          mouse.targetY = e.touches[0].clientY - rect.top;
+        }
+      }, { passive: true });
+
+      let step = 0;
+      const lines = 12;
+
+      function renderWaves() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Smooth mouse position interpolation
+        mouse.x += (mouse.targetX - mouse.x) * 0.05;
+        mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+        step += 0.015;
+
+        for (let i = 0; i < lines; i++) {
+          ctx.beginPath();
+          ctx.lineWidth = 1.5;
+
+          const progress = i / lines;
+          const lineAlpha = Math.sin(progress * Math.PI) * 0.5 + 0.1;
+          const isCyan = i % 2 === 0;
+
+          ctx.strokeStyle = isCyan 
+            ? `rgba(0, 240, 255, ${lineAlpha})` 
+            : `rgba(139, 92, 246, ${lineAlpha})`;
+
+          const baseHeight = (height / (lines + 1)) * (i + 1);
+
+          for (let x = 0; x <= width; x += 15) {
+            // Distance to mouse factor
+            const dx = x - mouse.x;
+            const dy = baseHeight - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxDist = 250;
+
+            let waveOffset = Math.sin(x * 0.008 + step + i * 0.4) * 20;
+
+            if (dist < maxDist) {
+              const factor = (1 - dist / maxDist);
+              waveOffset += Math.sin(dist * 0.05 - step * 3) * 35 * factor;
+            }
+
+            const y = baseHeight + waveOffset;
+
+            if (x === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+
+          ctx.stroke();
+        }
+
+        requestAnimationFrame(renderWaves);
+      }
+
+      renderWaves();
+    })();
+
+    /* ==========================================================================
+       3. VIDEO PLAYERS LOGIC (HUD CONTROLLERS)
+       ========================================================================== */
+    function setupVideoPlayer(idPrefix, videoId) {
+      const video = document.getElementById(videoId);
+      const overlayPlay = document.getElementById(`${idPrefix}-overlay-play`);
+      const playBtn = document.getElementById(`${idPrefix}-play-btn`);
+      const muteBtn = document.getElementById(`${idPrefix}-mute-btn`);
+      const fullscreenBtn = document.getElementById(`${idPrefix}-fullscreen-btn`);
+      const progressBar = document.getElementById(`${idPrefix}-progress-bar`);
+      const progressContainer = document.getElementById(`${idPrefix}-progress-container`);
+      const timeDisplay = document.getElementById(`${idPrefix}-time-display`);
+
+      if (!video) return;
+
+      function formatTime(seconds) {
+        if (isNaN(seconds)) return '00:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+      }
+
+      function togglePlay() {
+        if (video.paused) {
+          video.play().catch(() => {});
+          overlayPlay.classList.add('opacity-0', 'pointer-events-none');
+          if (playBtn) playBtn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i>`;
+        } else {
+          video.pause();
+          overlayPlay.classList.remove('opacity-0', 'pointer-events-none');
+          if (playBtn) playBtn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
+        }
+        lucide.createIcons();
+      }
+
+      if (overlayPlay) overlayPlay.addEventListener('click', togglePlay);
+      if (playBtn) playBtn.addEventListener('click', togglePlay);
+
+      if (muteBtn) {
+        muteBtn.addEventListener('click', () => {
+          video.muted = !video.muted;
+          muteBtn.innerHTML = video.muted 
+            ? `<i data-lucide="volume-x" class="w-5 h-5"></i>` 
+            : `<i data-lucide="volume-2" class="w-5 h-5"></i>`;
+          lucide.createIcons();
+        });
+      }
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (video.requestFullscreen) video.requestFullscreen();
+          else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+        });
+      }
+
+      video.addEventListener('timeupdate', () => {
+        if (video.duration) {
+          const percent = (video.currentTime / video.duration) * 100;
+          if (progressBar) progressBar.style.width = `${percent}%`;
+          if (timeDisplay) timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+        }
+      });
+
+      if (progressContainer) {
+        progressContainer.addEventListener('click', (e) => {
+          const rect = progressContainer.getBoundingClientRect();
+          const pos = (e.clientX - rect.left) / rect.width;
+          video.currentTime = pos * video.duration;
+        });
+      }
+    }
+
+    setupVideoPlayer('v1', 'video-player-1');
+    setupVideoPlayer('v2', 'video-player-2');
+
+    /* ==========================================================================
+       4. SCROLL TRIGGER ANIMATIONS & HEADER BEHAVIOR
+       ========================================================================== */
+    const header = document.getElementById('main-header');
+    
+    window.addEventListener('scroll', () => {
+      // Header Blur on Scroll
+      if (window.scrollY > 40) {
+        header.classList.add('glass-panel', 'shadow-xl', 'py-3');
+        header.classList.remove('py-5');
+      } else {
+        header.classList.remove('glass-panel', 'shadow-xl', 'py-3');
+        header.classList.add('py-5');
+      }
+    });
+
+    // Reveal Elements on Scroll
+    const observerOptions = { threshold: 0.15 };
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-element').forEach(el => revealObserver.observe(el));
+
+    /* Mobile Menu Drawer Toggle */
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+
+    if (mobileBtn && mobileDrawer) {
+      mobileBtn.addEventListener('click', () => {
+        mobileDrawer.classList.toggle('hidden');
+      });
+
+      document.querySelectorAll('.mobile-nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          mobileDrawer.classList.add('hidden');
+        });
+      });
+    }
+
+    /* ==========================================================================
+       5. BOOT LOADER INTRO
+       ========================================================================== */
+    const loader = document.getElementById('loader');
+    const loaderBar = document.getElementById('loader-bar');
+    const loaderPercent = document.getElementById('loader-percent');
+    const loaderStatus = document.getElementById('loader-status');
+    const skipBtn = document.getElementById('skip-loader');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * 25) + 10;
+      if (progress > 100) progress = 100;
+
+      if (loaderBar) loaderBar.style.width = `${progress}%`;
+      if (loaderPercent) loaderPercent.textContent = `${progress}%`;
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        if (loaderStatus) loaderStatus.textContent = 'SYSTEM ONLINE';
+        setTimeout(() => {
+          closeLoader();
+        }, 300);
+      }
+    }, 120);
+
+    function closeLoader() {
+      if (loader) {
+        loader.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          loader.remove();
+        }, 700);
+      }
+    }
+
+    if (skipBtn) skipBtn.addEventListener('click', closeLoader);
+  </script>
+</body>
+</html>
