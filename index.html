@@ -9,8 +9,8 @@
   <!-- ÍCONE DO SITE (FAVICON)                                          -->
   <!-- O ícone do site é carregado da pasta assets/icon.png / icon.ico   -->
   <!-- ================================================================= -->
-  <link rel="icon" type="image/png" href="/icon.png" />
-  <link rel="shortcut icon" href="/icon.ico" />
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="shortcut icon" href="assets/icon.ico" />
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -517,189 +517,56 @@
 
   </main>
 
+  <!-- FLOATING INSTAGRAM BUTTON -->
+  <a 
+    href="https://www.instagram.com/nave_unifoa" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    aria-label="Instagram @nave_unifoa"
+    class="fixed bottom-6 right-6 z-40 group flex items-center gap-2.5 p-3.5 sm:px-4 sm:py-3 rounded-full glass-panel-cyan border border-nave-cyan/40 bg-slate-950/80 text-white hover:text-nave-cyan hover:border-nave-cyan transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.25)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] hover:scale-105 active:scale-95"
+  >
+    <i data-lucide="instagram" class="w-5 h-5 text-nave-cyan group-hover:scale-110 transition-transform duration-300"></i>
+    <span class="hidden sm:inline font-mono-code text-xs font-semibold tracking-wider text-slate-200 group-hover:text-nave-cyan transition-colors">
+      @nave_unifoa
+    </span>
+  </a>
+
   <script>
     // Initialize Lucide Icons
     lucide.createIcons();
 
     /* ==========================================================================
-       1. HERO CANVAS - ENERGY BEAM ANIMATION
+       3. YOUTUBE UTILITY HELPER & AUTO-PAUSE SYSTEM
        ========================================================================== */
-    (function initEnergyBeam() {
-      const canvas = document.getElementById('energy-beam-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
+    // Carrega a API do IFrame do YouTube dinamicamente
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      let width = (canvas.width = window.innerWidth);
-      let height = (canvas.height = window.innerHeight);
+    let players = {};
 
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      });
-
-      // Stream particles
-      const particleCount = 45;
-      const particles = [];
-
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          length: Math.random() * 120 + 80,
-          speed: Math.random() * 2 + 0.8,
-          width: Math.random() * 2 + 0.5,
-          alpha: Math.random() * 0.6 + 0.2,
-          color: Math.random() > 0.4 ? '#00f0ff' : '#3b82f6'
-        });
-      }
-
-      function drawBeam() {
-        ctx.clearRect(0, 0, width, height);
-
-        // Radial beam gradient in center background
-        const bgGradient = ctx.createRadialGradient(
-          width / 2, height / 2, 50,
-          width / 2, height / 2, Math.max(width, height) / 1.5
-        );
-        bgGradient.addColorStop(0, 'rgba(0, 240, 255, 0.05)');
-        bgGradient.addColorStop(0.5, 'rgba(14, 19, 31, 0.2)');
-        bgGradient.addColorStop(1, 'rgba(7, 9, 14, 0)');
-        ctx.fillStyle = bgGradient;
-        ctx.fillRect(0, 0, width, height);
-
-        // Render rising glowing energy beams
-        particles.forEach((p) => {
-          ctx.beginPath();
-          const gradient = ctx.createLinearGradient(p.x, p.y, p.x, p.y - p.length);
-          gradient.addColorStop(0, 'rgba(0,0,0,0)');
-          gradient.addColorStop(0.5, p.color);
-          gradient.addColorStop(1, 'rgba(255,255,255,0.8)');
-
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = p.width;
-          ctx.lineCap = 'round';
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x, p.y - p.length);
-          ctx.stroke();
-
-          // Movement
-          p.y -= p.speed;
-          if (p.y - p.length < 0) {
-            p.y = height + p.length;
-            p.x = Math.random() * width;
-          }
-        });
-
-        requestAnimationFrame(drawBeam);
-      }
-
-      drawBeam();
-    })();
-
-    /* ==========================================================================
-       2. INTERACTIVE WAVES TRANSITION CANVAS
-       ========================================================================== */
-    (function initInteractiveWaves() {
-      const canvas = document.getElementById('waves-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-
-      let width = (canvas.width = canvas.parentElement.clientWidth);
-      let height = (canvas.height = canvas.parentElement.clientHeight);
-
-      let mouse = {
-        x: width / 2,
-        y: height / 2,
-        targetX: width / 2,
-        targetY: height / 2
-      };
-
-      window.addEventListener('resize', () => {
-        if (!canvas.parentElement) return;
-        width = canvas.width = canvas.parentElement.clientWidth;
-        height = canvas.height = canvas.parentElement.clientHeight;
-      });
-
-      canvas.parentElement.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        mouse.targetX = e.clientX - rect.left;
-        mouse.targetY = e.clientY - rect.top;
-      });
-
-      canvas.parentElement.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-          const rect = canvas.getBoundingClientRect();
-          mouse.targetX = e.touches[0].clientX - rect.left;
-          mouse.targetY = e.touches[0].clientY - rect.top;
+    // Função global executada quando a API do YouTube estiver pronta
+    window.onYouTubeIframeAPIReady = function() {
+      players['youtube-player-1'] = new YT.Player('youtube-player-1', {
+        events: {
+          'onStateChange': onPlayerStateChange
         }
-      }, { passive: true });
-
-      let step = 0;
-      const lines = 12;
-
-      function renderWaves() {
-        ctx.clearRect(0, 0, width, height);
-
-        // Smooth mouse position interpolation
-        mouse.x += (mouse.targetX - mouse.x) * 0.05;
-        mouse.y += (mouse.targetY - mouse.y) * 0.05;
-
-        step += 0.015;
-
-        for (let i = 0; i < lines; i++) {
-          ctx.beginPath();
-          ctx.lineWidth = 1.5;
-
-          const progress = i / lines;
-          const lineAlpha = Math.sin(progress * Math.PI) * 0.5 + 0.1;
-          const isCyan = i % 2 === 0;
-
-          ctx.strokeStyle = isCyan 
-            ? `rgba(0, 240, 255, ${lineAlpha})` 
-            : `rgba(139, 92, 246, ${lineAlpha})`;
-
-          const baseHeight = (height / (lines + 1)) * (i + 1);
-
-          for (let x = 0; x <= width; x += 15) {
-            // Distance to mouse factor
-            const dx = x - mouse.x;
-            const dy = baseHeight - mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const maxDist = 250;
-
-            let waveOffset = Math.sin(x * 0.008 + step + i * 0.4) * 20;
-
-            if (dist < maxDist) {
-              const factor = (1 - dist / maxDist);
-              waveOffset += Math.sin(dist * 0.05 - step * 3) * 35 * factor;
-            }
-
-            const y = baseHeight + waveOffset;
-
-            if (x === 0) {
-              ctx.moveTo(x, y);
-            } else {
-              ctx.lineTo(x, y);
-            }
-          }
-
-          ctx.stroke();
+      });
+      players['youtube-player-2'] = new YT.Player('youtube-player-2', {
+        events: {
+          'onStateChange': onPlayerStateChange
         }
+      });
+    };
 
-        requestAnimationFrame(renderWaves);
+    // Callback acionado sempre que o estado de reprodução muda
+    function onPlayerStateChange(event) {
+      // Quando o vídeo chega ao fim (YT.PlayerState.ENDED)
+      if (event.data === YT.PlayerState.ENDED) {
+        event.target.pauseVideo();
       }
-
-      renderWaves();
-    })();
-
-    /* ==========================================================================
-       3. YOUTUBE UTILITY HELPER
-       ========================================================================== */
-    /* 
-       Para alterar os vídeos do YouTube no futuro via JavaScript se desejar:
-       - Vídeo 1 (Anúncio): document.getElementById('youtube-player-1').src = "https://www.youtube.com/embed/SEU_NOVO_ID";
-       - Vídeo 2 (Tutorial): document.getElementById('youtube-player-2').src = "https://www.youtube.com/embed/SEU_NOVO_ID";
-    */
+    }
 
     /* ==========================================================================
        4. SCROLL TRIGGER ANIMATIONS & HEADER BEHAVIOR
