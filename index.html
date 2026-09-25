@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NAVE - O Futuro Começa Aqui</title>
+
+  <!-- ================================================================= -->
+  <!-- ÍCONE DO SITE (FAVICON)                                          -->
+  <!-- O ícone do site é carregado da pasta assets/icon.png / icon.ico   -->
+  <!-- ================================================================= -->
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="shortcut icon" href="assets/icon.ico" />
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -175,27 +182,26 @@
   <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-5 px-6 md:px-12">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
-      <!-- Brand Logo -->
+      <!-- Brand Logo & Icon -->
       <a href="#hero" class="flex items-center gap-3 group">
         <div class="relative w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center overflow-hidden transition-border duration-300 group-hover:border-nave-cyan">
-          <div class="absolute inset-0 bg-gradient-to-tr from-nave-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <span class="font-display font-black text-lg text-white tracking-tighter">N</span>
+          <img src="assets/icon.png" alt="Icon" class="w-5 h-5 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/32x32/0e131f/00f0ff?text=N';" />
         </div>
         <div class="flex flex-col">
           <span class="font-display font-bold text-lg tracking-widest text-white leading-none">NAVE</span>
-          <span class="font-mono-code text-[9px] tracking-widest text-slate-400 uppercase mt-0.5">Ecosistema Tech</span>
+          <span class="font-mono-code text-[9px] tracking-widest text-slate-400 uppercase mt-0.5">Ecossistema Tech</span>
         </div>
       </a>
 
-      <!-- Desktop Navigation Links -->
+      <!-- Desktop Navigation Links (ANÚNCIO e TUTORIAL) -->
       <nav class="hidden md:flex items-center gap-1 glass-panel px-4 py-2 rounded-full border border-slate-800">
         <a href="#hero" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">INÍCIO</a>
         <span class="text-slate-700 text-xs">•</span>
-        <a href="#video-1-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">VÍDEO 01</a>
+        <a href="#video-1-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">ANÚNCIO</a>
         <span class="text-slate-700 text-xs">•</span>
         <a href="#transition-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">TRANSIÇÃO</a>
         <span class="text-slate-700 text-xs">•</span>
-        <a href="#video-2-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">VÍDEO 02</a>
+        <a href="#video-2-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">TUTORIAL</a>
       </nav>
 
       <!-- Status Pill / CTA -->
@@ -219,7 +225,7 @@
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
       <a href="#video-1-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
-        <span>02 // Apresentação</span>
+        <span>02 // ANÚNCIO</span>
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
       <a href="#transition-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
@@ -227,7 +233,7 @@
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
       <a href="#video-2-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
-        <span>04 // Tutorial</span>
+        <span>04 // TUTORIAL</span>
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
     </div>
@@ -303,16 +309,16 @@
       </div>
     </section>
 
-    <!-- 11. SEÇÃO VÍDEO 01 & 12. ANIMAÇÕES DE SCROLL -->
+    <!-- 11. SEÇÃO VÍDEO 01 (ANÚNCIO) -->
     <section id="video-1-section" class="relative py-24 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
       
       <!-- Section Header -->
       <div class="reveal-element flex flex-col items-start mb-10 border-l-2 border-nave-cyan pl-4">
-        <span class="font-mono-code text-xs text-nave-cyan tracking-widest uppercase mb-1">01 // APRESENTAÇÃO INICIAL</span>
-        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">IMERSÃO INSTITUCIONAL</h2>
+        <span class="font-mono-code text-xs text-nave-cyan tracking-widest uppercase mb-1">01 // ANÚNCIO</span>
+        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">ANÚNCIO NAVE</h2>
       </div>
 
-      <!-- Video Player Frame / Canvas Overlay -->
+      <!-- Video Player Frame -->
       <div id="video-1-container" class="reveal-element relative rounded-2xl overflow-hidden glass-panel-cyan shadow-2xl transition-all duration-700 transform">
         
         <!-- Top HUD Header Bar -->
@@ -323,85 +329,51 @@
               <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
               <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
             </div>
-            <span class="text-slate-300 font-semibold tracking-wider">NAVE_DEMO_STREAM_01.MP4</span>
+            <span class="text-slate-300 font-semibold tracking-wider">NAVE_ANUNCIO.STREAM</span>
           </div>
           <div class="hidden sm:flex items-center gap-4 text-[10px]">
-            <span>FORMAT: H.264</span>
-            <span class="text-nave-cyan">BITRATE: HIGH</span>
+            <span>PLATFORM: YOUTUBE</span>
+            <span class="text-nave-cyan">STATUS: READY</span>
           </div>
         </div>
 
-        <!-- Video Wrapper -->
+        <!-- Video Wrapper / YouTube Embed -->
         <div class="relative aspect-video w-full bg-black group overflow-hidden">
           
-          <!-- Local Video 1 Asset Tag -->
-          <video 
-            id="video-player-1"
-            class="w-full h-full object-cover"
-            playsinline
-            preload="metadata"
-          >
-            <!-- Pasta assets/ com o arquivo video 1.mp4 ou video1.mp4 -->
-            <source src="assets/video 1.mp4" type="video/mp4" />
-            <source src="assets/video1.mp4" type="video/mp4" />
-            Seu navegador não suporta vídeos HTML5.
-          </video>
+          <!-- ========================================================================= -->
+          <!-- COLE SEU LINK OU ID DO YOUTUBE AQUI PARA O VÍDEO 01 (ANÚNCIO)             -->
+          <!-- Exemplo de ID: em https://www.youtube.com/watch?v=dQw4w9WgXcQ o ID é dQw4w9WgXcQ -->
+          <!-- Substitua o 'dQw4w9WgXcQ' no campo src pelo ID do seu vídeo               -->
+          <!-- ========================================================================= -->
+          <iframe 
+            id="youtube-player-1" 
+            class="w-full h-full object-cover border-0" 
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0" 
+            title="NAVE - Anúncio" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+          </iframe>
 
-          <!-- Custom HUD Play Overlay (Center Button) -->
-          <button id="v1-overlay-play" class="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/20">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-nave-cyan/90 hover:bg-nave-cyan text-black flex items-center justify-center transition-all duration-300 shadow-[0_0_40px_rgba(0,240,255,0.6)] transform group-hover:scale-110">
-              <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
-            </div>
-            <span class="mt-4 font-mono-code text-xs text-white tracking-widest uppercase bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-700">INICIAR VÍDEO 01</span>
-          </button>
-
-          <!-- Bottom Floating HUD Controls Bar -->
-          <div id="v1-controls" class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex flex-col gap-2">
-            
-            <!-- Progress Bar -->
-            <div class="relative w-full h-1.5 bg-slate-800 rounded cursor-pointer overflow-hidden group/bar" id="v1-progress-container">
-              <div id="v1-progress-bar" class="absolute top-0 left-0 bottom-0 bg-nave-cyan w-0 transition-all duration-100"></div>
-            </div>
-
-            <!-- Controls Buttons -->
-            <div class="flex items-center justify-between text-white font-mono-code text-xs pt-1">
-              <div class="flex items-center gap-4">
-                <button id="v1-play-btn" class="hover:text-nave-cyan transition-colors" aria-label="Play/Pause">
-                  <i data-lucide="play" class="w-5 h-5"></i>
-                </button>
-                <button id="v1-mute-btn" class="hover:text-nave-cyan transition-colors" aria-label="Mute/Unmute">
-                  <i data-lucide="volume-2" class="w-5 h-5"></i>
-                </button>
-                <span id="v1-time-display" class="text-slate-400 text-[11px]">00:00 / 00:00</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <button id="v1-fullscreen-btn" class="hover:text-nave-cyan transition-colors" aria-label="Tela Cheia">
-                  <i data-lucide="maximize" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-
-          </div>
         </div>
 
         <!-- Video Footer Context -->
         <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h3 class="font-display text-lg font-bold text-white">CONCEITO E VISÃO GERAL</h3>
-            <p class="text-sm text-slate-400 mt-1">Conheça as bases fundamentais do NAVE e como conectamos inovação ao futuro.</p>
+            <h3 class="font-display text-lg font-bold text-white">ANÚNCIO OFICIAL</h3>
+            <p class="text-sm text-slate-400 mt-1">Apresentação geral da visão e proposta do ecossistema NAVE.</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">VISUAL EXPERIENTIAL</span>
+            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">YOUTUBE VIDEO</span>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- 13. TRANSIÇÃO ENTRE OS VÍDEOS & 14. COMPORTAMENTO DAS WAVES & 15. TEXTO DA TRANSIÇÃO -->
+    <!-- 13. TRANSIÇÃO ENTRE OS VÍDEOS & INTERACTIVE WAVES -->
     <section id="transition-section" class="relative py-32 px-6 overflow-hidden border-y border-slate-800/60 bg-[#05070c]">
       
-      <!-- Canvas Canvas Interactive Waves -->
+      <!-- Canvas Interactive Waves -->
       <canvas id="waves-canvas" class="absolute inset-0 w-full h-full object-cover z-0"></canvas>
       
       <!-- Overlay Gradient for contrast -->
@@ -422,19 +394,19 @@
           </h2>
 
           <p class="text-slate-400 text-sm sm:text-base font-light max-w-lg mx-auto">
-            Mova o cursor para interagir com o fluxo digital da transição entre experiências.
+            Mova o cursor para interagir com o fluxo digital da transição entre conteúdos.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- 16. VÍDEO 02 SECTION -->
+    <!-- 16. VÍDEO 02 (TUTORIAL) -->
     <section id="video-2-section" class="relative py-24 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
       
       <!-- Section Header -->
       <div class="reveal-element flex flex-col items-start mb-10 border-l-2 border-nave-purple pl-4">
-        <span class="font-mono-code text-xs text-nave-purple tracking-widest uppercase mb-1">02 // NAVE EXPERIENCE</span>
-        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">IMERSÃO PRÁTICA E FUTURO</h2>
+        <span class="font-mono-code text-xs text-nave-purple tracking-widest uppercase mb-1">02 // TUTORIAL</span>
+        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">TUTORIAL NAVE</h2>
       </div>
 
       <!-- Video Player Container -->
@@ -448,75 +420,41 @@
               <span class="w-2.5 h-2.5 rounded-full bg-cyan-500/80"></span>
               <span class="w-2.5 h-2.5 rounded-full bg-blue-500/80"></span>
             </div>
-            <span class="text-slate-300 font-semibold tracking-wider">NAVE_EXPERIENCE_MODULE.MP4</span>
+            <span class="text-slate-300 font-semibold tracking-wider">NAVE_TUTORIAL.STREAM</span>
           </div>
           <div class="hidden sm:flex items-center gap-4 text-[10px]">
-            <span class="text-nave-purple">MODE: IMMERSIVE</span>
-            <span>AUDIO: STEREO</span>
+            <span class="text-nave-purple">MODE: GUIDED</span>
+            <span>PLATFORM: YOUTUBE</span>
           </div>
         </div>
 
-        <!-- Video Wrapper -->
+        <!-- Video Wrapper / YouTube Embed -->
         <div class="relative aspect-video w-full bg-black group overflow-hidden">
           
-          <!-- Local Video 2 Asset Tag -->
-          <video 
-            id="video-player-2"
-            class="w-full h-full object-cover"
-            playsinline
-            preload="metadata"
-          >
-            <!-- Pasta assets/ com o arquivo video 2.mp4 ou video2.mp4 -->
-            <source src="assets/video 2.mp4" type="video/mp4" />
-            <source src="assets/video2.mp4" type="video/mp4" />
-            Seu navegador não suporta vídeos HTML5.
-          </video>
+          <!-- ========================================================================= -->
+          <!-- COLE SEU LINK OU ID DO YOUTUBE AQUI PARA O VÍDEO 02 (TUTORIAL)            -->
+          <!-- Exemplo de ID: em https://www.youtube.com/watch?v=dQw4w9WgXcQ o ID é dQw4w9WgXcQ -->
+          <!-- Substitua o 'dQw4w9WgXcQ' no campo src pelo ID do seu vídeo               -->
+          <!-- ========================================================================= -->
+          <iframe 
+            id="youtube-player-2" 
+            class="w-full h-full object-cover border-0" 
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0" 
+            title="NAVE - Tutorial" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+          </iframe>
 
-          <!-- Custom HUD Play Overlay -->
-          <button id="v2-overlay-play" class="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/20">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-nave-purple/90 hover:bg-nave-purple text-white flex items-center justify-center transition-all duration-300 shadow-[0_0_40px_rgba(139,92,246,0.6)] transform group-hover:scale-110">
-              <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
-            </div>
-            <span class="mt-4 font-mono-code text-xs text-white tracking-widest uppercase bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-700">INICIAR VÍDEO 02</span>
-          </button>
-
-          <!-- Bottom Floating HUD Controls Bar -->
-          <div id="v2-controls" class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-opacity duration-300 opacity-0 group-hover:opacity-100 flex flex-col gap-2">
-            
-            <!-- Progress Bar -->
-            <div class="relative w-full h-1.5 bg-slate-800 rounded cursor-pointer overflow-hidden" id="v2-progress-container">
-              <div id="v2-progress-bar" class="absolute top-0 left-0 bottom-0 bg-nave-purple w-0 transition-all duration-100"></div>
-            </div>
-
-            <!-- Controls Buttons -->
-            <div class="flex items-center justify-between text-white font-mono-code text-xs pt-1">
-              <div class="flex items-center gap-4">
-                <button id="v2-play-btn" class="hover:text-nave-purple transition-colors" aria-label="Play/Pause">
-                  <i data-lucide="play" class="w-5 h-5"></i>
-                </button>
-                <button id="v2-mute-btn" class="hover:text-nave-purple transition-colors" aria-label="Mute/Unmute">
-                  <i data-lucide="volume-2" class="w-5 h-5"></i>
-                </button>
-                <span id="v2-time-display" class="text-slate-400 text-[11px]">00:00 / 00:00</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <button id="v2-fullscreen-btn" class="hover:text-nave-purple transition-colors" aria-label="Tela Cheia">
-                  <i data-lucide="maximize" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-
-          </div>
         </div>
 
         <!-- Video Footer Context -->
         <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h3 class="font-display text-lg font-bold text-white">ECOSSISTEMA & IMPACTO</h3>
-            <p class="text-sm text-slate-400 mt-1">Descubra as infinitas possibilidades de criação dentro do ambiente NAVE.</p>
+            <h3 class="font-display text-lg font-bold text-white">GUIA E PASSO A PASSO</h3>
+            <p class="text-sm text-slate-400 mt-1">Aprenda a explorar e utilizar as ferramentas do NAVE na prática.</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">FUTURE READY</span>
+            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">YOUTUBE VIDEO</span>
           </div>
         </div>
 
@@ -532,8 +470,8 @@
       <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
         
         <!-- Brand Core Identity -->
-        <div class="reveal-element inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700/60 mb-8 shadow-xl">
-          <span class="font-display font-black text-3xl text-nave-cyan">N</span>
+        <div class="reveal-element inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700/60 mb-8 shadow-xl overflow-hidden p-3">
+          <img src="assets/icon.png" alt="NAVE Icon" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64/0e131f/00f0ff?text=N';" />
         </div>
 
         <h2 class="reveal-element font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-4">
@@ -586,7 +524,7 @@
     lucide.createIcons();
 
     /* ==========================================================================
-       1. HERO CANVA - ENERGY BEAM ANIMATION
+       1. HERO CANVAS - ENERGY BEAM ANIMATION
        ========================================================================== */
     (function initEnergyBeam() {
       const canvas = document.getElementById('energy-beam-canvas');
@@ -757,79 +695,13 @@
     })();
 
     /* ==========================================================================
-       3. VIDEO PLAYERS LOGIC (HUD CONTROLLERS)
+       3. YOUTUBE UTILITY HELPER
        ========================================================================== */
-    function setupVideoPlayer(idPrefix, videoId) {
-      const video = document.getElementById(videoId);
-      const overlayPlay = document.getElementById(`${idPrefix}-overlay-play`);
-      const playBtn = document.getElementById(`${idPrefix}-play-btn`);
-      const muteBtn = document.getElementById(`${idPrefix}-mute-btn`);
-      const fullscreenBtn = document.getElementById(`${idPrefix}-fullscreen-btn`);
-      const progressBar = document.getElementById(`${idPrefix}-progress-bar`);
-      const progressContainer = document.getElementById(`${idPrefix}-progress-container`);
-      const timeDisplay = document.getElementById(`${idPrefix}-time-display`);
-
-      if (!video) return;
-
-      function formatTime(seconds) {
-        if (isNaN(seconds)) return '00:00';
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
-        return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-      }
-
-      function togglePlay() {
-        if (video.paused) {
-          video.play().catch(() => {});
-          overlayPlay.classList.add('opacity-0', 'pointer-events-none');
-          if (playBtn) playBtn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i>`;
-        } else {
-          video.pause();
-          overlayPlay.classList.remove('opacity-0', 'pointer-events-none');
-          if (playBtn) playBtn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
-        }
-        lucide.createIcons();
-      }
-
-      if (overlayPlay) overlayPlay.addEventListener('click', togglePlay);
-      if (playBtn) playBtn.addEventListener('click', togglePlay);
-
-      if (muteBtn) {
-        muteBtn.addEventListener('click', () => {
-          video.muted = !video.muted;
-          muteBtn.innerHTML = video.muted 
-            ? `<i data-lucide="volume-x" class="w-5 h-5"></i>` 
-            : `<i data-lucide="volume-2" class="w-5 h-5"></i>`;
-          lucide.createIcons();
-        });
-      }
-
-      if (fullscreenBtn) {
-        fullscreenBtn.addEventListener('click', () => {
-          if (video.requestFullscreen) video.requestFullscreen();
-          else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-        });
-      }
-
-      video.addEventListener('timeupdate', () => {
-        if (video.duration) {
-          const percent = (video.currentTime / video.duration) * 100;
-          if (progressBar) progressBar.style.width = `${percent}%`;
-          if (timeDisplay) timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-        }
-      });
-
-      if (progressContainer) {
-        progressContainer.addEventListener('click', (e) => {
-          const rect = progressContainer.getBoundingClientRect();
-          const pos = (e.clientX - rect.left) / rect.width;
-          video.currentTime = pos * video.duration;
-        });
-      }
-    }
-
-    setupVideoPlayer('v1', 'video-player-1');
-    setupVideoPlayer('v2', 'video-player-2');
+    /* 
+       Para alterar os vídeos do YouTube no futuro via JavaScript se desejar:
+       - Vídeo 1 (Anúncio): document.getElementById('youtube-player-1').src = "https://www.youtube.com/embed/SEU_NOVO_ID";
+       - Vídeo 2 (Tutorial): document.getElementById('youtube-player-2').src = "https://www.youtube.com/embed/SEU_NOVO_ID";
+    */
 
     /* ==========================================================================
        4. SCROLL TRIGGER ANIMATIONS & HEADER BEHAVIOR
