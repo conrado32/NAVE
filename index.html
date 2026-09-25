@@ -2,12 +2,11 @@
 <html lang="pt-BR" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>NAVE - O Futuro Começa Aqui</title>
 
   <!-- ================================================================= -->
   <!-- ÍCONE DO SITE (FAVICON)                                          -->
-  <!-- O ícone do site é carregado da pasta assets/icon.png / icon.ico   -->
   <!-- ================================================================= -->
   <link rel="icon" type="image/png" href="assets/icon.png" />
   <link rel="shortcut icon" href="assets/icon.ico" />
@@ -39,7 +38,8 @@
           animation: {
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'float': 'float 6s ease-in-out infinite',
-            'glow-line': 'glowLine 3s ease-in-out infinite'
+            'glow-line': 'glowLine 3s ease-in-out infinite',
+            'gradient-bg': 'gradientBg 10s ease infinite'
           },
           keyframes: {
             float: {
@@ -49,6 +49,10 @@
             glowLine: {
               '0%, 100%': { opacity: '0.3', transform: 'scaleX(0.95)' },
               '50%': { opacity: '0.9', transform: 'scaleX(1.05)' }
+            },
+            gradientBg: {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' }
             }
           }
         }
@@ -91,13 +95,14 @@
     .glass-panel-cyan {
       background: rgba(14, 19, 31, 0.75);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(0, 240, 255, 0.2);
       box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.05);
     }
 
     /* Scrollbar styling */
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
     ::-webkit-scrollbar-track {
       background: #07090e;
@@ -110,17 +115,11 @@
       background: #00f0ff;
     }
 
-    /* Subtle Scanline Effect */
-    .scanlines {
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0, 0, 0, 0.2) 50%,
-        rgba(0, 0, 0, 0.2)
-      );
-      background-size: 100% 4px;
-      pointer-events: none;
+    /* Subtle Ambient Gradient Mesh Background */
+    .animated-ambient-bg {
+      background: linear-gradient(-45deg, #07090e, #0b1120, #090e1a, #07090e);
+      background-size: 400% 400%;
+      animation: gradientBg 15s ease infinite;
     }
 
     /* Grid overlay */
@@ -131,21 +130,86 @@
         linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     }
 
-    /* Scroll trigger initial states */
+    /* Advanced Reveal System (Translate + Scale + Blur -> Crisp) */
     .reveal-element {
       opacity: 0;
-      transform: translateY(30px) scale(0.96);
-      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity;
+      transform: translateY(35px) scale(0.96);
+      filter: blur(8px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity, filter;
     }
 
     .reveal-element.active {
       opacity: 1;
       transform: translateY(0) scale(1);
+      filter: blur(0px);
+    }
+
+    /* Animated Video Card on Scroll */
+    .video-scroll-card {
+      opacity: 0;
+      transform: translateY(50px) scale(0.92);
+      transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                  opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.9s ease;
+      will-change: transform, opacity;
+    }
+
+    .video-scroll-card.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Cinematic Text Word/Span Animation */
+    .text-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      filter: blur(4px);
+      transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+      will-change: transform, opacity, filter;
+    }
+
+    .text-reveal-container.active .text-word {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
+    }
+
+    /* Mobile Drawer Link Stagger Animation */
+    .mobile-drawer-link {
+      opacity: 0;
+      transform: translateX(-15px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    #mobile-drawer:not(.hidden) .mobile-drawer-link {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Reduced Motion Rules */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-element, .video-scroll-card, .text-word, .mobile-drawer-link {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+      .animate-pulse, .animate-bounce, .animate-spin {
+        animation: none !important;
+      }
     }
   </style>
 </head>
-<body class="relative selection:bg-nave-cyan selection:text-black">
+<body class="relative selection:bg-nave-cyan selection:text-black animated-ambient-bg">
+
+  <!-- SCROLL PROGRESS BAR (PRIORIDADE 2 - ITEM 3) -->
+  <div class="fixed top-0 left-0 right-0 z-50 h-[3px] bg-slate-900/50 pointer-events-none">
+    <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-nave-blue via-nave-cyan to-white w-0 transition-all duration-75 ease-out shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
+  </div>
 
   <!-- 7. LOADING / INTRO SCREEN -->
   <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#05070a] transition-opacity duration-700">
@@ -168,11 +232,11 @@
       </div>
 
       <div class="flex items-center justify-between w-full font-mono-code text-xs text-slate-400">
-        <span id="loader-status" class="tracking-widest">INITIALIZING EXPERIENCE...</span>
+        <span id="loader-status" class="tracking-widest uppercase">INICIALIZANDO SISTEMA...</span>
         <span id="loader-percent" class="text-nave-cyan font-semibold">0%</span>
       </div>
 
-      <button id="skip-loader" class="mt-8 text-xs font-mono-code text-slate-500 hover:text-slate-300 transition-colors underline decoration-slate-700 underline-offset-4">
+      <button id="skip-loader" class="mt-8 text-xs font-mono-code text-slate-500 hover:text-slate-300 transition-colors underline decoration-slate-700 underline-offset-4 active:scale-95">
         [ pular introdução ]
       </button>
     </div>
@@ -184,7 +248,7 @@
       
       <!-- Brand Logo & Icon -->
       <a href="#hero" class="flex items-center gap-3 group">
-        <div class="relative w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center overflow-hidden transition-border duration-300 group-hover:border-nave-cyan">
+        <div class="relative w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-nave-cyan group-hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]">
           <img src="assets/icon.png" alt="Icon" class="w-5 h-5 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/32x32/0e131f/00f0ff?text=N';" />
         </div>
         <div class="flex flex-col">
@@ -193,7 +257,7 @@
         </div>
       </a>
 
-      <!-- Desktop Navigation Links (ANÚNCIO e TUTORIAL) -->
+      <!-- Desktop Navigation Links -->
       <nav class="hidden md:flex items-center gap-1 glass-panel px-4 py-2 rounded-full border border-slate-800">
         <a href="#hero" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">INÍCIO</a>
         <span class="text-slate-700 text-xs">•</span>
@@ -204,7 +268,7 @@
         <a href="#video-2-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">TUTORIAL</a>
       </nav>
 
-      <!-- Status Pill / CTA -->
+      <!-- Status Pill -->
       <div class="hidden sm:flex items-center gap-2">
         <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-mono-code text-slate-300">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -213,26 +277,26 @@
       </div>
 
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg bg-slate-900/80 border border-slate-800" aria-label="Abrir Menu">
+      <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 active:scale-95 transition-transform" aria-label="Abrir Menu">
         <i data-lucide="menu" class="w-5 h-5"></i>
       </button>
     </div>
 
     <!-- Mobile Drawer -->
-    <div id="mobile-drawer" class="hidden md:hidden absolute top-full left-0 right-0 glass-panel border-b border-slate-800 p-6 flex flex-col gap-4 shadow-2xl">
-      <a href="#hero" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+    <div id="mobile-drawer" class="hidden md:hidden absolute top-full left-0 right-0 glass-panel border-b border-slate-800/80 p-6 flex flex-col gap-3 shadow-2xl transition-all duration-300">
+      <a href="#hero" style="transition-delay: 50ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
         <span>01 // INÍCIO</span>
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
-      <a href="#video-1-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+      <a href="#video-1-section" style="transition-delay: 100ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
         <span>02 // ANÚNCIO</span>
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
-      <a href="#transition-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+      <a href="#transition-section" style="transition-delay: 150ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
         <span>03 // TRANSIÇÃO</span>
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
-      <a href="#video-2-section" class="mobile-nav-item font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center">
+      <a href="#video-2-section" style="transition-delay: 200ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
         <span>04 // TUTORIAL</span>
         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
       </a>
@@ -244,18 +308,18 @@
     <!-- 8. HERO & 9. ENERGY BEAM ANIMATION -->
     <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden cyber-grid">
       
-      <!-- Energy Beam WebGL / Canvas Background -->
-      <canvas id="energy-beam-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-60"></canvas>
+      <!-- Energy Beam Canvas Background -->
+      <canvas id="energy-beam-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-70"></canvas>
 
       <!-- Gradient Light Flares for Ambient Aesthetics -->
       <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-nave-cyan/15 via-blue-600/10 to-transparent blur-[120px] pointer-events-none rounded-full"></div>
       <div class="absolute bottom-10 left-10 w-72 h-72 bg-nave-purple/10 blur-[100px] pointer-events-none rounded-full"></div>
 
-      <!-- Hero Main Content Box -->
-      <div class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
+      <!-- Hero Main Content Box (Parallax target) -->
+      <div id="hero-content" class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center transition-transform duration-100 ease-out">
         
         <!-- Tag / Pill Indicator -->
-        <div class="reveal-element active inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-nave-cyan/30 mb-8 shadow-lg shadow-nave-cyan/5">
+        <div id="hero-stagger-1" class="reveal-element inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-nave-cyan/30 mb-8 shadow-lg shadow-nave-cyan/5">
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-nave-cyan opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-nave-cyan"></span>
@@ -263,21 +327,21 @@
           <span class="font-mono-code text-xs tracking-wider text-nave-cyan uppercase font-semibold">NAVE EXPERIENCE // VIRTUAL HUB</span>
         </div>
 
-        <!-- Main Title -->
-        <h1 class="reveal-element active font-display text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
-          O FUTURO <br class="hidden sm:inline" />
+        <!-- Main Title with Text Reveal -->
+        <h1 id="hero-stagger-2" class="reveal-element text-reveal-container font-display text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
+          <span class="text-word">O</span> <span class="text-word">FUTURO</span> <br class="hidden sm:inline" />
           <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-nave-cyan">
-            COMEÇA AQUI.
+            <span class="text-word">COMEÇA</span> <span class="text-word">AQUI.</span>
           </span>
         </h1>
 
         <!-- Supporting Subtitle -->
-        <p class="reveal-element active max-w-2xl text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-10">
+        <p id="hero-stagger-3" class="reveal-element max-w-2xl text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-10">
           Tecnologia, criatividade e experiências que transformam a forma como imaginamos o amanhã.
         </p>
 
         <!-- 10. CTA BUTTON "EXPLORAR EXPERIÊNCIA" -->
-        <div class="reveal-element active flex flex-col sm:flex-row items-center gap-4">
+        <div id="hero-stagger-4" class="reveal-element flex flex-col sm:flex-row items-center gap-4">
           <a id="explore-cta" href="#video-1-section" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-display font-semibold text-sm tracking-wider text-black bg-nave-cyan hover:bg-white transition-all duration-300 shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:shadow-[0_0_35px_rgba(255,255,255,0.6)] hover:scale-105 active:scale-95">
             <span>EXPLORAR EXPERIÊNCIA</span>
             <i data-lucide="arrow-down" class="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1"></i>
@@ -285,17 +349,17 @@
         </div>
 
         <!-- Tech Indicators / Mini Stats -->
-        <div class="reveal-element active grid grid-cols-3 gap-6 sm:gap-12 mt-20 pt-10 border-t border-slate-800/80 w-full max-w-2xl">
-          <div class="text-center">
-            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1">02</div>
+        <div id="hero-stagger-5" class="reveal-element grid grid-cols-3 gap-6 sm:gap-12 mt-20 pt-10 border-t border-slate-800/80 w-full max-w-2xl">
+          <div class="text-center group">
+            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1 group-hover:text-nave-cyan transition-colors">02</div>
             <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Vídeos Core</div>
           </div>
-          <div class="text-center">
-            <div class="font-mono-code text-xl sm:text-2xl font-bold text-nave-cyan mb-1">100%</div>
+          <div class="text-center group">
+            <div class="font-mono-code text-xl sm:text-2xl font-bold text-nave-cyan mb-1 group-hover:scale-110 transition-transform">100%</div>
             <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Imersão</div>
           </div>
-          <div class="text-center">
-            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1">4K</div>
+          <div class="text-center group">
+            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1 group-hover:text-nave-cyan transition-colors">4K</div>
             <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Qualidade</div>
           </div>
         </div>
@@ -318,8 +382,8 @@
         <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">ANÚNCIO NAVE</h2>
       </div>
 
-      <!-- Video Player Frame (Format Vertical / Reels) -->
-      <div id="video-1-container" class="reveal-element relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden glass-panel-cyan shadow-2xl transition-all duration-700 transform">
+      <!-- Video Player Frame (Format Vertical / Reels 9:16 with Scroll Scale Effect) -->
+      <div id="video-1-container" class="video-scroll-card relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden glass-panel-cyan shadow-2xl transition-all duration-700 hover:shadow-[0_0_40px_rgba(0,240,255,0.25)]">
         
         <!-- Top HUD Header Bar -->
         <div class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between font-mono-code text-xs text-slate-400">
@@ -337,13 +401,8 @@
           </div>
         </div>
 
-        <!-- Video Wrapper / YouTube Embed (Aspect 9:16 for Reels/Shorts) -->
+        <!-- Video Wrapper / YouTube Embed (Aspect 9:16) -->
         <div class="relative aspect-[9/16] w-full bg-black group overflow-hidden">
-          
-          <!-- ========================================================================= -->
-          <!-- VÍDEO ANÚNCIO (YOUTUBE SHORTS/REELS)                                       -->
-          <!-- ID: DI92G8dxU1M                                                           -->
-          <!-- ========================================================================= -->
           <iframe 
             id="youtube-player-1" 
             class="w-full h-full object-cover border-0" 
@@ -352,7 +411,6 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
           </iframe>
-
         </div>
 
         <!-- Video Footer Context -->
@@ -362,7 +420,7 @@
             <p class="text-sm text-slate-400 mt-1">Apresentação geral da visão e proposta do ecossistema NAVE.</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">YOUTUBE REELS</span>
+            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs border border-slate-700">YOUTUBE REELS</span>
           </div>
         </div>
 
@@ -373,7 +431,7 @@
     <section id="transition-section" class="relative py-32 px-6 overflow-hidden border-y border-slate-800/60 bg-[#05070c]">
       
       <!-- Canvas Interactive Waves -->
-      <canvas id="waves-canvas" class="absolute inset-0 w-full h-full object-cover z-0"></canvas>
+      <canvas id="waves-canvas" class="absolute inset-0 w-full h-full object-cover z-0 opacity-80"></canvas>
       
       <!-- Overlay Gradient for contrast -->
       <div class="absolute inset-0 bg-gradient-to-b from-[#07090e] via-transparent to-[#07090e] pointer-events-none"></div>
@@ -385,15 +443,16 @@
             // INTERACTION NODE
           </span>
           
-          <h2 class="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-            O FUTURO JÁ ESTÁ <br class="hidden sm:inline" />
+          <h2 class="text-reveal-container font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+            <span class="text-word">O</span> <span class="text-word">FUTURO</span> <span class="text-word">JÁ</span> <span class="text-word">ESTÁ</span> <br class="hidden sm:inline" />
             <span class="bg-clip-text text-transparent bg-gradient-to-r from-nave-cyan via-blue-400 to-nave-purple">
-              EM MOVIMENTO.
+              <span class="text-word">EM</span> <span class="text-word">MOVIMENTO.</span>
             </span>
           </h2>
 
           <p class="text-slate-400 text-sm sm:text-base font-light max-w-lg mx-auto">
-            Mova o cursor para interagir com o fluxo digital da transição entre conteúdos.
+            <span class="hidden md:inline">Mova o cursor para interagir com o fluxo digital da transição entre conteúdos.</span>
+            <span class="md:hidden">O fluxo digital em tempo real acompanha a navegação entre os conteúdos.</span>
           </p>
         </div>
       </div>
@@ -408,8 +467,8 @@
         <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">TUTORIAL NAVE</h2>
       </div>
 
-      <!-- Video Player Container (Format Vertical / Reels) -->
-      <div id="video-2-container" class="reveal-element relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden glass-panel border border-nave-purple/30 shadow-2xl transition-all duration-700 transform">
+      <!-- Video Player Container (Format Vertical / Reels 9:16) -->
+      <div id="video-2-container" class="video-scroll-card relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden glass-panel border border-nave-purple/30 shadow-2xl transition-all duration-700 hover:shadow-[0_0_40px_rgba(139,92,246,0.25)]">
         
         <!-- Top HUD Header Bar -->
         <div class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between font-mono-code text-xs text-slate-400">
@@ -427,13 +486,8 @@
           </div>
         </div>
 
-        <!-- Video Wrapper / YouTube Embed (Aspect 9:16 for Reels/Shorts) -->
+        <!-- Video Wrapper / YouTube Embed (Aspect 9:16) -->
         <div class="relative aspect-[9/16] w-full bg-black group overflow-hidden">
-          
-          <!-- ========================================================================= -->
-          <!-- VÍDEO TUTORIAL (YOUTUBE SHORTS/REELS)                                      -->
-          <!-- ID: D4skQc3i6Ho                                                           -->
-          <!-- ========================================================================= -->
           <iframe 
             id="youtube-player-2" 
             class="w-full h-full object-cover border-0" 
@@ -442,7 +496,6 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
           </iframe>
-
         </div>
 
         <!-- Video Footer Context -->
@@ -452,7 +505,7 @@
             <p class="text-sm text-slate-400 mt-1">Aprenda a explorar e utilizar as ferramentas do NAVE na prática.</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs">YOUTUBE REELS</span>
+            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs border border-slate-700">YOUTUBE REELS</span>
           </div>
         </div>
 
@@ -468,33 +521,33 @@
       <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
         
         <!-- Brand Core Identity -->
-        <div class="reveal-element inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700/60 mb-8 shadow-xl overflow-hidden p-3">
+        <div class="reveal-element inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700/60 mb-8 shadow-xl overflow-hidden p-3 hover:border-nave-cyan transition-colors">
           <img src="assets/icon.png" alt="NAVE Icon" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64/0e131f/00f0ff?text=N';" />
         </div>
 
-        <h2 class="reveal-element font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-4">
-          NAVE
+        <h2 class="text-reveal-container reveal-element font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-4">
+          <span class="text-word">NAVE</span>
         </h2>
 
-        <p class="reveal-element font-display text-xl sm:text-2xl font-light text-slate-300 tracking-wide mb-12">
-          O FUTURO COMEÇA AQUI.
+        <p class="text-reveal-container reveal-element font-display text-xl sm:text-2xl font-light text-slate-300 tracking-wide mb-12">
+          <span class="text-word">O</span> <span class="text-word">FUTURO</span> <span class="text-word">COMEÇA</span> <span class="text-word">AQUI.</span>
         </p>
 
         <!-- Key Pillars Grid -->
         <div class="reveal-element grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 w-full max-w-2xl mb-16">
-          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-colors">
+          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-all hover:-translate-y-1">
             <i data-lucide="cpu" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
             <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">TECNOLOGIA</h4>
             <p class="text-xs text-slate-400">Infraestrutura digital e inovação constante.</p>
           </div>
 
-          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-colors">
+          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-all hover:-translate-y-1">
             <i data-lucide="sparkles" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
             <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">CRIATIVIDADE</h4>
             <p class="text-xs text-slate-400">Espaço para explorar novas ideias e narrativas.</p>
           </div>
 
-          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-colors">
+          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-all hover:-translate-y-1">
             <i data-lucide="rocket" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
             <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">INOVAÇÃO</h4>
             <p class="text-xs text-slate-400">Experiências visuais voltadas para o amanhã.</p>
@@ -502,7 +555,7 @@
         </div>
 
         <!-- Back to Top Button -->
-        <a href="#hero" class="reveal-element group flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-all text-xs font-mono-code mb-12">
+        <a href="#hero" class="reveal-element group flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-all text-xs font-mono-code mb-12 active:scale-95">
           <i data-lucide="arrow-up" class="w-4 h-4 text-nave-cyan transition-transform group-hover:-translate-y-1"></i>
           <span>VOLTAR AO TOPO</span>
         </a>
@@ -536,9 +589,19 @@
     lucide.createIcons();
 
     /* ==========================================================================
-       3. YOUTUBE UTILITY HELPER & AUTO-PAUSE SYSTEM
+       1. SCROLL PROGRESS INDICATOR
        ========================================================================== */
-    // Carrega a API do IFrame do YouTube dinamicamente
+    const progressBar = document.getElementById('scroll-progress-bar');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (progressBar) progressBar.style.width = scrolled + "%";
+    }, { passive: true });
+
+    /* ==========================================================================
+       2. YOUTUBE UTILITY HELPER & AUTO-PAUSE SYSTEM
+       ========================================================================== */
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -546,46 +609,174 @@
 
     let players = {};
 
-    // Função global executada quando a API do YouTube estiver pronta
     window.onYouTubeIframeAPIReady = function() {
       players['youtube-player-1'] = new YT.Player('youtube-player-1', {
-        events: {
-          'onStateChange': onPlayerStateChange
-        }
+        events: { 'onStateChange': onPlayerStateChange }
       });
       players['youtube-player-2'] = new YT.Player('youtube-player-2', {
-        events: {
-          'onStateChange': onPlayerStateChange
-        }
+        events: { 'onStateChange': onPlayerStateChange }
       });
     };
 
-    // Callback acionado sempre que o estado de reprodução muda
     function onPlayerStateChange(event) {
-      // Quando o vídeo chega ao fim (YT.PlayerState.ENDED)
       if (event.data === YT.PlayerState.ENDED) {
         event.target.pauseVideo();
       }
     }
 
     /* ==========================================================================
-       4. SCROLL TRIGGER ANIMATIONS & HEADER BEHAVIOR
+       3. MOBILE DETECT & REDUCED MOTION CHECK
+       ========================================================================== */
+    const isMobile = window.innerWidth <= 768;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ==========================================================================
+       4. ENERGY BEAM CANVAS ENGINE (HERO)
+       ========================================================================== */
+    const beamCanvas = document.getElementById('energy-beam-canvas');
+    if (beamCanvas && !prefersReducedMotion) {
+      const ctx = beamCanvas.getContext('2d');
+      let width, height;
+      let mouseX = 0;
+      let targetMouseX = 0;
+
+      function resizeBeam() {
+        width = beamCanvas.width = beamCanvas.offsetWidth;
+        height = beamCanvas.height = beamCanvas.offsetHeight;
+      }
+      resizeBeam();
+      window.addEventListener('resize', resizeBeam);
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isMobile) targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      });
+
+      // Beams particles
+      const particleCount = isMobile ? 18 : 35;
+      const particles = Array.from({ length: particleCount }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        length: Math.random() * 120 + 60,
+        speed: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.5 + 0.2,
+        width: Math.random() * 2 + 1
+      }));
+
+      function drawEnergyBeam() {
+        ctx.clearRect(0, 0, width, height);
+
+        mouseX += (targetMouseX - mouseX) * 0.05;
+
+        // Draw central ambient glow
+        const glowGradient = ctx.createRadialGradient(
+          width / 2 + mouseX * 50, height / 2, 10,
+          width / 2, height / 2, Math.max(width, height) * 0.6
+        );
+        glowGradient.addColorStop(0, 'rgba(0, 240, 255, 0.15)');
+        glowGradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.05)');
+        glowGradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(0, 0, width, height);
+
+        // Draw dynamic beams
+        particles.forEach(p => {
+          p.y -= p.speed;
+          if (p.y + p.length < 0) {
+            p.y = height + p.length;
+            p.x = Math.random() * width;
+          }
+
+          const beamGrad = ctx.createLinearGradient(p.x, p.y, p.x + mouseX * 20, p.y - p.length);
+          beamGrad.addColorStop(0, 'transparent');
+          beamGrad.addColorStop(0.5, `rgba(0, 240, 255, ${p.opacity})`);
+          beamGrad.addColorStop(1, 'transparent');
+
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x + mouseX * 20, p.y - p.length);
+          ctx.strokeStyle = beamGrad;
+          ctx.lineWidth = p.width;
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(drawEnergyBeam);
+      }
+      drawEnergyBeam();
+    }
+
+    /* ==========================================================================
+       5. INTERACTIVE WAVES ENGINE (TRANSIÇÃO)
+       ========================================================================== */
+    const wavesCanvas = document.getElementById('waves-canvas');
+    if (wavesCanvas && !prefersReducedMotion) {
+      const wCtx = wavesCanvas.getContext('2d');
+      let wWidth, wHeight;
+      let waveStep = 0;
+      let wavePointer = 0;
+
+      function resizeWaves() {
+        wWidth = wavesCanvas.width = wavesCanvas.offsetWidth;
+        wHeight = wavesCanvas.height = wavesCanvas.offsetHeight;
+      }
+      resizeWaves();
+      window.addEventListener('resize', resizeWaves);
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isMobile) wavePointer = (e.clientX / window.innerWidth) * 2;
+      });
+
+      function drawWaves() {
+        wCtx.clearRect(0, 0, wWidth, wHeight);
+        waveStep += 0.02;
+
+        const lines = isMobile ? 3 : 5;
+        for (let i = 0; i < lines; i++) {
+          wCtx.beginPath();
+          wCtx.lineWidth = 1.5;
+          const color = i % 2 === 0 ? 'rgba(0, 240, 255, ' : 'rgba(139, 92, 246, ';
+          wCtx.strokeStyle = color + (0.15 + i * 0.05) + ')';
+
+          for (let x = 0; x <= wWidth; x += 15) {
+            const mod = Math.sin(waveStep + wavePointer + i) * 15;
+            const y = wHeight / 2 + Math.sin(x * 0.008 + waveStep + i) * (20 + mod);
+            if (x === 0) wCtx.moveTo(x, y);
+            else wCtx.lineTo(x, y);
+          }
+          wCtx.stroke();
+        }
+
+        requestAnimationFrame(drawWaves);
+      }
+      drawWaves();
+    }
+
+    /* ==========================================================================
+       6. SCROLL TRIGGER ANIMATIONS & HERO PARALLAX
        ========================================================================== */
     const header = document.getElementById('main-header');
-    
+    const heroContent = document.getElementById('hero-content');
+
     window.addEventListener('scroll', () => {
-      // Header Blur on Scroll
-      if (window.scrollY > 40) {
+      const scrollY = window.scrollY;
+
+      // Header glassmorphism on scroll
+      if (scrollY > 40) {
         header.classList.add('glass-panel', 'shadow-xl', 'py-3');
         header.classList.remove('py-5');
       } else {
         header.classList.remove('glass-panel', 'shadow-xl', 'py-3');
         header.classList.add('py-5');
       }
-    });
 
-    // Reveal Elements on Scroll
-    const observerOptions = { threshold: 0.15 };
+      // Lightweight Hero Parallax on Scroll
+      if (heroContent && !isMobile && !prefersReducedMotion && scrollY < 900) {
+        heroContent.style.transform = `translateY(${scrollY * 0.25}px)`;
+        heroContent.style.opacity = `${1 - scrollY / 700}`;
+      }
+    }, { passive: true });
+
+    // Intersection Observer for Reveal Elements & Video Cards
+    const observerOptions = { threshold: 0.12 };
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -594,9 +785,65 @@
       });
     }, observerOptions);
 
-    document.querySelectorAll('.reveal-element').forEach(el => revealObserver.observe(el));
+    document.querySelectorAll('.reveal-element, .video-scroll-card, .text-reveal-container').forEach(el => revealObserver.observe(el));
 
-    /* Mobile Menu Drawer Toggle */
+    /* ==========================================================================
+       7. STAGGERED INTRO SEQUENCER & MENU DRAWER
+       ========================================================================== */
+    function triggerCinematicHero() {
+      const staggers = [
+        { id: 'hero-stagger-1', delay: 100 },
+        { id: 'hero-stagger-2', delay: 250 },
+        { id: 'hero-stagger-3', delay: 400 },
+        { id: 'hero-stagger-4', delay: 550 },
+        { id: 'hero-stagger-5', delay: 700 }
+      ];
+
+      staggers.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (el) {
+          setTimeout(() => {
+            el.classList.add('active');
+          }, s.delay);
+        }
+      });
+    }
+
+    /* Loader logic */
+    const loader = document.getElementById('loader');
+    const loaderBar = document.getElementById('loader-bar');
+    const loaderPercent = document.getElementById('loader-percent');
+    const loaderStatus = document.getElementById('loader-status');
+    const skipBtn = document.getElementById('skip-loader');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * 25) + 12;
+      if (progress > 100) progress = 100;
+
+      if (loaderBar) loaderBar.style.width = `${progress}%`;
+      if (loaderPercent) loaderPercent.textContent = `${progress}%`;
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        if (loaderStatus) loaderStatus.textContent = 'SYSTEM ONLINE';
+        setTimeout(closeLoader, 250);
+      }
+    }, 100);
+
+    function closeLoader() {
+      if (loader) {
+        loader.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          loader.remove();
+          triggerCinematicHero();
+        }, 600);
+      }
+    }
+
+    if (skipBtn) skipBtn.addEventListener('click', closeLoader);
+
+    /* Mobile Drawer */
     const mobileBtn = document.getElementById('mobile-menu-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
 
@@ -611,43 +858,6 @@
         });
       });
     }
-
-    /* ==========================================================================
-       5. BOOT LOADER INTRO
-       ========================================================================== */
-    const loader = document.getElementById('loader');
-    const loaderBar = document.getElementById('loader-bar');
-    const loaderPercent = document.getElementById('loader-percent');
-    const loaderStatus = document.getElementById('loader-status');
-    const skipBtn = document.getElementById('skip-loader');
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 25) + 10;
-      if (progress > 100) progress = 100;
-
-      if (loaderBar) loaderBar.style.width = `${progress}%`;
-      if (loaderPercent) loaderPercent.textContent = `${progress}%`;
-
-      if (progress >= 100) {
-        clearInterval(interval);
-        if (loaderStatus) loaderStatus.textContent = 'SYSTEM ONLINE';
-        setTimeout(() => {
-          closeLoader();
-        }, 300);
-      }
-    }, 120);
-
-    function closeLoader() {
-      if (loader) {
-        loader.classList.add('opacity-0', 'pointer-events-none');
-        setTimeout(() => {
-          loader.remove();
-        }, 700);
-      }
-    }
-
-    if (skipBtn) skipBtn.addEventListener('click', closeLoader);
   </script>
 </body>
 </html>
