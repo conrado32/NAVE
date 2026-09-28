@@ -1,57 +1,3 @@
-Achei a parte do código responsável pela visualização 3D. Vou te mostrar exatamente o que precisa ser removido e depois entregar o código completo refeito.
-
----
-
-## 🔍 Parte do código que gera a visualização 3D
-
-São **4 blocos** que juntos criam o modal 3D:
-
-### 1. O modal HTML (visualização 3D do órgão)
-```html
-<!-- Organ Detail Modal -->
-<div id="organ-modal" class="fixed inset-0 z-[999] hidden ...">
-    ...
-    <!-- Simulated 3D Interactive Canvas Box -->
-    <div class="relative w-full h-56 bg-brand-surface ...">
-        <canvas id="modal-organ-canvas" ...></canvas>
-        ...
-        ARRASTE PARA GIRAR EM 3D
-    </div>
-    ...
-</div>
-```
-
-### 2. O `onclick` nos cards (que abre o modal)
-```javascript
-onclick="openOrganModal(${organ.id})"
-```
-
-### 3. As funções JS do modal
-```javascript
-function openOrganModal(id) { ... }
-function closeModal() { ... }
-document.getElementById('modal-close').addEventListener(...)
-document.getElementById('modal-action-close').addEventListener(...)
-modal.addEventListener('click', ...)
-```
-
-### 4. A função que desenha o "órgão 3D" no canvas do modal
-```javascript
-function initModalCanvasAnimation() {
-    // wireframe girando 360°...
-}
-```
-
-Também removi os textos que sugeriam interatividade 3D:
-- `"Clique para visualizar detalhes e simulação do módulo."`
-- `"EXPLORAR MÓDULO"` → substituí por algo mais neutro
-- Cursor customizado nos cards (agora são apenas visuais)
-
----
-
-## ✅ Código completo refeito (sem o modo 3D)
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark scroll-smooth">
 <head>
@@ -117,9 +63,17 @@ Também removi os textos que sugeriam interatividade 3D:
     </script>
 
     <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0A0A0C; }
-        ::-webkit-scrollbar-thumb { background: #00E5FF; border-radius: 3px; }
+        /* Custom Styles & Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00E5FF;
+            border-radius: 3px;
+        }
         
         body {
             background-color: #0A0A0C;
@@ -129,13 +83,19 @@ Também removi os textos que sugeriam interatividade 3D:
             cursor: default;
         }
 
-        .glow-cyan { box-shadow: 0 0 25px rgba(0, 229, 255, 0.3); }
-        .glow-cyan-lg { box-shadow: 0 0 50px rgba(0, 229, 255, 0.4); }
+        /* Custom Cyan Glow utility */
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+        }
+        .glow-cyan-lg {
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.4);
+        }
         .border-glow {
             border-color: rgba(0, 229, 255, 0.4);
             box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.2);
         }
 
+        /* Scanline Overlay */
         .scanline-bg {
             background: linear-gradient(
                 to bottom,
@@ -147,6 +107,7 @@ Também removi os textos que sugeriam interatividade 3D:
             background-size: 100% 4px;
         }
 
+        /* Custom Cursor Dot */
         #custom-cursor {
             pointer-events: none;
             position: fixed;
@@ -162,9 +123,10 @@ Também removi os textos que sugeriam interatividade 3D:
             z-index: 9999;
         }
 
-        /* Card apenas com hover visual, sem clique 3D */
+        /* Card Hover Perspective */
         .organ-card {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
         }
         .organ-card:hover {
             transform: translateY(-8px) scale(1.02);
@@ -172,6 +134,7 @@ Também removi os textos que sugeriam interatividade 3D:
             box-shadow: 0 10px 30px -5px rgba(0, 229, 255, 0.3);
         }
 
+        /* Respect Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
             *, ::before, ::after {
                 animation-duration: 0.01ms !important;
@@ -214,7 +177,7 @@ Também removi os textos que sugeriam interatividade 3D:
     <!-- Custom Cursor -->
     <div id="custom-cursor" class="hidden md:block"></div>
 
-    <!-- Vertical Scroll Progress Bar -->
+    <!-- Vertical Scroll Progress Bar (Right side) -->
     <div class="fixed right-2 top-0 bottom-0 w-1 z-50 pointer-events-none flex flex-col justify-between py-10 opacity-70">
         <div class="w-full bg-brand-border h-full rounded-full overflow-hidden">
             <div id="scroll-progress" class="w-full bg-brand-cyan h-0 transition-all duration-75 shadow-[0_0_10px_#00E5FF]"></div>
@@ -230,6 +193,7 @@ Também removi os textos que sugeriam interatividade 3D:
     <!-- Global Header / Navbar -->
     <header class="fixed top-0 left-0 right-0 z-40 bg-[#0A0A0C]/80 backdrop-blur-md border-b border-brand-border/60 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
             <a href="#" class="flex items-center gap-3 group">
                 <div class="w-10 h-10 rounded-lg bg-brand-surface border border-brand-cyan/40 flex items-center justify-center text-brand-cyan group-hover:scale-105 group-hover:border-brand-cyan transition-all glow-cyan">
                     <i data-lucide="box" class="w-5 h-5"></i>
@@ -240,11 +204,13 @@ Também removi os textos que sugeriam interatividade 3D:
                 </div>
             </a>
 
+            <!-- System Status Badge -->
             <div class="hidden sm:flex items-center gap-2 bg-brand-surface/80 px-3.5 py-1.5 rounded-full border border-brand-cyan/30 text-xs font-mono">
                 <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-pulse shadow-[0_0_8px_#00E5FF]"></span>
                 <span class="text-white tracking-wider">SYSTEM ONLINE</span>
             </div>
 
+            <!-- Navigation Links -->
             <nav class="flex items-center gap-6 text-xs uppercase font-mono tracking-widest">
                 <a href="#sala" class="text-brand-muted hover:text-brand-cyan transition-colors hidden md:block">01 // Sala</a>
                 <a href="#experiencias" class="text-brand-muted hover:text-brand-cyan transition-colors hidden md:block">02 // VR</a>
@@ -263,6 +229,7 @@ Também removi os textos que sugeriam interatividade 3D:
         <section id="hero" class="min-h-[calc(100vh-5rem)] flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-12">
             <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
+                <!-- Hero Left Column -->
                 <div class="lg:col-span-7 space-y-6">
                     <div class="flex items-center gap-3">
                         <span class="text-xs font-mono text-brand-cyan tracking-widest uppercase bg-brand-cyan/10 px-3 py-1 rounded border border-brand-cyan/30">
@@ -274,14 +241,17 @@ Também removi os textos que sugeriam interatividade 3D:
                         </div>
                     </div>
 
+                    <!-- Headline with Scramble Animation -->
                     <h1 id="scramble-headline" data-text="O FUTURO DA ANATOMIA COMEÇA AQUI." class="text-4xl sm:text-5xl lg:text-6xl font-black font-orbitron text-white leading-tight tracking-tight uppercase min-h-[3.6em] sm:min-h-[2.4em]">
                         O FUTURO DA ANATOMIA COMEÇA AQUI.
                     </h1>
 
+                    <!-- Subtitle -->
                     <p class="text-base sm:text-lg text-brand-muted max-w-2xl leading-relaxed">
                         Realidade virtual aplicada ao ensino de Medicina e Anatomia Humana na UNIFOA. Uma imersão tridimensional sem precedentes no aprendizado médico.
                     </p>
 
+                    <!-- CTA Group -->
                     <div class="pt-4 flex flex-wrap items-center gap-4">
                         <a href="#experiencias" class="interactive-btn group relative inline-flex items-center justify-center gap-3 bg-brand-cyan text-black px-8 py-4 rounded-lg font-orbitron font-bold text-sm uppercase tracking-wider overflow-hidden hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(0,229,255,0.4)]">
                             <span>EXPLORAR A SALA</span>
@@ -294,10 +264,13 @@ Também removi os textos que sugeriam interatividade 3D:
                     </div>
                 </div>
 
+                <!-- Hero Right Column (Main Hero Room Photo Frame) -->
                 <div class="lg:col-span-5 relative group">
                     <div class="relative rounded-2xl overflow-hidden border-2 border-brand-cyan/40 bg-brand-card glow-cyan transition-all duration-500 group-hover:border-brand-cyan">
+                        <!-- Hologram Overlay Effect -->
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-transparent to-brand-cyan/10 opacity-70 z-10 pointer-events-none"></div>
                         
+                        <!-- Hero Room Image -->
                         <img 
                             src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=1200&auto=format&fit=crop" 
                             alt="Foto da Sala NAVE UNIFOA com Óculos de Realidade Virtual" 
@@ -305,6 +278,7 @@ Também removi os textos que sugeriam interatividade 3D:
                             loading="eager"
                         >
 
+                        <!-- HUD Card Badge -->
                         <div class="absolute bottom-4 left-4 right-4 z-20 bg-[#0A0A0C]/90 backdrop-blur-md p-4 rounded-xl border border-brand-cyan/30 flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-brand-cyan/20 flex items-center justify-center text-brand-cyan">
@@ -324,6 +298,7 @@ Também removi os textos que sugeriam interatividade 3D:
 
             </div>
 
+            <!-- Scroll Indicator -->
             <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-brand-muted text-xs font-mono tracking-widest animate-bounce">
                 <span>SCROLL ↓</span>
             </div>
@@ -333,6 +308,7 @@ Também removi os textos que sugeriam interatividade 3D:
         <section id="sala" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 relative bg-brand-surface/30">
             <div class="max-w-7xl mx-auto space-y-16">
                 
+                <!-- Section Header -->
                 <div class="space-y-3">
                     <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
                         01 // A SALA
@@ -342,6 +318,7 @@ Também removi os textos que sugeriam interatividade 3D:
                     </h2>
                 </div>
 
+                <!-- Text Presentation & Content -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     <div class="lg:col-span-7 space-y-6 text-brand-muted text-base sm:text-lg leading-relaxed">
                         <p class="p-6 bg-brand-card/80 rounded-2xl border border-brand-border/80 border-l-4 border-l-brand-cyan">
@@ -352,6 +329,7 @@ Também removi os textos que sugeriam interatividade 3D:
                         </p>
                     </div>
 
+                    <!-- Room Feature Highlights -->
                     <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
                         <div class="p-5 bg-brand-card rounded-xl border border-brand-border flex items-start gap-4">
                             <div class="p-3 bg-brand-cyan/10 rounded-lg text-brand-cyan">
@@ -375,7 +353,9 @@ Também removi os textos que sugeriam interatividade 3D:
                     </div>
                 </div>
 
+                <!-- Metrics Animated Counters -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
+                    <!-- Metric 1 -->
                     <div class="bg-brand-card p-8 rounded-2xl border border-brand-border text-center relative overflow-hidden group hover:border-brand-cyan/50 transition-all">
                         <div class="absolute -right-4 -bottom-4 text-brand-cyan/5 text-8xl font-black font-orbitron">10</div>
                         <div class="text-4xl sm:text-5xl font-black font-orbitron text-brand-cyan mb-2">
@@ -385,6 +365,7 @@ Também removi os textos que sugeriam interatividade 3D:
                         <p class="text-xs text-brand-muted mt-2">Headsets Meta Quest de última geração calibrados para ensino médico.</p>
                     </div>
 
+                    <!-- Metric 2 -->
                     <div class="bg-brand-card p-8 rounded-2xl border border-brand-border text-center relative overflow-hidden group hover:border-brand-cyan/50 transition-all">
                         <div class="absolute -right-4 -bottom-4 text-brand-cyan/5 text-8xl font-black font-orbitron">13</div>
                         <div class="text-4xl sm:text-5xl font-black font-orbitron text-brand-cyan mb-2">
@@ -394,6 +375,7 @@ Também removi os textos que sugeriam interatividade 3D:
                         <p class="text-xs text-brand-muted mt-2">Módulos anatômicos completos de órgãos e sistemas humanos.</p>
                     </div>
 
+                    <!-- Metric 3 -->
                     <div class="bg-brand-card p-8 rounded-2xl border border-brand-border text-center relative overflow-hidden group hover:border-brand-cyan/50 transition-all">
                         <div class="absolute -right-4 -bottom-4 text-brand-cyan/5 text-8xl font-black font-orbitron">100</div>
                         <div class="text-4xl sm:text-5xl font-black font-orbitron text-brand-cyan mb-2">
@@ -411,6 +393,7 @@ Também removi os textos que sugeriam interatividade 3D:
         <section id="experiencias" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 relative">
             <div class="max-w-7xl mx-auto space-y-12">
                 
+                <!-- Section Title -->
                 <div class="space-y-3">
                     <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
                         02 // EXPERIÊNCIAS VR
@@ -419,13 +402,13 @@ Também removi os textos que sugeriam interatividade 3D:
                         EXPLORE O CORPO HUMANO EM IMERSÃO TOTAL.
                     </h2>
                     <p class="text-brand-muted text-sm sm:text-base max-w-2xl">
-                        Cada card representa uma experiência anatômica disponível nos óculos de realidade virtual da sala NAVE.
+                        Cada card representa uma experiência anatômica disponível nos óculos de realidade virtual da sala NAVE. Clique para visualizar detalhes e simulação do módulo.
                     </p>
                 </div>
 
                 <!-- 13 Organ Cards Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6" id="organ-grid">
-                    <!-- Cards injetados via JavaScript -->
+                    <!-- Cards injected dynamically via JavaScript -->
                 </div>
 
             </div>
@@ -435,6 +418,7 @@ Também removi os textos que sugeriam interatividade 3D:
         <section id="tutorial" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 bg-brand-surface/30 relative">
             <div class="max-w-7xl mx-auto space-y-12">
                 
+                <!-- Section Title -->
                 <div class="space-y-3 text-center max-w-3xl mx-auto">
                     <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
                         03 // TUTORIAL
@@ -447,10 +431,13 @@ Também removi os textos que sugeriam interatividade 3D:
                     </p>
                 </div>
 
+                <!-- YouTube Shorts Container (9:16 Vertical Aspect Ratio) -->
                 <div class="max-w-md mx-auto relative group">
+                    <!-- Cyan Frame Glow -->
                     <div class="absolute -inset-1 bg-gradient-to-r from-brand-cyan/50 to-cyan-500/50 rounded-2xl blur-lg opacity-50 group-hover:opacity-80 transition duration-500"></div>
                     
                     <div class="relative bg-brand-card border-2 border-brand-cyan/60 rounded-2xl overflow-hidden shadow-2xl">
+                        <!-- Top HUD Bar -->
                         <div class="bg-brand-surface px-4 py-2 border-b border-brand-border flex items-center justify-between text-xs font-mono">
                             <span class="text-brand-cyan flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
@@ -459,6 +446,7 @@ Também removi os textos que sugeriam interatividade 3D:
                             <span class="text-brand-muted">9:16 SHORTS</span>
                         </div>
 
+                        <!-- Responsive Video Container -->
                         <div class="relative w-full aspect-[9/16] bg-black">
                             <iframe 
                                 class="w-full h-full"
@@ -471,6 +459,7 @@ Também removi os textos que sugeriam interatividade 3D:
                             ></iframe>
                         </div>
 
+                        <!-- Footer Control Label -->
                         <div class="p-4 bg-brand-surface/90 border-t border-brand-border flex items-center justify-between">
                             <div>
                                 <div class="text-xs font-orbitron font-bold text-white">GUIA RÁPIDO DE OPERAÇÃO</div>
@@ -489,6 +478,7 @@ Também removi os textos que sugeriam interatividade 3D:
                     </div>
                 </div>
 
+                <!-- Tutorial Steps Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
                     <div class="p-6 bg-brand-card rounded-xl border border-brand-border space-y-2">
                         <div class="text-brand-cyan font-mono text-xs">PASSO 01</div>
@@ -514,6 +504,7 @@ Também removi os textos que sugeriam interatividade 3D:
         <section id="conectese" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 relative">
             <div class="max-w-7xl mx-auto space-y-16">
                 
+                <!-- Section Title -->
                 <div class="space-y-3">
                     <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
                         04 // CONECTE-SE
@@ -523,13 +514,16 @@ Também removi os textos que sugeriam interatividade 3D:
                     </h2>
                 </div>
 
+                <!-- Main Summary Paragraph -->
                 <div class="p-8 bg-brand-card/90 rounded-2xl border border-brand-cyan/30 text-brand-muted text-base sm:text-lg leading-relaxed shadow-xl">
                     <p>
                         O <strong class="text-white">NAVE</strong> é mais que uma sala: é um núcleo de inovação pedagógica da UNIFOA. Unindo tecnologia de realidade virtual, conteúdo anatômico de alta qualidade e um ambiente projetado para imersão, o NAVE reposiciona o estudo da Medicina como uma experiência ativa, visual e memorável.
                     </p>
                 </div>
 
+                <!-- 3 Columns Block -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Column 1 -->
                     <div class="p-6 bg-brand-card rounded-2xl border border-brand-border space-y-3">
                         <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
                             <i data-lucide="cpu" class="w-5 h-5"></i>
@@ -540,6 +534,7 @@ Também removi os textos que sugeriam interatividade 3D:
                         </p>
                     </div>
 
+                    <!-- Column 2 -->
                     <div class="p-6 bg-brand-card rounded-2xl border border-brand-border space-y-3">
                         <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
                             <i data-lucide="eye" class="w-5 h-5"></i>
@@ -550,6 +545,7 @@ Também removi os textos que sugeriam interatividade 3D:
                         </p>
                     </div>
 
+                    <!-- Column 3 -->
                     <div class="p-6 bg-brand-card rounded-2xl border border-brand-border space-y-3">
                         <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
                             <i data-lucide="sparkles" class="w-5 h-5"></i>
@@ -561,6 +557,7 @@ Também removi os textos que sugeriam interatividade 3D:
                     </div>
                 </div>
 
+                <!-- Instagram CTA Block -->
                 <div class="text-center py-8 space-y-6">
                     <div class="text-xs font-mono text-brand-muted uppercase tracking-widest">
                         SIGA NOSSAS ATIVIDADES NO INSTAGRAM
@@ -587,4 +584,433 @@ Também removi os textos que sugeriam interatividade 3D:
                 <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
                 <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
                 <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
-                <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE
+                <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-12 px-4 sm:px-6 lg:px-8 border-t border-brand-border bg-[#050507]">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+                <div>
+                    <div class="font-orbitron font-bold text-white text-sm uppercase">
+                        © 2026 NAVE — Núcleo de Atividade Virtual de Ensino · UNIFOA
+                    </div>
+                    <div class="text-xs font-mono text-brand-muted mt-1">
+                        Centro Universitário de Volta Redonda — Projeto de Inovação Pedagógica
+                    </div>
+                </div>
+                <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase border border-brand-cyan/30 px-3 py-1.5 rounded-md">
+                    EXPERIÊNCIA DIGITAL INTERATIVA
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Organ Detail Modal -->
+    <div id="organ-modal" class="fixed inset-0 z-[999] hidden bg-black/80 backdrop-blur-md p-4 sm:p-6 overflow-y-auto flex items-center justify-center">
+        <div class="bg-brand-card border border-brand-cyan/50 max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 relative shadow-[0_0_50px_rgba(0,229,255,0.2)] transform transition-all">
+            
+            <!-- Close Modal Button -->
+            <button id="modal-close" class="absolute top-4 right-4 text-brand-muted hover:text-brand-cyan p-2 rounded-lg bg-brand-surface border border-brand-border">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="flex items-center gap-3">
+                <span id="modal-badge" class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/30 px-3 py-1 rounded">
+                    GALERIA // VR
+                </span>
+                <span class="text-xs font-mono text-green-400">● 3D READY</span>
+            </div>
+
+            <h3 id="modal-title" class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase">
+                NOME DO ÓRGÃO
+            </h3>
+
+            <!-- Simulated 3D Interactive Canvas Box -->
+            <div class="relative w-full h-56 bg-brand-surface rounded-xl border border-brand-border overflow-hidden flex items-center justify-center">
+                <canvas id="modal-organ-canvas" class="w-full h-full"></canvas>
+                <div class="absolute bottom-3 right-3 text-[10px] font-mono text-brand-cyan bg-black/70 px-2 py-1 rounded border border-brand-cyan/30">
+                    <i data-lucide="rotate-3d" class="w-3 h-3 inline mr-1"></i> ARRASTE PARA GIRAR EM 3D
+                </div>
+            </div>
+
+            <p id="modal-description" class="text-brand-muted text-sm leading-relaxed">
+                Descrição anatômica detalhada e recursos pedagógicos disponíveis neste módulo dos óculos VR.
+            </p>
+
+            <!-- Anatomical Specs -->
+            <div class="grid grid-cols-2 gap-4 pt-2 font-mono text-xs border-t border-brand-border">
+                <div>
+                    <span class="text-brand-muted block">SISTEMA:</span>
+                    <span id="modal-system" class="text-white font-bold">CIRCULATÓRIO</span>
+                </div>
+                <div>
+                    <span class="text-brand-muted block">NÍVEL DE DETALHE:</span>
+                    <span class="text-brand-cyan font-bold">MICROSCÓPICO 4K</span>
+                </div>
+            </div>
+
+            <!-- Modal Footer CTA -->
+            <div class="flex justify-end pt-4">
+                <button id="modal-action-close" class="bg-brand-cyan text-black font-orbitron font-bold text-xs uppercase px-6 py-3 rounded-lg hover:bg-white transition-colors">
+                    FECHAR VISUALIZAÇÃO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Logic Scripts -->
+    <script>
+        // 1. DATA: 13 Organ Gallery Items
+        const organData = [
+            { id: 1, name: 'Bexiga', system: 'Urinário', desc: 'Estudo tridimensional da anatomia vesical, mucosa interna e dinâmica neuromuscular do trato urinário inferior.', img: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?q=80&w=800&auto=format&fit=crop' },
+            { id: 2, name: 'Cérebro', system: 'Nervoso', desc: 'Mapeamento tridimensional dos lobos cerebrais, sistema límbico, vias neurais e vascularização do encéfalo.', img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800&auto=format&fit=crop' },
+            { id: 3, name: 'Mamas', system: 'Reprodutor / Endócrino', desc: 'Dissecação virtual do tecido mamário, sistema linfático axilar, ductos lactíferos e vascularização.', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=800&auto=format&fit=crop' },
+            { id: 4, name: 'Olhos', system: 'Sensorial', desc: 'Anatomia microscópica do globo ocular, córnea, cristalino, retina e via óptica até o córtex occipital.', img: 'https://images.unsplash.com/photo-1516715094483-75da7dee9758?q=80&w=800&auto=format&fit=crop' },
+            { id: 5, name: 'Coração', system: 'Cardiovascular', desc: 'Navegação pelas câmaras cardíacas, valvas em funcionamento ativo e sistema de condução elétrica em tempo real.', img: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?q=80&w=800&auto=format&fit=crop' },
+            { id: 6, name: 'Rins', system: 'Urinário', desc: 'Visualização da néfrons, córtex e medula renal com simulação do processo de filtração sanguínea.', img: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop' },
+            { id: 7, name: 'Intestino grosso', system: 'Digestório', desc: 'Topografia do ceco, cólon ascendente, transverso, descendente e sigmoide com análise de camadas teciduais.', img: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=800&auto=format&fit=crop' },
+            { id: 8, name: 'Fígado', system: 'Digestório / Metabólico', desc: 'Arquitetura dos lóbulos hepáticos, vias biliares e sistema porta-hepático com interatividade funcional.', img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop' },
+            { id: 9, name: 'Pulmões', system: 'Respiratório', desc: 'Simulação dinâmica da mecânica ventilatória, árvore brônquica e trocas gasosas nos alvéolos pulmonares.', img: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=800&auto=format&fit=crop' },
+            { id: 10, name: 'Pâncreas', system: 'Endócrino / Digestório', desc: 'Estudo do pâncreas endócrino (Ilhotas de Langerhans) e exócrino com relação anatômica ao duodeno.', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop' },
+            { id: 11, name: 'Sistema reprodutivo', system: 'Reprodutor', desc: 'Anatomia comparada masculina e feminina, gônadas, vias genitais e aspectos embriológicos em 3D.', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop' },
+            { id: 12, name: 'Intestino delgado', system: 'Digestório', desc: 'Morfologia do duodeno, jejuno e íleo com aumento microscópico das vilosidades intestinais.', img: 'https://images.unsplash.com/photo-1583912267670-6575922313c0?q=80&w=800&auto=format&fit=crop' },
+            { id: 13, name: 'Estômago', system: 'Digestório', desc: 'Anatomia das curvaturas maior e menor, esfíncteres cárdia e píloro e túnica muscular gástrica.', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop' }
+        ];
+
+        // 2. Render Organ Cards into DOM
+        function renderOrganCards() {
+            const grid = document.getElementById('organ-grid');
+            if (!grid) return;
+
+            grid.innerHTML = organData.map((organ, index) => `
+                <div 
+                    class="organ-card bg-brand-card rounded-2xl overflow-hidden border border-brand-border cursor-pointer relative group flex flex-col justify-between"
+                    onclick="openOrganModal(${organ.id})"
+                >
+                    <!-- Background Image & Overlay -->
+                    <div class="relative h-52 overflow-hidden bg-brand-surface">
+                        <img 
+                            src="${organ.img}" 
+                            alt="${organ.name}" 
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                            loading="lazy"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-brand-card/40 to-transparent"></div>
+                        
+                        <!-- Top Tag -->
+                        <div class="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded border border-brand-cyan/40 text-[10px] font-mono text-brand-cyan">
+                            GALERIA ${organ.id < 10 ? '0' + organ.id : organ.id}
+                        </div>
+
+                        <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-cyan text-black text-[10px] font-mono font-bold px-2 py-0.5 rounded">
+                            // VR READY
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-6 space-y-2 flex-grow flex flex-col justify-between relative z-10">
+                        <div>
+                            <div class="text-[10px] font-mono text-brand-cyan uppercase tracking-widest">${organ.system}</div>
+                            <h3 class="text-xl font-black font-orbitron text-white uppercase group-hover:text-brand-cyan transition-colors">
+                                ${organ.name}
+                            </h3>
+                        </div>
+
+                        <p class="text-xs text-brand-muted line-clamp-2 pt-2">
+                            ${organ.desc}
+                        </p>
+
+                        <div class="pt-4 flex items-center justify-between border-t border-brand-border/60 text-xs font-mono text-brand-cyan">
+                            <span>EXPLORAR MÓDULO</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-initialize Lucide Icons for dynamic content
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        // 3. Boot Sequence Animation Logic
+        window.addEventListener('load', () => {
+            const bootLoader = document.getElementById('boot-loader');
+            const bootProgress = document.getElementById('boot-progress');
+            const bootPercent = document.getElementById('boot-percent');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        bootLoader.classList.add('opacity-0', 'pointer-events-none');
+                        setTimeout(() => bootLoader.remove(), 700);
+                        startHeroTextScramble();
+                    }, 400);
+                }
+
+                if (progress > 30) document.getElementById('boot-log-2')?.classList.remove('opacity-0');
+                if (progress > 70) document.getElementById('boot-log-3')?.classList.remove('opacity-0');
+
+                bootProgress.style.width = progress + '%';
+                bootPercent.innerText = progress + '%';
+            }, 80);
+        });
+
+        // 4. Text Scramble Effect for Hero Headline
+        function startHeroTextScramble() {
+            const el = document.getElementById('scramble-headline');
+            if (!el) return;
+
+            const finalText = el.getAttribute('data-text') || el.innerText;
+            const chars = 'ABCDEFGHIJKLMOPQRSTUVWXYZ0123456789#%&@//$';
+            let frame = 0;
+            const totalFrames = 30;
+
+            const timer = setInterval(() => {
+                frame++;
+                let output = '';
+                for (let i = 0; i < finalText.length; i++) {
+                    if (finalText[i] === ' ' || finalText[i] === '.') {
+                        output += finalText[i];
+                        continue;
+                    }
+                    if (i < (frame / totalFrames) * finalText.length) {
+                        output += finalText[i];
+                    } else {
+                        output += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                }
+                el.innerText = output;
+
+                if (frame >= totalFrames) {
+                    el.innerText = finalText;
+                    clearInterval(timer);
+                }
+            }, 40);
+        }
+
+        // 5. Custom Cursor Tracker
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            if (cursor && window.innerWidth >= 768) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
+        });
+
+        // Hover scale cursor on interactive elements
+        document.querySelectorAll('a, button, .organ-card').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                if (cursor) {
+                    cursor.style.width = '32px';
+                    cursor.style.height = '32px';
+                    cursor.style.opacity = '0.5';
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                if (cursor) {
+                    cursor.style.width = '16px';
+                    cursor.style.height = '16px';
+                    cursor.style.opacity = '1';
+                }
+            });
+        });
+
+        // 6. Scroll Progress Bar Update
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.getElementById('scroll-progress');
+            if (scrollProgress) {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (window.scrollY / totalHeight) * 100;
+                scrollProgress.style.height = `${progress}%`;
+            }
+        });
+
+        // 7. Interactive Background Particle Canvas
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.8 + 0.5;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00E5FF';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 65; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 229, 255, ${0.15 - dist / 120 * 0.15})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 8. Metric Animated Counter Observer
+        let countersAnimated = false;
+        const observerOptions = { threshold: 0.5 };
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !countersAnimated) {
+                    countersAnimated = true;
+                    document.querySelectorAll('.counter').forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const speed = target / 40;
+
+                        const updateCount = () => {
+                            count += speed;
+                            if (count < target) {
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 30);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
+                }
+            });
+        }, observerOptions);
+
+        const metricsSection = document.getElementById('sala');
+        if (metricsSection) counterObserver.observe(metricsSection);
+
+        // 9. Organ Interactive Modal & 3D Viewer Simulation
+        const modal = document.getElementById('organ-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-description');
+        const modalSystem = document.getElementById('modal-system');
+        const modalCanvas = document.getElementById('modal-organ-canvas');
+        let organAnimFrame;
+
+        function openOrganModal(id) {
+            const organ = organData.find(o => o.id === id);
+            if (!organ) return;
+
+            modalTitle.innerText = organ.name;
+            modalDesc.innerText = organ.desc;
+            modalSystem.innerText = organ.system.toUpperCase();
+            
+            modal.classList.remove('hidden');
+            initModalCanvasAnimation();
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            if (organAnimFrame) cancelAnimationFrame(organAnimFrame);
+        }
+
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        document.getElementById('modal-action-close').addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Interactive Canvas 3D Shape Renderer inside Modal
+        function initModalCanvasAnimation() {
+            const mCtx = modalCanvas.getContext('2d');
+            modalCanvas.width = modalCanvas.parentElement.clientWidth;
+            modalCanvas.height = modalCanvas.parentElement.clientHeight;
+
+            let angle = 0;
+
+            function renderOrgan3DShape() {
+                mCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+                
+                const centerX = modalCanvas.width / 2;
+                const centerY = modalCanvas.height / 2;
+                const radius = 60;
+
+                angle += 0.02;
+
+                // Render glowing 3D wireframe mesh simulation
+                mCtx.strokeStyle = '#00E5FF';
+                mCtx.lineWidth = 1.5;
+
+                for (let i = 0; i < 12; i++) {
+                    mCtx.beginPath();
+                    const lat = (i / 12) * Math.PI;
+                    for (let j = 0; j <= 24; j++) {
+                        const lon = (j / 24) * 2 * Math.PI + angle;
+                        const x = centerX + radius * Math.sin(lat) * Math.cos(lon);
+                        const y = centerY + radius * Math.cos(lat);
+                        if (j === 0) mCtx.moveTo(x, y);
+                        else mCtx.lineTo(x, y);
+                    }
+                    mCtx.stroke();
+                }
+
+                // Inner core pulse
+                mCtx.beginPath();
+                mCtx.arc(centerX, centerY, 20 + Math.sin(angle * 2) * 5, 0, Math.PI * 2);
+                mCtx.fillStyle = 'rgba(0, 229, 255, 0.4)';
+                mCtx.fill();
+
+                organAnimFrame = requestAnimationFrame(renderOrgan3DShape);
+            }
+            renderOrgan3DShape();
+        }
+
+        // Initialize dynamic rendering on page load
+        renderOrganCards();
+    </script>
+</body>
+</html>
