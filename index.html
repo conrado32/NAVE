@@ -1,863 +1,1016 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth dark">
+<html lang="pt-BR" class="dark scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>NAVE - O Futuro Começa Aqui</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVE — Núcleo de Atividade Virtual de Ensino | UNIFOA</title>
+    <meta name="description" content="O NAVE é o centro de inovação em realidade virtual para o ensino de Medicina e Anatomia Humana no UNIFOA. Explore 13 experiências VR imersivas.">
+    <meta property="og:title" content="NAVE — Núcleo de Atividade Virtual de Ensino | UNIFOA">
+    <meta property="og:description" content="Realidade virtual aplicada ao ensino de Medicina e Anatomia Humana na UNIFOA.">
+    <meta property="og:type" content="website">
 
-  <!-- ================================================================= -->
-  <!-- ÍCONE DO SITE (FAVICON)                                          -->
-  <!-- ================================================================= -->
-  <link rel="icon" type="image/png" href="assets/icon.png" />
-  <link rel="shortcut icon" href="assets/icon.ico" />
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            nave: {
-              bg: '#07090e',
-              card: '#0e131f',
-              border: '#1e293b',
-              cyan: '#00f0ff',
-              cyanGlow: 'rgba(0, 240, 255, 0.25)',
-              blue: '#3b82f6',
-              purple: '#8b5cf6',
-              accent: '#0ea5e9'
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#0A0A0C',
+                            surface: '#121318',
+                            card: '#161822',
+                            border: '#242838',
+                            cyan: '#00E5FF',
+                            cyanGlow: 'rgba(0, 229, 255, 0.35)',
+                            text: '#E2E8F0',
+                            muted: '#94A3B8'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        sans: ['Space Grotesk', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
             }
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['Space Mono', 'monospace'],
-            display: ['Space Grotesk', 'sans-serif']
-          },
-          animation: {
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'float': 'float 6s ease-in-out infinite',
-            'glow-line': 'glowLine 3s ease-in-out infinite',
-            'gradient-bg': 'gradientBg 10s ease infinite'
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-10px)' }
-            },
-            glowLine: {
-              '0%, 100%': { opacity: '0.3', transform: 'scaleX(0.95)' },
-              '50%': { opacity: '0.9', transform: 'scaleX(1.05)' }
-            },
-            gradientBg: {
-              '0%, 100%': { 'background-position': '0% 50%' },
-              '50%': { 'background-position': '100% 50%' }
-            }
-          }
         }
-      }
-    }
-  </script>
+    </script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles & Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00E5FF;
+            border-radius: 3px;
+        }
+        
+        body {
+            background-color: #0A0A0C;
+            color: #E2E8F0;
+            overflow-x: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            cursor: default;
+        }
 
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+        /* Custom Cyan Glow utility */
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+        }
+        .glow-cyan-lg {
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.4);
+        }
+        .border-glow {
+            border-color: rgba(0, 229, 255, 0.4);
+            box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.2);
+        }
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #07090e;
-      color: #f1f5f9;
-      overflow-x: hidden;
-    }
+        /* Scanline Overlay */
+        .scanline-bg {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+        }
 
-    h1, h2, h3, .font-display {
-      font-family: 'Space Grotesk', sans-serif;
-    }
+        /* Custom Cursor Dot */
+        #custom-cursor {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #00E5FF;
+            box-shadow: 0 0 15px #00E5FF, 0 0 30px #00E5FF;
+            transform: translate(-50%, -50%);
+            transition: transform 0.08s ease-out, width 0.2s, height 0.2s, opacity 0.2s;
+            z-index: 9999;
+        }
 
-    .font-mono-code {
-      font-family: 'Space Mono', monospace;
-    }
+        /* Card Hover Perspective */
+        .organ-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .organ-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #00E5FF;
+            box-shadow: 0 10px 30px -5px rgba(0, 229, 255, 0.3);
+        }
 
-    /* Custom Glassmorphism */
-    .glass-panel {
-      background: rgba(14, 19, 31, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .glass-panel-cyan {
-      background: rgba(14, 19, 31, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.05);
-    }
-
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #07090e;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #00f0ff;
-    }
-
-    /* Subtle Ambient Gradient Mesh Background */
-    .animated-ambient-bg {
-      background: linear-gradient(-45deg, #07090e, #0b1120, #090e1a, #07090e);
-      background-size: 400% 400%;
-      animation: gradientBg 15s ease infinite;
-    }
-
-    /* Grid overlay */
-    .cyber-grid {
-      background-size: 40px 40px;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    }
-
-    /* Advanced Reveal System (Translate + Scale + Blur -> Crisp) */
-    .reveal-element {
-      opacity: 0;
-      transform: translateY(35px) scale(0.96);
-      filter: blur(8px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity, filter;
-    }
-
-    .reveal-element.active {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0px);
-    }
-
-    /* Animated Video Card on Scroll */
-    .video-scroll-card {
-      opacity: 0;
-      transform: translateY(50px) scale(0.92);
-      transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
-                  opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.9s ease;
-      will-change: transform, opacity;
-    }
-
-    .video-scroll-card.active {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    /* Cinematic Text Word/Span Animation */
-    .text-word {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
-      filter: blur(4px);
-      transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
-      will-change: transform, opacity, filter;
-    }
-
-    .text-reveal-container.active .text-word {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0px);
-    }
-
-    /* Mobile Drawer Link Stagger Animation */
-    .mobile-drawer-link {
-      opacity: 0;
-      transform: translateX(-15px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-    #mobile-drawer:not(.hidden) .mobile-drawer-link {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Reduced Motion Rules */
-    @media (prefers-reduced-motion: reduce) {
-      .reveal-element, .video-scroll-card, .text-word, .mobile-drawer-link {
-        transition: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
-      }
-      .animate-pulse, .animate-bounce, .animate-spin {
-        animation: none !important;
-      }
-    }
-  </style>
+        /* Respect Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            #custom-cursor { display: none; }
+        }
+    </style>
 </head>
-<body class="relative selection:bg-nave-cyan selection:text-black animated-ambient-bg">
+<body class="relative selection:bg-brand-cyan selection:text-black">
 
-  <!-- SCROLL PROGRESS BAR (PRIORIDADE 2 - ITEM 3) -->
-  <div class="fixed top-0 left-0 right-0 z-50 h-[3px] bg-slate-900/50 pointer-events-none">
-    <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-nave-blue via-nave-cyan to-white w-0 transition-all duration-75 ease-out shadow-[0_0_10px_rgba(0,240,255,0.8)]"></div>
-  </div>
-
-  <!-- 7. LOADING / INTRO SCREEN -->
-  <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#05070a] transition-opacity duration-700">
-    <div class="relative flex flex-col items-center max-w-sm w-full px-6 text-center">
-      <!-- Glow effect -->
-      <div class="absolute -inset-4 bg-nave-cyan/10 rounded-full blur-2xl pointer-events-none"></div>
-
-      <!-- Tech HUD Loader -->
-      <div class="relative mb-6 flex items-center justify-center">
-        <svg class="w-20 h-20 animate-spin text-nave-cyan/30" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="60 120" />
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-display font-bold text-2xl tracking-wider text-white">
-          NAVE
-        </div>
-      </div>
-
-      <div class="w-full bg-slate-900/80 rounded-full h-1.5 mb-3 overflow-hidden border border-slate-800">
-        <div id="loader-bar" class="bg-gradient-to-r from-nave-blue via-nave-cyan to-white h-full w-0 transition-all duration-300 ease-out"></div>
-      </div>
-
-      <div class="flex items-center justify-between w-full font-mono-code text-xs text-slate-400">
-        <span id="loader-status" class="tracking-widest uppercase">INICIALIZANDO SISTEMA...</span>
-        <span id="loader-percent" class="text-nave-cyan font-semibold">0%</span>
-      </div>
-
-      <button id="skip-loader" class="mt-8 text-xs font-mono-code text-slate-500 hover:text-slate-300 transition-colors underline decoration-slate-700 underline-offset-4 active:scale-95">
-        [ pular introdução ]
-      </button>
-    </div>
-  </div>
-
-  <!-- 18. HEADER & 19. NAVEGAÇÃO -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-5 px-6 md:px-12">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      
-      <!-- Brand Logo & Icon -->
-      <a href="#hero" class="flex items-center gap-3 group">
-        <div class="relative w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-nave-cyan group-hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]">
-          <img src="assets/icon.png" alt="Icon" class="w-5 h-5 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/32x32/0e131f/00f0ff?text=N';" />
-        </div>
-        <div class="flex flex-col">
-          <span class="font-display font-bold text-lg tracking-widest text-white leading-none">NAVE</span>
-          <span class="font-mono-code text-[9px] tracking-widest text-slate-400 uppercase mt-0.5">MedTech</span>
-        </div>
-      </a>
-
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center gap-1 glass-panel px-4 py-2 rounded-full border border-slate-800">
-        <a href="#hero" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">INÍCIO</a>
-        <span class="text-slate-700 text-xs">•</span>
-        <a href="#video-1-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">ANÚNCIO</a>
-        <span class="text-slate-700 text-xs">•</span>
-        <a href="#transition-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">TRANSIÇÃO</a>
-        <span class="text-slate-700 text-xs">•</span>
-        <a href="#video-2-section" class="nav-link px-4 py-1.5 text-xs font-mono-code text-slate-300 hover:text-nave-cyan transition-colors rounded-full hover:bg-slate-800/50">TUTORIAL</a>
-      </nav>
-
-      <!-- Status Pill -->
-      <div class="hidden sm:flex items-center gap-2">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-mono-code text-slate-300">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>SYSTEM ONLINE</span>
-        </div>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 active:scale-95 transition-transform" aria-label="Abrir Menu">
-        <i data-lucide="menu" class="w-5 h-5"></i>
-      </button>
-    </div>
-
-    <!-- Mobile Drawer -->
-    <div id="mobile-drawer" class="hidden md:hidden absolute top-full left-0 right-0 glass-panel border-b border-slate-800/80 p-6 flex flex-col gap-3 shadow-2xl transition-all duration-300">
-      <a href="#hero" style="transition-delay: 50ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
-        <span>01 // INÍCIO</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
-      </a>
-      <a href="#video-1-section" style="transition-delay: 100ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
-        <span>02 // ANÚNCIO</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
-      </a>
-      <a href="#transition-section" style="transition-delay: 150ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
-        <span>03 // TRANSIÇÃO</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
-      </a>
-      <a href="#video-2-section" style="transition-delay: 200ms;" class="mobile-nav-item mobile-drawer-link font-mono-code text-sm text-slate-200 hover:text-nave-cyan py-2 border-b border-slate-800/50 flex justify-between items-center active:scale-98">
-        <span>04 // TUTORIAL</span>
-        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
-      </a>
-    </div>
-  </header>
-
-  <main class="relative z-10">
-
-    <!-- 8. HERO & 9. ENERGY BEAM ANIMATION -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden cyber-grid">
-      
-      <!-- Energy Beam Canvas Background -->
-      <canvas id="energy-beam-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-70"></canvas>
-
-      <!-- Gradient Light Flares for Ambient Aesthetics -->
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-nave-cyan/15 via-blue-600/10 to-transparent blur-[120px] pointer-events-none rounded-full"></div>
-      <div class="absolute bottom-10 left-10 w-72 h-72 bg-nave-purple/10 blur-[100px] pointer-events-none rounded-full"></div>
-
-      <!-- Hero Main Content Box (Parallax target) -->
-      <div id="hero-content" class="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center transition-transform duration-100 ease-out">
-        
-        <!-- Tag / Pill Indicator -->
-        <div id="hero-stagger-1" class="reveal-element inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-nave-cyan/30 mb-8 shadow-lg shadow-nave-cyan/5">
-          <span class="flex h-2 w-2 relative">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-nave-cyan opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-nave-cyan"></span>
-          </span>
-          <span class="font-mono-code text-xs tracking-wider text-nave-cyan uppercase font-semibold">NAVE EXPERIENCE // VIRTUAL HUB</span>
-        </div>
-
-        <!-- Main Title with Text Reveal -->
-        <h1 id="hero-stagger-2" class="reveal-element text-reveal-container font-display text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
-          <span class="text-word">O</span> <span class="text-word">FUTURO</span> <br class="hidden sm:inline" />
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-nave-cyan">
-            <span class="text-word">COMEÇA</span> <span class="text-word">AQUI.</span>
-          </span>
-        </h1>
-
-        <!-- Supporting Subtitle -->
-        <p id="hero-stagger-3" class="reveal-element max-w-2xl text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-10">
-          Tecnologia, criatividade e experiências que transformam a forma como imaginamos o amanhã.
-        </p>
-
-        <!-- 10. CTA BUTTON "EXPLORAR EXPERIÊNCIA" -->
-        <div id="hero-stagger-4" class="reveal-element flex flex-col sm:flex-row items-center gap-4">
-          <a id="explore-cta" href="#video-1-section" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-display font-semibold text-sm tracking-wider text-black bg-nave-cyan hover:bg-white transition-all duration-300 shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:shadow-[0_0_35px_rgba(255,255,255,0.6)] hover:scale-105 active:scale-95">
-            <span>EXPLORAR EXPERIÊNCIA</span>
-            <i data-lucide="arrow-down" class="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1"></i>
-          </a>
-        </div>
-
-        <!-- Tech Indicators / Mini Stats -->
-        <div id="hero-stagger-5" class="reveal-element grid grid-cols-3 gap-6 sm:gap-12 mt-20 pt-10 border-t border-slate-800/80 w-full max-w-2xl">
-          <div class="text-center group">
-            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1 group-hover:text-nave-cyan transition-colors">02</div>
-            <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Vídeos Core</div>
-          </div>
-          <div class="text-center group">
-            <div class="font-mono-code text-xl sm:text-2xl font-bold text-nave-cyan mb-1 group-hover:scale-110 transition-transform">100%</div>
-            <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Imersão</div>
-          </div>
-          <div class="text-center group">
-            <div class="font-mono-code text-xl sm:text-2xl font-bold text-white mb-1 group-hover:text-nave-cyan transition-colors">4K</div>
-            <div class="text-[11px] font-mono-code text-slate-400 uppercase tracking-widest">Qualidade</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Scroll Indicator Chevron -->
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-500 animate-bounce">
-        <span class="text-[10px] font-mono-code tracking-widest uppercase">SCROLL</span>
-        <i data-lucide="chevron-down" class="w-4 h-4 text-nave-cyan"></i>
-      </div>
-    </section>
-
-    <!-- 11. SEÇÃO VÍDEO 01 (ANÚNCIO) -->
-    <section id="video-1-section" class="relative py-24 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
-      
-      <!-- Section Header -->
-      <div class="reveal-element flex flex-col items-start mb-10 border-l-2 border-nave-cyan pl-4">
-        <span class="font-mono-code text-xs text-nave-cyan tracking-widest uppercase mb-1">01 // ANÚNCIO</span>
-        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">ANÚNCIO NAVE</h2>
-      </div>
-
-      <!-- Video Player Frame (Format Vertical / Reels 9:16 with Scroll Scale Effect) -->
-      <div id="video-1-container" class="video-scroll-card relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden glass-panel-cyan shadow-2xl transition-all duration-700 hover:shadow-[0_0_40px_rgba(0,240,255,0.25)]">
-        
-        <!-- Top HUD Header Bar -->
-        <div class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between font-mono-code text-xs text-slate-400">
-          <div class="flex items-center gap-3">
-            <div class="flex gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+    <!-- Boot Sequence Loader -->
+    <div id="boot-loader" class="fixed inset-0 z-[10000] bg-[#050507] flex flex-col items-center justify-center p-6 transition-opacity duration-700">
+        <div class="max-w-md w-full space-y-6">
+            <div class="flex items-center justify-between text-brand-cyan font-orbitron text-xs tracking-widest border-b border-brand-border pb-2">
+                <span>NAVE_SYS_v4.2</span>
+                <span class="animate-pulse">INITIALIZING...</span>
             </div>
-            <span class="text-slate-300 font-semibold tracking-wider">NAVE_ANUNCIO.STREAM</span>
-          </div>
-          <div class="hidden sm:flex items-center gap-4 text-[10px]">
-            <span>FORMAT: REELS 9:16</span>
-            <span class="text-nave-cyan">STATUS: READY</span>
-          </div>
-        </div>
-
-        <!-- Video Wrapper / YouTube Embed (Aspect 9:16) -->
-        <div class="relative aspect-[9/16] w-full bg-black group overflow-hidden">
-          <iframe 
-            id="youtube-player-1" 
-            class="w-full h-full object-cover border-0" 
-            src="https://www.youtube.com/embed/DI92G8dxU1M?enablejsapi=1&rel=0" 
-            title="NAVE - Anúncio" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-          </iframe>
-        </div>
-
-        <!-- Video Footer Context -->
-        <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h3 class="font-display text-lg font-bold text-white">ANÚNCIO OFICIAL</h3>
-            <p class="text-sm text-slate-400 mt-1">Apresentação geral das novidades do NAVE.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs border border-slate-700">YOUTUBE REELS</span>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 13. TRANSIÇÃO ENTRE OS VÍDEOS & INTERACTIVE WAVES -->
-    <section id="transition-section" class="relative py-32 px-6 overflow-hidden border-y border-slate-800/60 bg-[#05070c]">
-      
-      <!-- Canvas Interactive Waves -->
-      <canvas id="waves-canvas" class="absolute inset-0 w-full h-full object-cover z-0 opacity-80"></canvas>
-      
-      <!-- Overlay Gradient for contrast -->
-      <div class="absolute inset-0 bg-gradient-to-b from-[#07090e] via-transparent to-[#07090e] pointer-events-none"></div>
-
-      <!-- Center Transition Text Banner -->
-      <div class="relative z-10 max-w-3xl mx-auto text-center py-16">
-        <div class="reveal-element">
-          <span class="inline-block px-3 py-1 rounded-full font-mono-code text-[11px] text-nave-cyan bg-nave-cyan/10 border border-nave-cyan/20 mb-6 uppercase tracking-widest">
-            // N.A.V.E
-          </span>
-          
-          <h2 class="text-reveal-container font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
-            <span class="text-word">O</span> <span class="text-word">FUTURO</span> <span class="text-word">JÁ</span> <span class="text-word">ESTÁ</span> <br class="hidden sm:inline" />
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-nave-cyan via-blue-400 to-nave-purple">
-              <span class="text-word">EM</span> <span class="text-word">MOVIMENTO.</span>
-            </span>
-          </h2>
-
-          <p class="text-slate-400 text-sm sm:text-base font-light max-w-lg mx-auto">
-            <span class="hidden md:inline"> tecnologia sempre em fluxo.</span>
-            <span class="md:hidden">O NAVE vai além da teoria.</span>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 16. VÍDEO 02 (TUTORIAL) -->
-    <section id="video-2-section" class="relative py-24 md:py-32 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
-      
-      <!-- Section Header -->
-      <div class="reveal-element flex flex-col items-start mb-10 border-l-2 border-nave-purple pl-4">
-        <span class="font-mono-code text-xs text-nave-purple tracking-widest uppercase mb-1">02 // TUTORIAL</span>
-        <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">TUTORIAL NAVE</h2>
-      </div>
-
-      <!-- Video Player Container (Format Vertical / Reels 9:16) -->
-      <div id="video-2-container" class="video-scroll-card relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden glass-panel border border-nave-purple/30 shadow-2xl transition-all duration-700 hover:shadow-[0_0_40px_rgba(139,92,246,0.25)]">
-        
-        <!-- Top HUD Header Bar -->
-        <div class="bg-slate-950/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between font-mono-code text-xs text-slate-400">
-          <div class="flex items-center gap-3">
-            <div class="flex gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-purple-500/80"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-cyan-500/80"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-blue-500/80"></span>
+            
+            <div class="text-3xl font-black font-orbitron tracking-tighter text-white uppercase">
+                NAVE <span class="text-brand-cyan">//</span> UNIFOA
             </div>
-            <span class="text-slate-300 font-semibold tracking-wider">NAVE_TUTORIAL.STREAM</span>
-          </div>
-          <div class="hidden sm:flex items-center gap-4 text-[10px]">
-            <span class="text-nave-purple">FORMAT: REELS 9:16</span>
-            <span>PLATFORM: YOUTUBE</span>
-          </div>
+            
+            <div class="space-y-2 font-mono text-xs text-brand-muted">
+                <div id="boot-log-1">> Loading neural anatomy matrices... [OK]</div>
+                <div id="boot-log-2" class="opacity-0">> Synchronizing 10 VR Headsets... [OK]</div>
+                <div id="boot-log-3" class="opacity-0">> Mounting 13 anatomical experiences... [OK]</div>
+            </div>
+
+            <div class="w-full bg-brand-surface h-1.5 rounded-full overflow-hidden border border-brand-border">
+                <div id="boot-progress" class="bg-brand-cyan h-full w-0 transition-all duration-300 shadow-[0_0_12px_#00E5FF]"></div>
+            </div>
+
+            <div class="text-right font-mono text-xs text-brand-cyan" id="boot-percent">0%</div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="hidden md:block"></div>
+
+    <!-- Vertical Scroll Progress Bar (Right side) -->
+    <div class="fixed right-2 top-0 bottom-0 w-1 z-50 pointer-events-none flex flex-col justify-between py-10 opacity-70">
+        <div class="w-full bg-brand-border h-full rounded-full overflow-hidden">
+            <div id="scroll-progress" class="w-full bg-brand-cyan h-0 transition-all duration-75 shadow-[0_0_10px_#00E5FF]"></div>
+        </div>
+    </div>
+
+    <!-- Background Particle Grid Canvas -->
+    <canvas id="hero-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Overlay Scanlines -->
+    <div class="fixed inset-0 pointer-events-none z-10 scanline-bg opacity-30"></div>
+
+    <!-- Global Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-[#0A0A0C]/80 backdrop-blur-md border-b border-brand-border/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-lg bg-brand-surface border border-brand-cyan/40 flex items-center justify-center text-brand-cyan group-hover:scale-105 group-hover:border-brand-cyan transition-all glow-cyan">
+                    <i data-lucide="box" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="font-orbitron font-black text-lg text-white tracking-wider block leading-none">NAVE</span>
+                    <span class="text-[10px] font-mono tracking-widest text-brand-cyan uppercase">UNIFOA VR LAB</span>
+                </div>
+            </a>
+
+            <!-- System Status Badge -->
+            <div class="hidden sm:flex items-center gap-2 bg-brand-surface/80 px-3.5 py-1.5 rounded-full border border-brand-cyan/30 text-xs font-mono">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-pulse shadow-[0_0_8px_#00E5FF]"></span>
+                <span class="text-white tracking-wider">SYSTEM ONLINE</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex items-center gap-6 text-xs uppercase font-mono tracking-widest">
+                <a href="#sala" class="text-brand-muted hover:text-brand-cyan transition-colors hidden md:block">01 // Sala</a>
+                <a href="#experiencias" class="text-brand-muted hover:text-brand-cyan transition-colors hidden md:block">02 // VR</a>
+                <a href="#tutorial" class="text-brand-muted hover:text-brand-cyan transition-colors hidden md:block">03 // Tutorial</a>
+                <a href="#conectese" class="bg-brand-cyan/10 hover:bg-brand-cyan text-brand-cyan hover:text-black border border-brand-cyan/50 px-4 py-2 rounded-md font-bold transition-all duration-300">
+                    Acessar
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-20 pt-20">
+
+        <!-- SECTION 1: HERO -->
+        <section id="hero" class="min-h-[calc(100vh-5rem)] flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-12">
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Column -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono text-brand-cyan tracking-widest uppercase bg-brand-cyan/10 px-3 py-1 rounded border border-brand-cyan/30">
+                            NAVE // UNIFOA
+                        </span>
+                        <div class="flex items-center gap-1.5 sm:hidden">
+                            <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                            <span class="text-[10px] font-mono text-brand-cyan">ONLINE</span>
+                        </div>
+                    </div>
+
+                    <!-- Headline with Scramble Animation -->
+                    <h1 id="scramble-headline" data-text="O FUTURO DA ANATOMIA COMEÇA AQUI." class="text-4xl sm:text-5xl lg:text-6xl font-black font-orbitron text-white leading-tight tracking-tight uppercase min-h-[3.6em] sm:min-h-[2.4em]">
+                        O FUTURO DA ANATOMIA COMEÇA AQUI.
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="text-base sm:text-lg text-brand-muted max-w-2xl leading-relaxed">
+                        Realidade virtual aplicada ao ensino de Medicina e Anatomia Humana na UNIFOA. Uma imersão tridimensional sem precedentes no aprendizado médico.
+                    </p>
+
+                    <!-- CTA Group -->
+                    <div class="pt-4 flex flex-wrap items-center gap-4">
+                        <a href="#experiencias" class="interactive-btn group relative inline-flex items-center justify-center gap-3 bg-brand-cyan text-black px-8 py-4 rounded-lg font-orbitron font-bold text-sm uppercase tracking-wider overflow-hidden hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(0,229,255,0.4)]">
+                            <span>EXPLORAR A SALA</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#tutorial" class="inline-flex items-center gap-2 bg-brand-surface border border-brand-border hover:border-brand-cyan/50 text-white px-6 py-4 rounded-lg font-mono text-xs uppercase tracking-widest transition-all">
+                            <i data-lucide="play-circle" class="w-4 h-4 text-brand-cyan"></i>
+                            Ver Tutorial
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right Column (Main Hero Room Photo Frame) -->
+                <div class="lg:col-span-5 relative group">
+                    <div class="relative rounded-2xl overflow-hidden border-2 border-brand-cyan/40 bg-brand-card glow-cyan transition-all duration-500 group-hover:border-brand-cyan">
+                        <!-- Hologram Overlay Effect -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-transparent to-brand-cyan/10 opacity-70 z-10 pointer-events-none"></div>
+                        
+                        <!-- Hero Room Image -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=1200&auto=format&fit=crop" 
+                            alt="Foto da Sala NAVE UNIFOA com Óculos de Realidade Virtual" 
+                            class="w-full h-[380px] sm:h-[450px] object-cover transform group-hover:scale-105 transition-transform duration-700"
+                            loading="eager"
+                        >
+
+                        <!-- HUD Card Badge -->
+                        <div class="absolute bottom-4 left-4 right-4 z-20 bg-[#0A0A0C]/90 backdrop-blur-md p-4 rounded-xl border border-brand-cyan/30 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-brand-cyan/20 flex items-center justify-center text-brand-cyan">
+                                    <i data-lucide="glasses" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-orbitron font-bold text-white uppercase">SALA NAVE - CAMPUS TÊXTIL</div>
+                                    <div class="text-[10px] font-mono text-brand-muted">10 ESTAÇÕES VR OPERACIONAIS</div>
+                                </div>
+                            </div>
+                            <span class="text-xs font-mono text-brand-cyan border border-brand-cyan/40 px-2 py-0.5 rounded">
+                                ACTIVE
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-brand-muted text-xs font-mono tracking-widest animate-bounce">
+                <span>SCROLL ↓</span>
+            </div>
+        </section>
+
+        <!-- SECTION 2: A SALA -->
+        <section id="sala" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 relative bg-brand-surface/30">
+            <div class="max-w-7xl mx-auto space-y-16">
+                
+                <!-- Section Header -->
+                <div class="space-y-3">
+                    <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
+                        01 // A SALA
+                    </div>
+                    <h2 class="reveal-text text-3xl sm:text-4xl lg:text-5xl font-black font-orbitron text-white uppercase tracking-tight">
+                        UM ESPAÇO CONSTRUÍDO PARA O FUTURO.
+                    </h2>
+                </div>
+
+                <!-- Text Presentation & Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-brand-muted text-base sm:text-lg leading-relaxed">
+                        <p class="p-6 bg-brand-card/80 rounded-2xl border border-brand-border/80 border-l-4 border-l-brand-cyan">
+                            O <strong class="text-white">NAVE — Núcleo de Atividade Virtual de Ensino</strong> — é um ambiente da UNIFOA equipado com 10 óculos de realidade virtual, projetado para transformar o estudo de Anatomia Humana em uma experiência imersiva. Aqui, o aluno não apenas observa: ele explora.
+                        </p>
+                        <p>
+                            Desenvolvido com tecnologia de ponta para proporcionar uma imersão completa em estruturas anatômicas tridimensionais, a sala possibilita a dissecação virtual, navegação por sistemas vivos e análise detalhada de patologias em tempo real.
+                        </p>
+                    </div>
+
+                    <!-- Room Feature Highlights -->
+                    <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                        <div class="p-5 bg-brand-card rounded-xl border border-brand-border flex items-start gap-4">
+                            <div class="p-3 bg-brand-cyan/10 rounded-lg text-brand-cyan">
+                                <i data-lucide="cpu" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-white text-sm uppercase">Alta Performance</h3>
+                                <p class="text-xs text-brand-muted mt-1">Renderização 3D em tempo real com rastreamento preciso de movimentos.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-5 bg-brand-card rounded-xl border border-brand-border flex items-start gap-4">
+                            <div class="p-3 bg-brand-cyan/10 rounded-lg text-brand-cyan">
+                                <i data-lucide="users" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-orbitron font-bold text-white text-sm uppercase">Aprendizado Colaborativo</h3>
+                                <p class="text-xs text-brand-muted mt-1">Sessões guiadas por professores para turmas de Medicina e Enfermagem.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Animated Counters -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
+                    <!-- Metric 1 -->
+                    <div class="bg-brand-card p-8 rounded-2xl border border-brand-border text-center relative overflow-hidden group hover:border-brand-cyan/50 transition-all">
+                        <div class="absolute -right-4 -bottom-4 text-brand-cyan/5 text-8xl font-black font-orbitron">10</div>
+                        <div class="text-4xl sm:text-5xl font-black font-orbitron text-brand-cyan mb-2">
+                            <span class="counter" data-target="10">0</span>
+                        </div>
+                        <div class="text-xs font-mono uppercase tracking-widest text-white">ÓCULOS VR</div>
+                        <p class="text-xs text-brand-muted mt-2">Headsets Meta Quest de última geração calibrados para ensino médico.</p>
+                    </div>
+
+                    <!-- Metric 2 -->
+                    <div class="bg-brand-card p-8 rounded-2xl border border-brand-border text-center relative overflow-hidden group hover:border-brand-cyan/50 transition-all">
+                        <div class="absolute -right-4 -bottom-4 text-brand-cyan/5 text-8xl font-black font-orbitron">13</div>
+                        <div class="text-4xl sm:text-5xl font-black font-orbitron text-brand-cyan mb-2">
+                            <span class="counter" data-target="13">0</span>
+                        </div>
+                        <div class="text-xs font-mono uppercase tracking-widest text-white">EXPERIÊNCIAS DISPONÍVEIS</div>
+                        <p class="text-xs text-brand-muted mt-2">Módulos anatômicos completos de órgãos e sistemas humanos.</p>
+                    </div>
+
+                    <!-- Metric 3 -->
+                    <div class="bg-brand-card p-8 rounded-2xl border border-brand-border text-center relative overflow-hidden group hover:border-brand-cyan/50 transition-all">
+                        <div class="absolute -right-4 -bottom-4 text-brand-cyan/5 text-8xl font-black font-orbitron">100</div>
+                        <div class="text-4xl sm:text-5xl font-black font-orbitron text-brand-cyan mb-2">
+                            <span class="counter" data-target="100">0</span>%
+                        </div>
+                        <div class="text-xs font-mono uppercase tracking-widest text-white">IMERSÃO ANATÔMICA</div>
+                        <p class="text-xs text-brand-muted mt-2">Interatividade 360° com estruturas microscópicas e macroscópicas.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: GALERIA VR (13 ÓRGÃOS) -->
+        <section id="experiencias" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 relative">
+            <div class="max-w-7xl mx-auto space-y-12">
+                
+                <!-- Section Title -->
+                <div class="space-y-3">
+                    <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
+                        02 // EXPERIÊNCIAS VR
+                    </div>
+                    <h2 class="reveal-text text-3xl sm:text-4xl lg:text-5xl font-black font-orbitron text-white uppercase tracking-tight">
+                        EXPLORE O CORPO HUMANO EM IMERSÃO TOTAL.
+                    </h2>
+                    <p class="text-brand-muted text-sm sm:text-base max-w-2xl">
+                        Cada card representa uma experiência anatômica disponível nos óculos de realidade virtual da sala NAVE. Clique para visualizar detalhes e simulação do módulo.
+                    </p>
+                </div>
+
+                <!-- 13 Organ Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6" id="organ-grid">
+                    <!-- Cards injected dynamically via JavaScript -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: TUTORIAL -->
+        <section id="tutorial" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 bg-brand-surface/30 relative">
+            <div class="max-w-7xl mx-auto space-y-12">
+                
+                <!-- Section Title -->
+                <div class="space-y-3 text-center max-w-3xl mx-auto">
+                    <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
+                        03 // TUTORIAL
+                    </div>
+                    <h2 class="reveal-text text-3xl sm:text-4xl lg:text-5xl font-black font-orbitron text-white uppercase tracking-tight">
+                        COMO USAR A SALA NAVE.
+                    </h2>
+                    <p class="text-brand-muted text-base">
+                        Assista ao guia rápido e aprenda o passo a passo para utilizar os óculos de realidade virtual e acessar as experiências anatômicas do NAVE.
+                    </p>
+                </div>
+
+                <!-- YouTube Shorts Container (9:16 Vertical Aspect Ratio) -->
+                <div class="max-w-md mx-auto relative group">
+                    <!-- Cyan Frame Glow -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-brand-cyan/50 to-cyan-500/50 rounded-2xl blur-lg opacity-50 group-hover:opacity-80 transition duration-500"></div>
+                    
+                    <div class="relative bg-brand-card border-2 border-brand-cyan/60 rounded-2xl overflow-hidden shadow-2xl">
+                        <!-- Top HUD Bar -->
+                        <div class="bg-brand-surface px-4 py-2 border-b border-brand-border flex items-center justify-between text-xs font-mono">
+                            <span class="text-brand-cyan flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                                TUTORIAL_VR.MP4
+                            </span>
+                            <span class="text-brand-muted">9:16 SHORTS</span>
+                        </div>
+
+                        <!-- Responsive Video Container -->
+                        <div class="relative w-full aspect-[9/16] bg-black">
+                            <iframe 
+                                class="w-full h-full"
+                                src="https://www.youtube-nocookie.com/embed/D4skQc3i6Ho?rel=0&modestbranding=1" 
+                                title="Tutorial de Uso da Sala NAVE UNIFOA" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen
+                                loading="lazy"
+                            ></iframe>
+                        </div>
+
+                        <!-- Footer Control Label -->
+                        <div class="p-4 bg-brand-surface/90 border-t border-brand-border flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-orbitron font-bold text-white">GUIA RÁPIDO DE OPERAÇÃO</div>
+                                <div class="text-[10px] font-mono text-brand-muted">Passo a passo presencial</div>
+                            </div>
+                            <a 
+                                href="https://youtube.com/shorts/D4skQc3i6Ho?si=5JWv73WBXFtdvCvd" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                class="inline-flex items-center gap-1.5 text-xs font-mono text-brand-cyan hover:underline"
+                            >
+                                <span>YOUTUBE</span>
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tutorial Steps Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+                    <div class="p-6 bg-brand-card rounded-xl border border-brand-border space-y-2">
+                        <div class="text-brand-cyan font-mono text-xs">PASSO 01</div>
+                        <h4 class="font-orbitron font-bold text-white text-sm uppercase">Ajuste do Headset</h4>
+                        <p class="text-xs text-brand-muted">Ajuste as tiras laterais dos óculos e calibre o foco visual antes de iniciar a sessão.</p>
+                    </div>
+                    <div class="p-6 bg-brand-card rounded-xl border border-brand-border space-y-2">
+                        <div class="text-brand-cyan font-mono text-xs">PASSO 02</div>
+                        <h4 class="font-orbitron font-bold text-white text-sm uppercase">Seleção do Módulo</h4>
+                        <p class="text-xs text-brand-muted">No menu principal do NAVE VR, escolha uma das 13 experiências anatômicas usando o controle.</p>
+                    </div>
+                    <div class="p-6 bg-brand-card rounded-xl border border-brand-border space-y-2">
+                        <div class="text-brand-cyan font-mono text-xs">PASSO 03</div>
+                        <h4 class="font-orbitron font-bold text-white text-sm uppercase">Navegação e Dissecação</h4>
+                        <p class="text-xs text-brand-muted">Utilize os gatilhos dos controles para ampliar, girar ou dissecá as camadas de órgãos em 3D.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: RESUMO + INSTAGRAM -->
+        <section id="conectese" class="py-24 px-4 sm:px-6 lg:px-8 border-t border-brand-border/60 relative">
+            <div class="max-w-7xl mx-auto space-y-16">
+                
+                <!-- Section Title -->
+                <div class="space-y-3">
+                    <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase">
+                        04 // CONECTE-SE
+                    </div>
+                    <h2 class="reveal-text text-3xl sm:text-4xl lg:text-5xl font-black font-orbitron text-white uppercase tracking-tight">
+                        O FUTURO JÁ ESTÁ EM MOVIMENTO.
+                    </h2>
+                </div>
+
+                <!-- Main Summary Paragraph -->
+                <div class="p-8 bg-brand-card/90 rounded-2xl border border-brand-cyan/30 text-brand-muted text-base sm:text-lg leading-relaxed shadow-xl">
+                    <p>
+                        O <strong class="text-white">NAVE</strong> é mais que uma sala: é um núcleo de inovação pedagógica da UNIFOA. Unindo tecnologia de realidade virtual, conteúdo anatômico de alta qualidade e um ambiente projetado para imersão, o NAVE reposiciona o estudo da Medicina como uma experiência ativa, visual e memorável.
+                    </p>
+                </div>
+
+                <!-- 3 Columns Block -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Column 1 -->
+                    <div class="p-6 bg-brand-card rounded-2xl border border-brand-border space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-white text-lg uppercase">TECNOLOGIA</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            Infraestrutura de realidade virtual com constante atualização de softwares médicos e simuladores cirúrgicos.
+                        </p>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="p-6 bg-brand-card rounded-2xl border border-brand-border space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
+                            <i data-lucide="eye" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-white text-lg uppercase">IMERSÃO</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            Aprendizado anatômico interativo em 3D com 13 experiências detalhadas de sistemas do corpo humano.
+                        </p>
+                    </div>
+
+                    <!-- Column 3 -->
+                    <div class="p-6 bg-brand-card rounded-2xl border border-brand-border space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-white text-lg uppercase">INOVAÇÃO</h3>
+                        <p class="text-sm text-brand-muted leading-relaxed">
+                            Metodologias ativas voltadas para a formação de profissionais de saúde prontos para a era digital.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Instagram CTA Block -->
+                <div class="text-center py-8 space-y-6">
+                    <div class="text-xs font-mono text-brand-muted uppercase tracking-widest">
+                        SIGA NOSSAS ATIVIDADES NO INSTAGRAM
+                    </div>
+                    <div>
+                        <a 
+                            href="https://instagram.com/nave_unifoa" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="interactive-btn group inline-flex items-center gap-4 bg-gradient-to-r from-pink-600 via-purple-600 to-brand-cyan text-white px-10 py-5 rounded-2xl font-orbitron font-bold text-lg sm:text-xl uppercase tracking-wider hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(0,229,255,0.3)]"
+                        >
+                            <i data-lucide="instagram" class="w-6 h-6"></i>
+                            <span>@nave_unifoa →</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Infinite Decorative Marquee Bar -->
+        <div class="border-y border-brand-border bg-brand-surface py-4 overflow-hidden select-none">
+            <div class="animate-marquee whitespace-nowrap flex items-center gap-8 text-xs font-mono text-brand-cyan uppercase tracking-widest">
+                <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
+                <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
+                <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
+                <span>NAVE • UNIFOA • VR • ANATOMIA • REALIDADE VIRTUAL • MEDICINA • IMMERSIVE LEARNING •</span>
+            </div>
         </div>
 
-        <!-- Video Wrapper / YouTube Embed (Aspect 9:16) -->
-        <div class="relative aspect-[9/16] w-full bg-black group overflow-hidden">
-          <iframe 
-            id="youtube-player-2" 
-            class="w-full h-full object-cover border-0" 
-            src="https://www.youtube.com/embed/D4skQc3i6Ho?enablejsapi=1&rel=0" 
-            title="NAVE - Tutorial" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-          </iframe>
+        <!-- Footer -->
+        <footer class="py-12 px-4 sm:px-6 lg:px-8 border-t border-brand-border bg-[#050507]">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+                <div>
+                    <div class="font-orbitron font-bold text-white text-sm uppercase">
+                        © 2026 NAVE — Núcleo de Atividade Virtual de Ensino · UNIFOA
+                    </div>
+                    <div class="text-xs font-mono text-brand-muted mt-1">
+                        Centro Universitário de Volta Redonda — Projeto de Inovação Pedagógica
+                    </div>
+                </div>
+                <div class="text-xs font-mono text-brand-cyan tracking-widest uppercase border border-brand-cyan/30 px-3 py-1.5 rounded-md">
+                    EXPERIÊNCIA DIGITAL INTERATIVA
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Organ Detail Modal -->
+    <div id="organ-modal" class="fixed inset-0 z-[999] hidden bg-black/80 backdrop-blur-md p-4 sm:p-6 overflow-y-auto flex items-center justify-center">
+        <div class="bg-brand-card border border-brand-cyan/50 max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 relative shadow-[0_0_50px_rgba(0,229,255,0.2)] transform transition-all">
+            
+            <!-- Close Modal Button -->
+            <button id="modal-close" class="absolute top-4 right-4 text-brand-muted hover:text-brand-cyan p-2 rounded-lg bg-brand-surface border border-brand-border">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="flex items-center gap-3">
+                <span id="modal-badge" class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/30 px-3 py-1 rounded">
+                    GALERIA // VR
+                </span>
+                <span class="text-xs font-mono text-green-400">● 3D READY</span>
+            </div>
+
+            <h3 id="modal-title" class="text-2xl sm:text-3xl font-black font-orbitron text-white uppercase">
+                NOME DO ÓRGÃO
+            </h3>
+
+            <!-- Simulated 3D Interactive Canvas Box -->
+            <div class="relative w-full h-56 bg-brand-surface rounded-xl border border-brand-border overflow-hidden flex items-center justify-center">
+                <canvas id="modal-organ-canvas" class="w-full h-full"></canvas>
+                <div class="absolute bottom-3 right-3 text-[10px] font-mono text-brand-cyan bg-black/70 px-2 py-1 rounded border border-brand-cyan/30">
+                    <i data-lucide="rotate-3d" class="w-3 h-3 inline mr-1"></i> ARRASTE PARA GIRAR EM 3D
+                </div>
+            </div>
+
+            <p id="modal-description" class="text-brand-muted text-sm leading-relaxed">
+                Descrição anatômica detalhada e recursos pedagógicos disponíveis neste módulo dos óculos VR.
+            </p>
+
+            <!-- Anatomical Specs -->
+            <div class="grid grid-cols-2 gap-4 pt-2 font-mono text-xs border-t border-brand-border">
+                <div>
+                    <span class="text-brand-muted block">SISTEMA:</span>
+                    <span id="modal-system" class="text-white font-bold">CIRCULATÓRIO</span>
+                </div>
+                <div>
+                    <span class="text-brand-muted block">NÍVEL DE DETALHE:</span>
+                    <span class="text-brand-cyan font-bold">MICROSCÓPICO 4K</span>
+                </div>
+            </div>
+
+            <!-- Modal Footer CTA -->
+            <div class="flex justify-end pt-4">
+                <button id="modal-action-close" class="bg-brand-cyan text-black font-orbitron font-bold text-xs uppercase px-6 py-3 rounded-lg hover:bg-white transition-colors">
+                    FECHAR VISUALIZAÇÃO
+                </button>
+            </div>
         </div>
+    </div>
 
-        <!-- Video Footer Context -->
-        <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h3 class="font-display text-lg font-bold text-white">GUIA E PASSO A PASSO</h3>
-            <p class="text-sm text-slate-400 mt-1">Aprenda a explorar e utilizar as ferramentas do NAVE na prática.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded bg-slate-800 text-slate-300 font-mono-code text-xs border border-slate-700">YOUTUBE REELS</span>
-          </div>
-        </div>
+    <!-- Interactive Logic Scripts -->
+    <script>
+        // 1. DATA: 13 Organ Gallery Items
+        const organData = [
+            { id: 1, name: 'Bexiga', system: 'Urinário', desc: 'Estudo tridimensional da anatomia vesical, mucosa interna e dinâmica neuromuscular do trato urinário inferior.', img: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?q=80&w=800&auto=format&fit=crop' },
+            { id: 2, name: 'Cérebro', system: 'Nervoso', desc: 'Mapeamento tridimensional dos lobos cerebrais, sistema límbico, vias neurais e vascularização do encéfalo.', img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800&auto=format&fit=crop' },
+            { id: 3, name: 'Mamas', system: 'Reprodutor / Endócrino', desc: 'Dissecação virtual do tecido mamário, sistema linfático axilar, ductos lactíferos e vascularização.', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=800&auto=format&fit=crop' },
+            { id: 4, name: 'Olhos', system: 'Sensorial', desc: 'Anatomia microscópica do globo ocular, córnea, cristalino, retina e via óptica até o córtex occipital.', img: 'https://images.unsplash.com/photo-1516715094483-75da7dee9758?q=80&w=800&auto=format&fit=crop' },
+            { id: 5, name: 'Coração', system: 'Cardiovascular', desc: 'Navegação pelas câmaras cardíacas, valvas em funcionamento ativo e sistema de condução elétrica em tempo real.', img: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?q=80&w=800&auto=format&fit=crop' },
+            { id: 6, name: 'Rins', system: 'Urinário', desc: 'Visualização da néfrons, córtex e medula renal com simulação do processo de filtração sanguínea.', img: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop' },
+            { id: 7, name: 'Intestino grosso', system: 'Digestório', desc: 'Topografia do ceco, cólon ascendente, transverso, descendente e sigmoide com análise de camadas teciduais.', img: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=800&auto=format&fit=crop' },
+            { id: 8, name: 'Fígado', system: 'Digestório / Metabólico', desc: 'Arquitetura dos lóbulos hepáticos, vias biliares e sistema porta-hepático com interatividade funcional.', img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop' },
+            { id: 9, name: 'Pulmões', system: 'Respiratório', desc: 'Simulação dinâmica da mecânica ventilatória, árvore brônquica e trocas gasosas nos alvéolos pulmonares.', img: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=800&auto=format&fit=crop' },
+            { id: 10, name: 'Pâncreas', system: 'Endócrino / Digestório', desc: 'Estudo do pâncreas endócrino (Ilhotas de Langerhans) e exócrino com relação anatômica ao duodeno.', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop' },
+            { id: 11, name: 'Sistema reprodutivo', system: 'Reprodutor', desc: 'Anatomia comparada masculina e feminina, gônadas, vias genitais e aspectos embriológicos em 3D.', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop' },
+            { id: 12, name: 'Intestino delgado', system: 'Digestório', desc: 'Morfologia do duodeno, jejuno e íleo com aumento microscópico das vilosidades intestinais.', img: 'https://images.unsplash.com/photo-1583912267670-6575922313c0?q=80&w=800&auto=format&fit=crop' },
+            { id: 13, name: 'Estômago', system: 'Digestório', desc: 'Anatomia das curvaturas maior e menor, esfíncteres cárdia e píloro e túnica muscular gástrica.', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop' }
+        ];
 
-      </div>
-    </section>
+        // 2. Render Organ Cards into DOM
+        function renderOrganCards() {
+            const grid = document.getElementById('organ-grid');
+            if (!grid) return;
 
-    <!-- 17. ENCERRAMENTO -->
-    <section id="encerramento" class="relative py-28 px-6 bg-[#040508] border-t border-slate-900 text-center overflow-hidden">
-      
-      <!-- Background Ambient Glow -->
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-nave-cyan/10 blur-[150px] rounded-full pointer-events-none"></div>
+            grid.innerHTML = organData.map((organ, index) => `
+                <div 
+                    class="organ-card bg-brand-card rounded-2xl overflow-hidden border border-brand-border cursor-pointer relative group flex flex-col justify-between"
+                    onclick="openOrganModal(${organ.id})"
+                >
+                    <!-- Background Image & Overlay -->
+                    <div class="relative h-52 overflow-hidden bg-brand-surface">
+                        <img 
+                            src="${organ.img}" 
+                            alt="${organ.name}" 
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                            loading="lazy"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-brand-card/40 to-transparent"></div>
+                        
+                        <!-- Top Tag -->
+                        <div class="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded border border-brand-cyan/40 text-[10px] font-mono text-brand-cyan">
+                            GALERIA ${organ.id < 10 ? '0' + organ.id : organ.id}
+                        </div>
 
-      <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-        
-        <!-- Brand Core Identity -->
-        <div class="reveal-element inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-700/60 mb-8 shadow-xl overflow-hidden p-3 hover:border-nave-cyan transition-colors">
-          <img src="assets/icon.png" alt="NAVE Icon" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64/0e131f/00f0ff?text=N';" />
-        </div>
+                        <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-brand-cyan text-black text-[10px] font-mono font-bold px-2 py-0.5 rounded">
+                            // VR READY
+                        </div>
+                    </div>
 
-        <h2 class="text-reveal-container reveal-element font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight mb-4">
-          <span class="text-word">NAVE</span>
-        </h2>
+                    <!-- Card Body -->
+                    <div class="p-6 space-y-2 flex-grow flex flex-col justify-between relative z-10">
+                        <div>
+                            <div class="text-[10px] font-mono text-brand-cyan uppercase tracking-widest">${organ.system}</div>
+                            <h3 class="text-xl font-black font-orbitron text-white uppercase group-hover:text-brand-cyan transition-colors">
+                                ${organ.name}
+                            </h3>
+                        </div>
 
-        <p class="text-reveal-container reveal-element font-display text-xl sm:text-2xl font-light text-slate-300 tracking-wide mb-12">
-          <span class="text-word">O</span> <span class="text-word">FUTURO</span> <span class="text-word">COMEÇA</span> <span class="text-word">AQUI.</span>
-        </p>
+                        <p class="text-xs text-brand-muted line-clamp-2 pt-2">
+                            ${organ.desc}
+                        </p>
 
-        <!-- Key Pillars Grid -->
-        <div class="reveal-element grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 w-full max-w-2xl mb-16">
-          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-all hover:-translate-y-1">
-            <i data-lucide="cpu" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
-            <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">TECNOLOGIA</h4>
-            <p class="text-xs text-slate-400">Infraestrutura digital e inovação constante.</p>
-          </div>
+                        <div class="pt-4 flex items-center justify-between border-t border-brand-border/60 text-xs font-mono text-brand-cyan">
+                            <span>EXPLORAR MÓDULO</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
 
-          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-all hover:-translate-y-1">
-            <i data-lucide="sparkles" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
-            <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">CRIATIVIDADE</h4>
-            <p class="text-xs text-slate-400">Espaço para explorar novas ideias e narrativas.</p>
-          </div>
+            // Re-initialize Lucide Icons for dynamic content
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
 
-          <div class="p-6 rounded-xl glass-panel border border-slate-800 hover:border-nave-cyan/40 transition-all hover:-translate-y-1">
-            <i data-lucide="rocket" class="w-6 h-6 text-nave-cyan mx-auto mb-3"></i>
-            <h4 class="font-display font-bold text-white text-sm tracking-wider mb-1">INOVAÇÃO</h4>
-            <p class="text-xs text-slate-400">Experiências visuais voltadas para o amanhã.</p>
-          </div>
-        </div>
+        // 3. Boot Sequence Animation Logic
+        window.addEventListener('load', () => {
+            const bootLoader = document.getElementById('boot-loader');
+            const bootProgress = document.getElementById('boot-progress');
+            const bootPercent = document.getElementById('boot-percent');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        bootLoader.classList.add('opacity-0', 'pointer-events-none');
+                        setTimeout(() => bootLoader.remove(), 700);
+                        startHeroTextScramble();
+                    }, 400);
+                }
 
-        <!-- Back to Top Button -->
-        <a href="#hero" class="reveal-element group flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-all text-xs font-mono-code mb-12 active:scale-95">
-          <i data-lucide="arrow-up" class="w-4 h-4 text-nave-cyan transition-transform group-hover:-translate-y-1"></i>
-          <span>VOLTAR AO TOPO</span>
-        </a>
+                if (progress > 30) document.getElementById('boot-log-2')?.classList.remove('opacity-0');
+                if (progress > 70) document.getElementById('boot-log-3')?.classList.remove('opacity-0');
 
-        <div class="w-full pt-8 border-t border-slate-900 text-slate-600 font-mono-code text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span>&copy; 2026 NAVE. Todos os direitos reservados.</span>
-          <span class="text-slate-500">EXPERIÊNCIA DIGITAL INTERATIVA</span>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FLOATING INSTAGRAM BUTTON -->
-  <a 
-    href="https://www.instagram.com/nave_unifoa" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    aria-label="Instagram @nave_unifoa"
-    class="fixed bottom-6 right-6 z-40 group flex items-center gap-2.5 p-3.5 sm:px-4 sm:py-3 rounded-full glass-panel-cyan border border-nave-cyan/40 bg-slate-950/80 text-white hover:text-nave-cyan hover:border-nave-cyan transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.25)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] hover:scale-105 active:scale-95"
-  >
-    <i data-lucide="instagram" class="w-5 h-5 text-nave-cyan group-hover:scale-110 transition-transform duration-300"></i>
-    <span class="hidden sm:inline font-mono-code text-xs font-semibold tracking-wider text-slate-200 group-hover:text-nave-cyan transition-colors">
-      @nave_unifoa
-    </span>
-  </a>
-
-  <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
-
-    /* ==========================================================================
-       1. SCROLL PROGRESS INDICATOR
-       ========================================================================== */
-    const progressBar = document.getElementById('scroll-progress-bar');
-    window.addEventListener('scroll', () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (progressBar) progressBar.style.width = scrolled + "%";
-    }, { passive: true });
-
-    /* ==========================================================================
-       2. YOUTUBE UTILITY HELPER & AUTO-PAUSE SYSTEM
-       ========================================================================== */
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    let players = {};
-
-    window.onYouTubeIframeAPIReady = function() {
-      players['youtube-player-1'] = new YT.Player('youtube-player-1', {
-        events: { 'onStateChange': onPlayerStateChange }
-      });
-      players['youtube-player-2'] = new YT.Player('youtube-player-2', {
-        events: { 'onStateChange': onPlayerStateChange }
-      });
-    };
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.ENDED) {
-        event.target.pauseVideo();
-      }
-    }
-
-    /* ==========================================================================
-       3. MOBILE DETECT & REDUCED MOTION CHECK
-       ========================================================================== */
-    const isMobile = window.innerWidth <= 768;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* ==========================================================================
-       4. ENERGY BEAM CANVAS ENGINE (HERO)
-       ========================================================================== */
-    const beamCanvas = document.getElementById('energy-beam-canvas');
-    if (beamCanvas && !prefersReducedMotion) {
-      const ctx = beamCanvas.getContext('2d');
-      let width, height;
-      let mouseX = 0;
-      let targetMouseX = 0;
-
-      function resizeBeam() {
-        width = beamCanvas.width = beamCanvas.offsetWidth;
-        height = beamCanvas.height = beamCanvas.offsetHeight;
-      }
-      resizeBeam();
-      window.addEventListener('resize', resizeBeam);
-
-      window.addEventListener('mousemove', (e) => {
-        if (!isMobile) targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      });
-
-      // Beams particles
-      const particleCount = isMobile ? 18 : 35;
-      const particles = Array.from({ length: particleCount }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        length: Math.random() * 120 + 60,
-        speed: Math.random() * 2 + 1,
-        opacity: Math.random() * 0.5 + 0.2,
-        width: Math.random() * 2 + 1
-      }));
-
-      function drawEnergyBeam() {
-        ctx.clearRect(0, 0, width, height);
-
-        mouseX += (targetMouseX - mouseX) * 0.05;
-
-        // Draw central ambient glow
-        const glowGradient = ctx.createRadialGradient(
-          width / 2 + mouseX * 50, height / 2, 10,
-          width / 2, height / 2, Math.max(width, height) * 0.6
-        );
-        glowGradient.addColorStop(0, 'rgba(0, 240, 255, 0.15)');
-        glowGradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.05)');
-        glowGradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = glowGradient;
-        ctx.fillRect(0, 0, width, height);
-
-        // Draw dynamic beams
-        particles.forEach(p => {
-          p.y -= p.speed;
-          if (p.y + p.length < 0) {
-            p.y = height + p.length;
-            p.x = Math.random() * width;
-          }
-
-          const beamGrad = ctx.createLinearGradient(p.x, p.y, p.x + mouseX * 20, p.y - p.length);
-          beamGrad.addColorStop(0, 'transparent');
-          beamGrad.addColorStop(0.5, `rgba(0, 240, 255, ${p.opacity})`);
-          beamGrad.addColorStop(1, 'transparent');
-
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x + mouseX * 20, p.y - p.length);
-          ctx.strokeStyle = beamGrad;
-          ctx.lineWidth = p.width;
-          ctx.stroke();
+                bootProgress.style.width = progress + '%';
+                bootPercent.innerText = progress + '%';
+            }, 80);
         });
 
-        requestAnimationFrame(drawEnergyBeam);
-      }
-      drawEnergyBeam();
-    }
+        // 4. Text Scramble Effect for Hero Headline
+        function startHeroTextScramble() {
+            const el = document.getElementById('scramble-headline');
+            if (!el) return;
 
-    /* ==========================================================================
-       5. INTERACTIVE WAVES ENGINE (TRANSIÇÃO)
-       ========================================================================== */
-    const wavesCanvas = document.getElementById('waves-canvas');
-    if (wavesCanvas && !prefersReducedMotion) {
-      const wCtx = wavesCanvas.getContext('2d');
-      let wWidth, wHeight;
-      let waveStep = 0;
-      let wavePointer = 0;
+            const finalText = el.getAttribute('data-text') || el.innerText;
+            const chars = 'ABCDEFGHIJKLMOPQRSTUVWXYZ0123456789#%&@//$';
+            let frame = 0;
+            const totalFrames = 30;
 
-      function resizeWaves() {
-        wWidth = wavesCanvas.width = wavesCanvas.offsetWidth;
-        wHeight = wavesCanvas.height = wavesCanvas.offsetHeight;
-      }
-      resizeWaves();
-      window.addEventListener('resize', resizeWaves);
+            const timer = setInterval(() => {
+                frame++;
+                let output = '';
+                for (let i = 0; i < finalText.length; i++) {
+                    if (finalText[i] === ' ' || finalText[i] === '.') {
+                        output += finalText[i];
+                        continue;
+                    }
+                    if (i < (frame / totalFrames) * finalText.length) {
+                        output += finalText[i];
+                    } else {
+                        output += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                }
+                el.innerText = output;
 
-      window.addEventListener('mousemove', (e) => {
-        if (!isMobile) wavePointer = (e.clientX / window.innerWidth) * 2;
-      });
-
-      function drawWaves() {
-        wCtx.clearRect(0, 0, wWidth, wHeight);
-        waveStep += 0.02;
-
-        const lines = isMobile ? 3 : 5;
-        for (let i = 0; i < lines; i++) {
-          wCtx.beginPath();
-          wCtx.lineWidth = 1.5;
-          const color = i % 2 === 0 ? 'rgba(0, 240, 255, ' : 'rgba(139, 92, 246, ';
-          wCtx.strokeStyle = color + (0.15 + i * 0.05) + ')';
-
-          for (let x = 0; x <= wWidth; x += 15) {
-            const mod = Math.sin(waveStep + wavePointer + i) * 15;
-            const y = wHeight / 2 + Math.sin(x * 0.008 + waveStep + i) * (20 + mod);
-            if (x === 0) wCtx.moveTo(x, y);
-            else wCtx.lineTo(x, y);
-          }
-          wCtx.stroke();
+                if (frame >= totalFrames) {
+                    el.innerText = finalText;
+                    clearInterval(timer);
+                }
+            }, 40);
         }
 
-        requestAnimationFrame(drawWaves);
-      }
-      drawWaves();
-    }
-
-    /* ==========================================================================
-       6. SCROLL TRIGGER ANIMATIONS & HERO PARALLAX
-       ========================================================================== */
-    const header = document.getElementById('main-header');
-    const heroContent = document.getElementById('hero-content');
-
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-
-      // Header glassmorphism on scroll
-      if (scrollY > 40) {
-        header.classList.add('glass-panel', 'shadow-xl', 'py-3');
-        header.classList.remove('py-5');
-      } else {
-        header.classList.remove('glass-panel', 'shadow-xl', 'py-3');
-        header.classList.add('py-5');
-      }
-
-      // Lightweight Hero Parallax on Scroll
-      if (heroContent && !isMobile && !prefersReducedMotion && scrollY < 900) {
-        heroContent.style.transform = `translateY(${scrollY * 0.25}px)`;
-        heroContent.style.opacity = `${1 - scrollY / 700}`;
-      }
-    }, { passive: true });
-
-    // Intersection Observer for Reveal Elements & Video Cards
-    const observerOptions = { threshold: 0.12 };
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.reveal-element, .video-scroll-card, .text-reveal-container').forEach(el => revealObserver.observe(el));
-
-    /* ==========================================================================
-       7. STAGGERED INTRO SEQUENCER & MENU DRAWER
-       ========================================================================== */
-    function triggerCinematicHero() {
-      const staggers = [
-        { id: 'hero-stagger-1', delay: 100 },
-        { id: 'hero-stagger-2', delay: 250 },
-        { id: 'hero-stagger-3', delay: 400 },
-        { id: 'hero-stagger-4', delay: 550 },
-        { id: 'hero-stagger-5', delay: 700 }
-      ];
-
-      staggers.forEach(s => {
-        const el = document.getElementById(s.id);
-        if (el) {
-          setTimeout(() => {
-            el.classList.add('active');
-          }, s.delay);
-        }
-      });
-    }
-
-    /* Loader logic */
-    const loader = document.getElementById('loader');
-    const loaderBar = document.getElementById('loader-bar');
-    const loaderPercent = document.getElementById('loader-percent');
-    const loaderStatus = document.getElementById('loader-status');
-    const skipBtn = document.getElementById('skip-loader');
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 25) + 12;
-      if (progress > 100) progress = 100;
-
-      if (loaderBar) loaderBar.style.width = `${progress}%`;
-      if (loaderPercent) loaderPercent.textContent = `${progress}%`;
-
-      if (progress >= 100) {
-        clearInterval(interval);
-        if (loaderStatus) loaderStatus.textContent = 'SYSTEM ONLINE';
-        setTimeout(closeLoader, 250);
-      }
-    }, 100);
-
-    function closeLoader() {
-      if (loader) {
-        loader.classList.add('opacity-0', 'pointer-events-none');
-        setTimeout(() => {
-          loader.remove();
-          triggerCinematicHero();
-        }, 600);
-      }
-    }
-
-    if (skipBtn) skipBtn.addEventListener('click', closeLoader);
-
-    /* Mobile Drawer */
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const mobileDrawer = document.getElementById('mobile-drawer');
-
-    if (mobileBtn && mobileDrawer) {
-      mobileBtn.addEventListener('click', () => {
-        mobileDrawer.classList.toggle('hidden');
-      });
-
-      document.querySelectorAll('.mobile-nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-          mobileDrawer.classList.add('hidden');
+        // 5. Custom Cursor Tracker
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            if (cursor && window.innerWidth >= 768) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
         });
-      });
-    }
-  </script>
+
+        // Hover scale cursor on interactive elements
+        document.querySelectorAll('a, button, .organ-card').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                if (cursor) {
+                    cursor.style.width = '32px';
+                    cursor.style.height = '32px';
+                    cursor.style.opacity = '0.5';
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                if (cursor) {
+                    cursor.style.width = '16px';
+                    cursor.style.height = '16px';
+                    cursor.style.opacity = '1';
+                }
+            });
+        });
+
+        // 6. Scroll Progress Bar Update
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.getElementById('scroll-progress');
+            if (scrollProgress) {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (window.scrollY / totalHeight) * 100;
+                scrollProgress.style.height = `${progress}%`;
+            }
+        });
+
+        // 7. Interactive Background Particle Canvas
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.8 + 0.5;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00E5FF';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 65; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 229, 255, ${0.15 - dist / 120 * 0.15})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 8. Metric Animated Counter Observer
+        let countersAnimated = false;
+        const observerOptions = { threshold: 0.5 };
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !countersAnimated) {
+                    countersAnimated = true;
+                    document.querySelectorAll('.counter').forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const speed = target / 40;
+
+                        const updateCount = () => {
+                            count += speed;
+                            if (count < target) {
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 30);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
+                }
+            });
+        }, observerOptions);
+
+        const metricsSection = document.getElementById('sala');
+        if (metricsSection) counterObserver.observe(metricsSection);
+
+        // 9. Organ Interactive Modal & 3D Viewer Simulation
+        const modal = document.getElementById('organ-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-description');
+        const modalSystem = document.getElementById('modal-system');
+        const modalCanvas = document.getElementById('modal-organ-canvas');
+        let organAnimFrame;
+
+        function openOrganModal(id) {
+            const organ = organData.find(o => o.id === id);
+            if (!organ) return;
+
+            modalTitle.innerText = organ.name;
+            modalDesc.innerText = organ.desc;
+            modalSystem.innerText = organ.system.toUpperCase();
+            
+            modal.classList.remove('hidden');
+            initModalCanvasAnimation();
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            if (organAnimFrame) cancelAnimationFrame(organAnimFrame);
+        }
+
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        document.getElementById('modal-action-close').addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Interactive Canvas 3D Shape Renderer inside Modal
+        function initModalCanvasAnimation() {
+            const mCtx = modalCanvas.getContext('2d');
+            modalCanvas.width = modalCanvas.parentElement.clientWidth;
+            modalCanvas.height = modalCanvas.parentElement.clientHeight;
+
+            let angle = 0;
+
+            function renderOrgan3DShape() {
+                mCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+                
+                const centerX = modalCanvas.width / 2;
+                const centerY = modalCanvas.height / 2;
+                const radius = 60;
+
+                angle += 0.02;
+
+                // Render glowing 3D wireframe mesh simulation
+                mCtx.strokeStyle = '#00E5FF';
+                mCtx.lineWidth = 1.5;
+
+                for (let i = 0; i < 12; i++) {
+                    mCtx.beginPath();
+                    const lat = (i / 12) * Math.PI;
+                    for (let j = 0; j <= 24; j++) {
+                        const lon = (j / 24) * 2 * Math.PI + angle;
+                        const x = centerX + radius * Math.sin(lat) * Math.cos(lon);
+                        const y = centerY + radius * Math.cos(lat);
+                        if (j === 0) mCtx.moveTo(x, y);
+                        else mCtx.lineTo(x, y);
+                    }
+                    mCtx.stroke();
+                }
+
+                // Inner core pulse
+                mCtx.beginPath();
+                mCtx.arc(centerX, centerY, 20 + Math.sin(angle * 2) * 5, 0, Math.PI * 2);
+                mCtx.fillStyle = 'rgba(0, 229, 255, 0.4)';
+                mCtx.fill();
+
+                organAnimFrame = requestAnimationFrame(renderOrgan3DShape);
+            }
+            renderOrgan3DShape();
+        }
+
+        // Initialize dynamic rendering on page load
+        renderOrganCards();
+    </script>
 </body>
 </html>
