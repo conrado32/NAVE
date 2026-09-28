@@ -1,1574 +1,754 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NAVE - Núcleo de Atividade Virtual de Ensino | UniFOA</title>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    /* ==========================================================================
-       1. VARIÁVEIS DE DESIGN E CSS RESET
-       ========================================================================== */
-    :root {
-      --bg-white: #FFFFFF;
-      --bg-light: #E8F4FB;
-      --navy-primary: #0A2A5E;
-      --navy-dark: #051838;
-      --cyan-accent: #00E0FF;
-      --cyan-glow: rgba(0, 224, 255, 0.4);
-      --text-dark: #1C1C1C;
-      --text-muted: #556B82;
-      --card-bg: #FFFFFF;
-      --border-radius: 16px;
-      --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      --shadow-sm: 0 4px 12px rgba(10, 42, 94, 0.06);
-      --shadow-md: 0 10px 30px rgba(10, 42, 94, 0.12);
-      --shadow-glow: 0 0 25px var(--cyan-glow);
-      --font-title: 'Montserrat', sans-serif;
-      --font-body: 'Inter', sans-serif;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
-    body {
-      font-family: var(--font-body);
-      background-color: var(--bg-white);
-      color: var(--text-dark);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Selection */
-    ::selection {
-      background-color: var(--cyan-accent);
-      color: var(--navy-dark);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--navy-dark);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--navy-primary);
-      border: 2px solid var(--navy-dark);
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--cyan-accent);
-    }
-
-    /* Canvas de Partículas no Fundo */
-    #particle-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    /* Container Global */
-    .container {
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ==========================================================================
-       2. HEADER E NAVEGAÇÃO
-       ========================================================================== */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      background: rgba(10, 42, 94, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 224, 255, 0.2);
-      transition: var(--transition-smooth);
-    }
-
-    .header-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, var(--cyan-accent), var(--navy-primary));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--bg-white);
-      font-size: 1.25rem;
-      box-shadow: 0 0 15px var(--cyan-glow);
-    }
-
-    .logo-text {
-      font-family: var(--font-title);
-      font-weight: 900;
-      font-size: 1.5rem;
-      color: var(--bg-white);
-      letter-spacing: 1.5px;
-    }
-
-    .logo-text span {
-      color: var(--cyan-accent);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-link {
-      color: var(--bg-white);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: var(--transition-fast);
-      position: relative;
-      padding: 0.5rem 0;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: var(--cyan-accent);
-      transition: var(--transition-smooth);
-      box-shadow: 0 0 8px var(--cyan-accent);
-    }
-
-    .nav-link:hover {
-      color: var(--cyan-accent);
-    }
-
-    .nav-link:hover::after {
-      width: 100%;
-    }
-
-    .nav-cta {
-      background: rgba(0, 224, 255, 0.1);
-      border: 1px solid var(--cyan-accent);
-      color: var(--cyan-accent);
-      padding: 0.6rem 1.4rem;
-      border-radius: 50px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: var(--transition-fast);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-cta:hover {
-      background: var(--cyan-accent);
-      color: var(--navy-dark);
-      box-shadow: var(--shadow-glow);
-      transform: translateY(-2px);
-    }
-
-    /* Mobile Menu Toggle */
-    .mobile-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--bg-white);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    /* ==========================================================================
-       3. SEÇÃO HERO (3.1)
-       ========================================================================== */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-primary) 100%);
-      color: var(--bg-white);
-      display: flex;
-      align-items: center;
-      padding-top: 100px;
-      padding-bottom: 60px;
-      overflow: hidden;
-    }
-
-    .hero-bg-glow {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--cyan-glow) 0%, rgba(0,224,255,0) 70%);
-      top: 20%;
-      right: -10%;
-      pointer-events: none;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3.5rem;
-      align-items: center;
-    }
-
-    .hero-content {
-      z-index: 2;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 224, 255, 0.15);
-      border: 1px solid rgba(0, 224, 255, 0.3);
-      padding: 0.4rem 1rem;
-      border-radius: 50px;
-      color: var(--cyan-accent);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .hero-title {
-      font-family: var(--font-title);
-      font-size: 4rem;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      letter-spacing: -1px;
-      background: linear-gradient(to right, #FFFFFF, #E0F7FF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-subtitle {
-      font-family: var(--font-title);
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: var(--cyan-accent);
-      margin-bottom: 1.25rem;
-      text-shadow: 0 0 10px rgba(0,224,255,0.3);
-    }
-
-    .hero-description {
-      font-size: 1.1rem;
-      color: #C0D6E8;
-      margin-bottom: 2.2rem;
-      max-width: 540px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1.25rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0.95rem 2rem;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: var(--transition-smooth);
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: var(--cyan-accent);
-      color: var(--navy-dark);
-      box-shadow: var(--shadow-glow);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 0 35px var(--cyan-accent);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--bg-white);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--cyan-accent);
-      color: var(--cyan-accent);
-      transform: translateY(-3px);
-    }
-
-    .hero-image-wrapper {
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-image-container {
-      position: relative;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      border: 2px solid rgba(0, 224, 255, 0.3);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), var(--shadow-glow);
-      transition: var(--transition-smooth);
-    }
-
-    .hero-image-container:hover {
-      border-color: var(--cyan-accent);
-      transform: scale(1.01);
-    }
-
-    .hero-image {
-      width: 100%;
-      height: 420px;
-      object-fit: cover;
-      display: block;
-      transition: var(--transition-smooth);
-    }
-
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 2rem;
-      padding: 1.25rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--border-radius);
-      backdrop-filter: blur(5px);
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-family: var(--font-title);
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--cyan-accent);
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      color: #A0B8D0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* ==========================================================================
-       4. SEÇÃO DE APRESENTAÇÃO (3.2)
-       ========================================================================== */
-    .presentation {
-      padding: 100px 0;
-      background-color: var(--bg-light);
-      position: relative;
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto 4rem auto;
-    }
-
-    .section-tag {
-      color: var(--navy-primary);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .section-title {
-      font-family: var(--font-title);
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--navy-primary);
-      line-height: 1.2;
-      margin-bottom: 1rem;
-    }
-
-    .section-description {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-    }
-
-    .presentation-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .presentation-card {
-      background: var(--bg-white);
-      padding: 2.5rem;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow-md);
-      border-top: 4px solid var(--navy-primary);
-      position: relative;
-      transition: var(--transition-smooth);
-    }
-
-    .presentation-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(10, 42, 94, 0.15);
-      border-top-color: var(--cyan-accent);
-    }
-
-    .presentation-card h3 {
-      font-family: var(--font-title);
-      font-size: 1.5rem;
-      color: var(--navy-primary);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .presentation-card h3 i {
-      color: var(--cyan-accent);
-    }
-
-    .presentation-card p {
-      color: var(--text-dark);
-      margin-bottom: 1.5rem;
-      line-height: 1.7;
-    }
-
-    .feature-list {
-      list-style: none;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 1rem;
-    }
-
-    .feature-icon {
-      width: 24px;
-      height: 24px;
-      background: rgba(0, 224, 255, 0.15);
-      color: var(--navy-primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      margin-top: 3px;
-      flex-shrink: 0;
-    }
-
-    .presentation-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
-    }
-
-    .gallery-thumb {
-      height: 200px;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      position: relative;
-    }
-
-    .gallery-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: var(--transition-smooth);
-    }
-
-    .gallery-thumb:hover img {
-      transform: scale(1.08);
-    }
-
-    /* ==========================================================================
-       5. SEÇÃO GALERIA DE ÓRGÃOS EM RV (3.3)
-       ========================================================================== */
-    .gallery-section {
-      padding: 100px 0;
-      background-color: var(--bg-white);
-    }
-
-    .gallery-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .search-box {
-      position: relative;
-      min-width: 280px;
-      flex-grow: 1;
-      max-width: 400px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 0.8rem 1rem 0.8rem 2.8rem;
-      border-radius: 50px;
-      border: 1px solid #D1E3F0;
-      background: var(--bg-light);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      transition: var(--transition-fast);
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: var(--cyan-accent);
-      background: var(--bg-white);
-      box-shadow: 0 0 0 3px rgba(0, 224, 255, 0.2);
-    }
-
-    .search-box i {
-      position: absolute;
-      left: 1.1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-    }
-
-    .filter-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 0.5rem 1.2rem;
-      border-radius: 50px;
-      border: 1px solid #D1E3F0;
-      background: var(--bg-white);
-      color: var(--text-dark);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition-fast);
-    }
-
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--navy-primary);
-      color: var(--bg-white);
-      border-color: var(--navy-primary);
-    }
-
-    .organs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 2rem;
-      margin-bottom: 5rem;
-    }
-
-    .organ-card {
-      background: var(--bg-white);
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid #E2ECF5;
-      transition: var(--transition-smooth);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .organ-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-md), 0 0 20px rgba(0, 224, 255, 0.15);
-      border-color: var(--cyan-accent);
-    }
-
-    .organ-img-wrapper {
-      position: relative;
-      height: 220px;
-      background: var(--bg-light);
-      overflow: hidden;
-    }
-
-    .organ-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: var(--transition-smooth);
-    }
-
-    .organ-card:hover .organ-img {
-      transform: scale(1.06);
-    }
-
-    .organ-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: rgba(10, 42, 94, 0.85);
-      color: var(--cyan-accent);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      backdrop-filter: blur(4px);
-    }
-
-    .organ-content {
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .organ-title {
-      font-family: var(--font-title);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--navy-primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .organ-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-      flex-grow: 1;
-    }
-
-    /* Video Embed Block (3.3 - Vídeo Tutorial) */
-    .video-block {
-      background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-dark) 100%);
-      border-radius: var(--border-radius);
-      padding: 3.5rem 2.5rem;
-      color: var(--bg-white);
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(0, 224, 255, 0.3);
-    }
-
-    .video-block-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
-
-    .video-info h3 {
-      font-family: var(--font-title);
-      font-size: 2.2rem;
-      color: var(--bg-white);
-      margin-bottom: 1rem;
-    }
-
-    .video-info h3 span {
-      color: var(--cyan-accent);
-    }
-
-    .video-info p {
-      color: #C0D6E8;
-      font-size: 1.05rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .video-container {
-      position: relative;
-      width: 100%;
-      max-width: 340px;
-      margin: 0 auto;
-      aspect-ratio: 9/16;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px var(--cyan-glow);
-      border: 2px solid var(--cyan-accent);
-    }
-
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* ==========================================================================
-       6. SEÇÃO RESUMO + INSTAGRAM (3.4)
-       ========================================================================== */
-    .summary-instagram {
-      padding: 100px 0;
-      background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg-white) 100%);
-      text-align: center;
-    }
-
-    .summary-box {
-      max-width: 850px;
-      margin: 0 auto;
-      background: var(--bg-white);
-      border-radius: calc(var(--border-radius) * 1.5);
-      padding: 3.5rem 2.5rem;
-      box-shadow: var(--shadow-md);
-      border: 1px solid #D8E8F5;
-      position: relative;
-    }
-
-    .summary-box::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: 10%;
-      right: 10%;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, var(--cyan-accent), transparent);
-    }
-
-    .summary-box h2 {
-      font-family: var(--font-title);
-      font-size: 2.2rem;
-      color: var(--navy-primary);
-      margin-bottom: 1.25rem;
-    }
-
-    .summary-text {
-      font-size: 1.15rem;
-      color: var(--text-dark);
-      line-height: 1.8;
-      margin-bottom: 2.5rem;
-    }
-
-    .instagram-card {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      background: linear-gradient(135deg, var(--navy-primary), var(--navy-dark));
-      padding: 2rem 3rem;
-      border-radius: var(--border-radius);
-      color: var(--bg-white);
-      box-shadow: var(--shadow-md);
-      border: 1px solid rgba(0, 224, 255, 0.2);
-      transition: var(--transition-smooth);
-    }
-
-    .instagram-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-glow), 0 15px 30px rgba(10, 42, 94, 0.3);
-      border-color: var(--cyan-accent);
-    }
-
-    .instagram-icon {
-      font-size: 3rem;
-      color: var(--cyan-accent);
-      margin-bottom: 0.75rem;
-      transition: var(--transition-fast);
-    }
-
-    .instagram-card:hover .instagram-icon {
-      transform: scale(1.1) rotate(5deg);
-    }
-
-    .instagram-handle {
-      font-family: var(--font-title);
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.5px;
-    }
-
-    .instagram-btn {
-      margin-top: 1rem;
-      background: var(--cyan-accent);
-      color: var(--navy-dark);
-      font-weight: 700;
-      padding: 0.75rem 2rem;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: var(--transition-fast);
-    }
-
-    .instagram-btn:hover {
-      background: var(--bg-white);
-      color: var(--navy-primary);
-      box-shadow: 0 0 15px var(--bg-white);
-    }
-
-    /* ==========================================================================
-       7. FOOTER
-       ========================================================================== */
-    .footer {
-      background-color: var(--navy-dark);
-      color: #A0B8D0;
-      padding: 3rem 0 1.5rem 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.9rem;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .footer-brand h4 {
-      font-family: var(--font-title);
-      color: var(--bg-white);
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-links h5 {
-      color: var(--bg-white);
-      font-family: var(--font-title);
-      margin-bottom: 1rem;
-    }
-
-    .footer-links ul {
-      list-style: none;
-    }
-
-    .footer-links li {
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-links a {
-      color: #A0B8D0;
-      text-decoration: none;
-      transition: var(--transition-fast);
-    }
-
-    .footer-links a:hover {
-      color: var(--cyan-accent);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 0.8rem;
-    }
-
-    /* ==========================================================================
-       8. ANIMAÇÕES E INTERAÇÕES (Scroll Reveal)
-       ========================================================================== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Stagger Delay Utility */
-    .delay-1 { transition-delay: 0.1s; }
-    .delay-2 { transition-delay: 0.2s; }
-    .delay-3 { transition-delay: 0.3s; }
-    .delay-4 { transition-delay: 0.4s; }
-
-    /* ==========================================================================
-       9. RESPONSIVIDADE (MOBILE-FIRST ADAPTATIONS)
-       ========================================================================== */
-    @media (max-width: 992px) {
-      .hero-grid, 
-      .presentation-grid, 
-      .video-block-grid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-      }
-
-      .hero-title {
-        font-size: 3rem;
-      }
-
-      .hero-image {
-        height: 320px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .mobile-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background: var(--navy-dark);
-        flex-direction: column;
-        padding: 2rem;
-        gap: 1.5rem;
-        transform: translateY(-150%);
-        transition: var(--transition-smooth);
-        border-bottom: 2px solid var(--cyan-accent);
-      }
-
-      .nav-links.active {
-        transform: translateY(0);
-      }
-
-      .hero-title {
-        font-size: 2.5rem;
-      }
-
-      .hero-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
-
-      .gallery-controls {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .search-box {
-        max-width: 100%;
-      }
-
-      .summary-box {
-        padding: 2rem 1.25rem;
-      }
-
-      .instagram-card {
-        padding: 1.5rem;
-        width: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVE — Núcleo de Atividade Virtual de Ensino | UNIFOA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nave: {
+                            dark: '#0A2A5E',
+                            deep: '#051838',
+                            cyan: '#00E0FF',
+                            cyanGlow: 'rgba(0, 224, 255, 0.35)',
+                            light: '#E8F4FB',
+                            darkText: '#1C1C1C',
+                            slate: '#64748B'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite ease-in-out',
+                        'float': 'float 4s ease-in-out infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(0, 224, 255, 0.3)' },
+                            '50%': { boxShadow: '0 0 35px rgba(0, 224, 255, 0.8)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(1000%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #051838;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0A2A5E;
+            border: 1px solid #00E0FF;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00E0FF;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 224, 255, 0.2);
+        }
+
+        .glass-dark {
+            background: rgba(10, 42, 94, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 224, 255, 0.3);
+        }
+
+        .cyan-glow-box {
+            box-shadow: 0 0 20px rgba(0, 224, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .cyan-glow-box:hover {
+            box-shadow: 0 0 30px rgba(0, 224, 255, 0.6);
+            border-color: #00E0FF;
+        }
+
+        .cyan-text-glow {
+            text-shadow: 0 0 10px rgba(0, 224, 255, 0.6);
+        }
+
+        /* Hero Background Grid Effect */
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 224, 255, 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 224, 255, 0.07) 1px, transparent 1px);
+        }
+
+        /* Organ Card Hover Effect */
+        .organ-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .organ-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(0, 224, 255, 0.4);
+        }
+
+        /* Smooth reveal animation classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
-<body>
 
-  <!-- Background Particle Canvas -->
-  <canvas id="particle-canvas"></canvas>
+<body class="font-inter bg-white text-nave-darkText antialiased selection:bg-nave-cyan selection:text-nave-dark overflow-x-hidden">
 
-  <!-- ==========================================================================
-       1. HEADER / NAVEGAÇÃO
-       ========================================================================== -->
-  <header class="header">
-    <div class="container header-nav">
-      <a href="#" class="logo">
-        <div class="logo-icon"><i class="fa-solid fa-vr-cardboard"></i></div>
-        <div class="logo-text">NAVE <span>UniFOA</span></div>
-      </a>
-
-      <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir Menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#hero" class="nav-link">Início</a></li>
-        <li><a href="#apresentacao" class="nav-link">A Sala NAVE</a></li>
-        <li><a href="#galeria" class="nav-link">Anatomia em RV</a></li>
-        <li><a href="#tutorial" class="nav-link">Como Usar</a></li>
-        <li><a href="#instagram" class="nav-cta"><i class="fa-brands fa-instagram"></i> @nave_unifoa</a></li>
-      </ul>
-    </div>
-  </header>
-
-  <!-- ==========================================================================
-       2. SEÇÃO HERO (PDR 3.1)
-       ========================================================================== -->
-  <section id="hero" class="hero">
-    <div class="hero-bg-glow"></div>
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-content">
-          <span class="hero-badge"><i class="fa-solid fa-atom"></i> Realidade Virtual Acadêmica</span>
-          <h1 class="hero-title">NAVE</h1>
-          <div class="hero-subtitle">Núcleo de Atividade Virtual de Ensino</div>
-          <p class="hero-description">
-            Submerja no ensino anatômico de alta definição. O NAVE proporciona uma experiência imersiva através de tecnologia RV de ponta para os alunos do UniFOA.
-          </p>
-          <div class="hero-actions">
-            <a href="#apresentacao" class="btn btn-primary">
-              Conheça a Sala <i class="fa-solid fa-arrow-down"></i>
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-nave-dark/95 backdrop-blur-md border-b border-nave-cyan/30 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-nave-dark to-nave-cyan p-[2px] flex items-center justify-center shadow-lg group-hover:shadow-nave-cyan/50 transition">
+                    <div class="w-full h-full bg-nave-dark rounded-[6px] flex items-center justify-center">
+                        <i class="fa-solid font-orbitron text-nave-cyan text-xl group-hover:rotate-12 transition-transform">N</i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-orbitron text-2xl font-bold tracking-wider text-white flex items-center gap-1">
+                        NAVE <span class="text-nave-cyan text-xs font-inter font-semibold px-2 py-0.5 rounded bg-nave-cyan/20 border border-nave-cyan/40">UNIFOA</span>
+                    </span>
+                    <span class="block text-[10px] text-gray-300 tracking-widest uppercase font-montserrat hidden sm:block">Realidade Virtual em Saúde</span>
+                </div>
             </a>
-            <a href="#galeria" class="btn btn-secondary">
-              Explorar Órgãos <i class="fa-solid fa-heart-pulse"></i>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-200">
+                <a href="#hero" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Início</a>
+                <a href="#apresentacao" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">A Sala NAVE</a>
+                <a href="#galeria" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Órgãos em RV</a>
+                <a href="#tutorial" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Tutorial de Uso</a>
+                <a href="#sobre" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Contato</a>
+            </nav>
+
+            <!-- Instagram Action CTA -->
+            <a href="https://instagram.com/nave_unifoa" target="_blank" rel="noopener noreferrer" 
+               class="flex items-center gap-2 bg-gradient-to-r from-nave-cyan to-blue-500 text-nave-dark font-montserrat font-bold text-sm px-5 py-2.5 rounded-full hover:shadow-[0_0_20px_rgba(0,224,255,0.6)] hover:scale-105 transition duration-300">
+                <i class="fa-brands fa-instagram text-lg"></i>
+                <span>@nave_unifoa</span>
             </a>
-          </div>
+        </div>
+    </header>
 
-          <div class="hero-stats">
-            <div class="stat-item">
-              <div class="stat-number">10</div>
-              <div class="stat-label">Óculos de RV</div>
+    <section id="hero" class="relative min-h-screen pt-28 pb-16 flex items-center justify-center bg-nave-dark text-white overflow-hidden cyber-grid">
+        <!-- Interactive Canvas Background -->
+        <canvas id="heroCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40"></canvas>
+        
+        <!-- Glowing Light Flares -->
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-nave-cyan/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Text Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal active">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-nave-cyan/10 border border-nave-cyan/40 text-nave-cyan text-xs font-montserrat font-semibold tracking-wider uppercase">
+                        <span class="w-2 h-2 rounded-full bg-nave-cyan animate-ping"></span>
+                        Tecnologia Educacional UNIFOA
+                    </div>
+
+                    <h1 class="font-orbitron text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none text-white">
+                        NAVE
+                    </h1>
+                    
+                    <h2 class="font-montserrat text-xl sm:text-2xl font-bold text-nave-cyan tracking-wide">
+                        Núcleo de Atividade Virtual de Ensino
+                    </h2>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed font-light">
+                        Transformando o aprendizado em saúde com **10 óculos de Realidade Virtual** de última geração e aplicativo imersivo de anatomia humana interativa em 3D.
+                    </p>
+
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#apresentacao" 
+                           class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-nave-cyan text-nave-dark font-montserrat font-extrabold text-sm tracking-wider uppercase shadow-[0_0_25px_rgba(0,224,255,0.5)] hover:bg-white hover:shadow-[0_0_35px_rgba(255,255,255,0.8)] hover:scale-105 transition duration-300">
+                            Conheça a Sala <i class="fa-solid fa-arrow-down ml-2"></i>
+                        </a>
+
+                        <a href="#galeria" 
+                           class="w-full sm:w-auto text-center px-8 py-4 rounded-xl border-2 border-nave-cyan/60 text-nave-cyan font-montserrat font-bold text-sm tracking-wider uppercase hover:bg-nave-cyan/10 transition duration-300">
+                            Explorar Anatomia <i class="fa-solid fa-cube ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- Highlights Badge Bar -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-gray-800 text-center lg:text-left">
+                        <div>
+                            <span class="block font-orbitron text-2xl font-bold text-white">10</span>
+                            <span class="text-xs text-gray-400">Óculos de RV</span>
+                        </div>
+                        <div>
+                            <span class="block font-orbitron text-2xl font-bold text-nave-cyan">13+</span>
+                            <span class="text-xs text-gray-400">Sistemas e Órgãos</span>
+                        </div>
+                        <div>
+                            <span class="block font-orbitron text-2xl font-bold text-white">100%</span>
+                            <span class="text-xs text-gray-400">Imersivo em 3D</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Image Frame -->
+                <div class="lg:col-span-5 relative reveal active">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Futuristic Glowing Frame -->
+                        <div class="absolute -inset-2 rounded-3xl bg-gradient-to-r from-nave-cyan to-blue-600 opacity-60 blur-lg animate-pulse-glow"></div>
+                        
+                        <div class="relative bg-nave-deep rounded-2xl overflow-hidden border border-nave-cyan/40 p-2 shadow-2xl">
+                            <!-- Main Room Image with Fallback -->
+                            <img id="heroImage" src="assets/sala.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=1000&q=80';" 
+                                 alt="Sala NAVE com equipamentos de Realidade Virtual UNIFOA" 
+                                 class="w-full h-[380px] sm:h-[420px] object-cover rounded-xl transform hover:scale-105 transition duration-700">
+                            
+                            <!-- VR Overlay Badge -->
+                            <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl glass-dark border border-nave-cyan/30 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-nave-cyan font-orbitron uppercase tracking-widest">Ambiente Imersivo</p>
+                                    <p class="text-sm font-semibold text-white">Laboratório de Anatomia RV</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-nave-cyan/20 border border-nave-cyan flex items-center justify-center text-nave-cyan">
+                                    <i class="fa-solid fa-vr-cardboard text-xl animate-float"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="stat-item">
-              <div class="stat-number">13+</div>
-              <div class="stat-label">Sistemas Anatômicos</div>
+        </div>
+    </section>
+
+    <section id="apresentacao" class="py-24 bg-nave-light relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <span class="text-nave-dark font-orbitron font-bold text-sm tracking-widest uppercase bg-nave-cyan/30 px-4 py-1.5 rounded-full border border-nave-cyan">
+                    Inovação Pedagógica
+                </span>
+                <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-nave-dark">
+                    A Experiência no Núcleo NAVE
+                </h2>
+                <div class="w-24 h-1 bg-nave-cyan mx-auto mt-4 rounded-full"></div>
+                <p class="mt-4 text-nave-slate text-base sm:text-lg leading-relaxed">
+                    O NAVE foi concebido para revolucionar o ensino de Anatomia Humana no UNIFOA. Através da tecnologia imersiva, estudantes de Medicina e saúde exploram estruturas anatômicas tridimensionais em escala real com precisão cirúrgica.
+                </p>
             </div>
-            <div class="stat-item">
-              <div class="stat-number">100%</div>
-              <div class="stat-label">Imersivo & Interativo</div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-2xl cyan-glow-box reveal">
+                    <div class="w-14 h-14 rounded-xl bg-nave-dark flex items-center justify-center text-nave-cyan text-2xl mb-6 shadow-md">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="font-montserrat font-bold text-xl text-nave-dark mb-3">10 Óculos de RV</h3>
+                    <p class="text-nave-slate text-sm leading-relaxed">
+                        Estações individuais equipadas com headsets autônomos de alta resolução para imersão fluida, rastreamento espacial e total liberdade de movimento.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-2xl cyan-glow-box reveal">
+                    <div class="w-14 h-14 rounded-xl bg-nave-dark flex items-center justify-center text-nave-cyan text-2xl mb-6 shadow-md">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <h3 class="font-montserrat font-bold text-xl text-nave-dark mb-3">App de Anatomia 3D</h3>
+                    <p class="text-nave-slate text-sm leading-relaxed">
+                        Software avançado com dissecação virtual em camadas, transparência de órgãos, isolamento vascular e animações fisiológicas em tempo real.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-2xl cyan-glow-box reveal">
+                    <div class="w-14 h-14 rounded-xl bg-nave-dark flex items-center justify-center text-nave-cyan text-2xl mb-6 shadow-md">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h3 class="font-montserrat font-bold text-xl text-nave-dark mb-3">Metodologia Ativa</h3>
+                    <p class="text-nave-slate text-sm leading-relaxed">
+                        Sessões guiadas por docentes onde a teoria dos livros é vivenciada em ambiente tridimensional interativo, acelerando a retenção do conhecimento.
+                    </p>
+                </div>
             </div>
-          </div>
+
+            <!-- Interactive Presentation Showcase -->
+            <div class="bg-nave-dark rounded-3xl p-8 lg:p-12 text-white shadow-2xl relative overflow-hidden reveal">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-nave-cyan/10 rounded-full blur-2xl"></div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-6">
+                        <h3 class="font-orbitron text-2xl sm:text-3xl font-bold text-nave-cyan">
+                            Aprofundamento Clínico & Anatômico
+                        </h3>
+                        <p class="text-gray-300 leading-relaxed font-light">
+                            Na sala NAVE, o aluno não apenas observa a anatomia humana — ele navega por dentro do músculo, inspeciona cavidades cardíacas em funcionamento e visualiza correlações topográficas complexas que seriam de difícil compreensão em peças de formol tradicionais.
+                        </p>
+                        <ul class="space-y-3 text-sm text-gray-200">
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-nave-cyan"></i>
+                                Visualização de estruturas em 360 graus e escala personalizável
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-nave-cyan"></i>
+                                Estudo interativo individualizado ou em duplas integradas
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-circle-check text-nave-cyan"></i>
+                                Suporte contínuo de monitores e corpo docente especializado
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="rounded-xl overflow-hidden border border-nave-cyan/30 shadow-lg group">
+                            <img src="assets/sala.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=600&q=80';" 
+                                 alt="Estudante utilizando RV na NAVE" 
+                                 class="w-full h-44 object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="rounded-xl overflow-hidden border border-nave-cyan/30 shadow-lg group">
+                            <img src="assets/sala.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80';" 
+                                 alt="Sessão de aula prática com óculos RV" 
+                                 class="w-full h-44 object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </section>
 
-        <div class="hero-image-wrapper">
-          <div class="hero-image-container">
-            <!-- PDR: assets/sala.jpg -->
-            <img src="assets/sala.jpg" alt="Sala NAVE UniFOA com Óculos de RV" class="hero-image" id="hero-img-element" onerror="this.src='https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=1000&q=80'">
-          </div>
+    <section id="galeria" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Gallery Title & Search Filter -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
+                <div>
+                    <span class="text-nave-dark font-orbitron font-bold text-sm tracking-widest uppercase bg-nave-cyan/20 px-4 py-1.5 rounded-full border border-nave-cyan">
+                        Módulos de Estudo
+                    </span>
+                    <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-nave-dark">
+                        Galeria de Órgãos em RV
+                    </h2>
+                    <p class="text-nave-slate text-sm mt-2">
+                        Selecione qualquer um dos 13 órgãos abaixo para inspecionar a visualização anatômica do aplicativo.
+                    </p>
+                </div>
+
+                <!-- Search Input Bar -->
+                <div class="relative w-full md:w-72">
+                    <input type="text" id="organSearch" placeholder="Buscar órgão..." 
+                           class="w-full px-4 py-3 pl-10 rounded-xl bg-nave-light border border-gray-300 focus:border-nave-cyan focus:outline-none focus:ring-2 focus:ring-nave-cyan/40 text-sm font-medium transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Organ Cards Grid (13 Organs) -->
+            <div id="organGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Cards injected dynamically via JS for clean component structure -->
+            </div>
+
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ==========================================================================
-       3. SEÇÃO DE APRESENTAÇÃO (PDR 3.2)
-       ========================================================================== -->
-  <section id="apresentacao" class="presentation">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Infraestrutura Tecnológica</span>
-        <h2 class="section-title">Inovação no Ensino de Medicina e Saúde</h2>
-        <p class="section-description">O NAVE redefiniu o aprendizado prático na UniFOA integrando realidades imersivas ao currículo médico.</p>
-      </div>
+    <section id="tutorial" class="py-24 bg-nave-dark text-white relative cyber-grid">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <span class="text-nave-cyan font-orbitron font-bold text-xs tracking-widest uppercase bg-nave-cyan/10 px-4 py-1.5 rounded-full border border-nave-cyan/40">
+                    Passo a Passo
+                </span>
+                <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-white">
+                    Como Usar a Sala NAVE
+                </h2>
+                <div class="w-20 h-1 bg-nave-cyan mx-auto mt-4 rounded-full"></div>
+                <p class="mt-4 text-gray-300 text-sm sm:text-base">
+                    Assista ao vídeo tutorial rápido e aprenda a colocar os óculos de RV, ajustar os controles e iniciar o software de anatomia.
+                </p>
+            </div>
 
-      <div class="presentation-grid">
-        <div class="presentation-card reveal">
-          <h3><i class="fa-solid fa-microscope"></i> Proposta Pedagógica</h3>
-          <p>
-            O Núcleo de Atividade Virtual de Ensino é um espaço projetado para transformar o aprendizado de anatomia e fisiologia humana. Através de simulações digitais tridimensionais, alunos exploram estruturas complexas com profundidade e interatividade sem precedentes.
-          </p>
-          <ul class="feature-list">
-            <li class="feature-item">
-              <div class="feature-icon"><i class="fa-solid fa-check"></i></div>
-              <div><strong>10 Headsets RV de Alta Performance:</strong> Equipamentos de última geração preparados para sessões simultâneas.</div>
-            </li>
-            <li class="feature-item">
-              <div class="feature-icon"><i class="fa-solid fa-check"></i></div>
-              <div><strong>Software de Anatomia Avançado:</strong> Mapeamento tridimensional minucioso de camadas corporais, órgãos e sistemas.</div>
-            </li>
-            <li class="feature-item">
-              <div class="feature-icon"><i class="fa-solid fa-check"></i></div>
-              <div><strong>Acompanhamento Docente:</strong> Aulas guiadas integrando teoria e visualização virtual em tempo real.</div>
-            </li>
-          </ul>
+            <!-- YouTube Video Embed Container (Shorts Format Responsive) -->
+            <div class="max-w-xl mx-auto glass-dark rounded-3xl p-4 sm:p-6 border border-nave-cyan/40 shadow-2xl cyan-glow-box reveal">
+                <div class="relative w-full overflow-hidden rounded-2xl bg-black border border-nave-cyan/30 pt-[177.77%] sm:pt-[100%] lg:pt-[56.25%]">
+                    <iframe class="absolute top-0 left-0 w-full h-full rounded-2xl"
+                            src="https://www.youtube.com/embed/D4skQc3i6Ho" 
+                            title="Como usar a sala NAVE - UNIFOA" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="mt-6 flex items-center justify-between text-xs text-gray-300 px-2">
+                    <span class="flex items-center gap-2 text-nave-cyan font-medium">
+                        <i class="fa-solid fa-play-circle text-base"></i> Tutorial Oficial NAVE
+                    </span>
+                    <a href="https://youtube.com/shorts/D4skQc3i6Ho?si=5JWv73WBXFtdvCvd" target="_blank" class="hover:text-nave-cyan underline transition">
+                        Abrir no YouTube <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                    </a>
+                </div>
+            </div>
+
         </div>
+    </section>
 
-        <div class="presentation-gallery-grid reveal delay-1">
-          <div class="gallery-thumb">
-            <img src="assets/sala.jpg" alt="Alunos na sala NAVE" onerror="this.src='https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=600&q=80'">
-          </div>
-          <div class="gallery-thumb">
-            <img src="assets/sala.jpg" alt="Uso de Óculos de RV no UniFOA" onerror="this.src='https://images.unsplash.com/photo-1622979135225-d2ba269bc1bd?auto=format&fit=crop&w=600&q=80'">
-          </div>
-          <div class="gallery-thumb" style="grid-column: span 2;">
-            <img src="assets/sala.jpg" alt="Apresentação da Sala NAVE" onerror="this.src='https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80'">
-          </div>
+    <section id="sobre" class="py-24 bg-nave-light relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-nave-dark to-nave-deep rounded-3xl p-8 sm:p-14 text-white shadow-2xl border border-nave-cyan/30 relative overflow-hidden reveal">
+                
+                <!-- Background Decorative Rings -->
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 rounded-full border-8 border-nave-cyan/10 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-60 h-60 rounded-full border-4 border-nave-cyan/20 pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+                    
+                    <div class="lg:col-span-8 space-y-6">
+                        <span class="inline-block font-orbitron text-xs font-semibold uppercase tracking-widest text-nave-cyan bg-nave-cyan/20 px-3.5 py-1 rounded-md border border-nave-cyan/40">
+                            Resumo & Conectividade
+                        </span>
+
+                        <h2 class="font-montserrat text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                            Acompanhe nossas novidades e agendamentos
+                        </h2>
+
+                        <p class="text-gray-300 text-base leading-relaxed font-light">
+                            O **Núcleo de Atividade Virtual de Ensino (NAVE)** da Faculdade UNIFOA reafirma o compromisso da instituição com a excelência acadêmica e a inovação tecnológica na formação médica. Visite nossa sala, experimente os 10 óculos de realidade virtual e siga nosso perfil no Instagram para tutoriais extras e fotos do dia a dia.
+                        </p>
+
+                        <div class="flex flex-wrap gap-6 pt-2 text-xs font-medium text-nave-cyan">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Campus Três Poços - UNIFOA</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-microscope"></i> Laboratório de Anatomia RV</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap"></i> Exclusivo para Alunos & Docentes</span>
+                        </div>
+                    </div>
+
+                    <!-- Instagram Call to Action Box -->
+                    <div class="lg:col-span-4 text-center glass-dark p-8 rounded-2xl border border-nave-cyan/40 space-y-6">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl shadow-lg">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-montserrat font-bold text-lg text-white">Instagram Oficial</h3>
+                            <p class="text-nave-cyan text-sm font-semibold mt-1">@nave_unifoa</p>
+                        </div>
+
+                        <p class="text-xs text-gray-300">
+                            Fique por dentro das programações das aulas e bastidores dos testes anatômicos.
+                        </p>
+
+                        <a href="https://instagram.com/nave_unifoa" target="_blank" rel="noopener noreferrer" 
+                           class="block w-full py-3.5 px-6 rounded-xl bg-nave-cyan text-nave-dark font-montserrat font-bold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(0,224,255,0.4)] hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.8)] hover:scale-105 transition duration-300">
+                            Siga @nave_unifoa
+                        </a>
+                    </div>
+
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ==========================================================================
-       4. GALERIA (ÓRGÃOS EM REALIDADE VIRTUAL) (PDR 3.3)
-       ========================================================================== -->
-  <section id="galeria" class="gallery-section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Biblioteca Virtual</span>
-        <h2 class="section-title">Órgãos & Módulos em Realidade Virtual</h2>
-        <p class="section-description">Conheça os modelos anatômicos tridimensionais disponíveis no aplicativo interativo da sala NAVE.</p>
-      </div>
+    <footer class="bg-nave-deep text-gray-400 border-t border-nave-cyan/20 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-nave-dark border border-nave-cyan/40 flex items-center justify-center font-orbitron font-bold text-nave-cyan">N</div>
+                <span class="font-orbitron font-bold text-white tracking-wider">NAVE UNIFOA</span>
+            </div>
 
-      <!-- Filtros e Busca -->
-      <div class="gallery-controls reveal">
-        <div class="search-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="search-organ" placeholder="Buscar por órgão ou sistema...">
-        </div>
-        <div class="filter-tags">
-          <button class="filter-btn active" data-filter="all">Todos (13)</button>
-          <button class="filter-btn" data-filter="nervoso">S. Nervoso</button>
-          <button class="filter-btn" data-filter="circulatorio">S. Cardiorrespiratório</button>
-          <button class="filter-btn" data-filter="digestivo">S. Digestório/Excretor</button>
-        </div>
-      </div>
-
-      <!-- Grid dos 13 Órgãos (PDR) -->
-      <div class="organs-grid" id="organs-grid">
-        <!-- Os 13 cards são inseridos dinamicamente via JavaScript para manutenção limpa -->
-      </div>
-
-      <!-- Espaço para Vídeo Tutorial (PDR 3.3) -->
-      <div id="tutorial" class="video-block reveal">
-        <div class="video-block-grid">
-          <div class="video-info">
-            <h3>Como usar a sala <span>NAVE</span></h3>
-            <p>
-              Assista ao vídeo tutorial rápido e aprenda como calibrar os óculos de RV, iniciar o software de anatomia e navegar pelos modelos virtuais com precisão.
+            <p class="text-xs text-center md:text-left">
+                &copy; 2026 NAVE — Núcleo de Atividade Virtual de Ensino. Centro Universitário de Volta Redonda (UNIFOA).
             </p>
-            <ul class="feature-list" style="margin-bottom: 1.5rem;">
-              <li class="feature-item">
-                <div class="feature-icon" style="background: rgba(0,224,255,0.2); color: var(--cyan-accent);"><i class="fa-solid fa-play"></i></div>
-                <div style="color: #E0F0FF;">Ajuste dos headsets e manetes de controle.</div>
-              </li>
-              <li class="feature-item">
-                <div class="feature-icon" style="background: rgba(0,224,255,0.2); color: var(--cyan-accent);"><i class="fa-solid fa-play"></i></div>
-                <div style="color: #E0F0FF;">Seleção e isolamento de órgãos anatômicos.</div>
-              </li>
-            </ul>
-          </div>
 
-          <div class="video-container">
-            <!-- Embed do YouTube Shorts conforme PDR: D4skQc3i6Ho -->
-            <iframe 
-              src="https://www.youtube.com/embed/D4skQc3i6Ho" 
-              title="Como usar a sala NAVE - UniFOA" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen>
-            </iframe>
-          </div>
+            <div class="flex items-center gap-4 text-lg text-gray-300">
+                <a href="https://instagram.com/nave_unifoa" target="_blank" class="hover:text-nave-cyan transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://youtube.com/shorts/D4skQc3i6Ho?si=5JWv73WBXFtdvCvd" target="_blank" class="hover:text-nave-cyan transition"><i class="fa-brands fa-youtube"></i></a>
+            </div>
         </div>
-      </div>
+    </footer>
 
-    </div>
-  </section>
+    <script>
+        /* 13 Organs Data Array (Strictly aligned with requirements) */
+        const organsData = [
+            {
+                id: 'bexiga',
+                name: 'Bexiga',
+                system: 'Sistema Urinário',
+                file: 'assets/bexiga.jpg',
+                fallback: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&w=600&q=80',
+                desc: 'Órgão muscular oco responsável pelo armazenamento temporário da urina. No app em RV, alunos exploram o trígono vesical e as camadas do músculo detrusor em profundidade.'
+            },
+            {
+                id: 'cerebro',
+                name: 'Cérebro',
+                system: 'Sistema Nervoso Central',
+                file: 'assets/cerebro.jpg',
+                fallback: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=600&q=80',
+                desc: 'O centro do sistema nervoso humano. A simulação em RV permite a dissecação virtual dos lobos cerebrais, giro pré-central, sulcos e vias ventriculares em 3D.'
+            },
+            {
+                id: 'orelha',
+                name: 'Orelha',
+                system: 'Sistema Sensorial',
+                file: 'assets/orelha.jpg',
+                fallback: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=80',
+                desc: 'Anatomia complexa das orelhas externa, média e interna. O app em RV destaca os ossículos (martelo, bigorna e estribo) e a cóclea em escala gigante.'
+            },
+            {
+                id: 'intestinos',
+                name: 'Intestinos',
+                system: 'Sistema Digestório',
+                file: 'assets/intestinos.jpg',
+                fallback: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80',
+                desc: 'Compreende o intestino delgado e grosso. Os estudantes podem navegar por alças intestinais, vilosidades e o trajeto mesentérico vascular.'
+            },
+            {
+                id: 'rim',
+                name: 'Rim',
+                system: 'Sistema Urinário',
+                file: 'assets/rim.jpg',
+                fallback: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80',
+                desc: 'Filtro sanguíneo essencial do corpo. Na RV é possível seccionar o rim ao meio para observar córtex, pirâmides renais, cálices e o néfron em corte 3D.'
+            },
+            {
+                id: 'olho',
+                name: 'Olho',
+                system: 'Sistema Sensorial',
+                file: 'assets/olho.jpg',
+                fallback: 'https://images.unsplash.com/photo-1509100194014-d49809396246?auto=format&fit=crop&w=600&q=80',
+                desc: 'Estrutura ocular completa com esclera, córnea, íris, cristalino e retina. A imersão em RV demonstra a refração luminosa e musculatura extrínseca.'
+            },
+            {
+                id: 'coracao',
+                name: 'Coração',
+                system: 'Sistema Cardiovascular',
+                file: 'assets/coracao.jpg',
+                fallback: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=600&q=80',
+                desc: 'A bomba muscular do corpo humano. O modelo interativo em RV simula o sístole e diástole com corte coronal revelando átrios, ventrículos e valvas em batimento.'
+            },
+            {
+                id: 'laringe',
+                name: 'Laringe',
+                system: 'Sistema Respiratório',
+                file: 'assets/laringe.jpg',
+                fallback: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80',
+                desc: 'Estrutura cartilaginosa que abriga as pregas vocais. Na sala NAVE, observa-se a abertura da glote e a movimentação da epiglote durante a deglutição.'
+            },
+            {
+                id: 'figado',
+                name: 'Fígado',
+                system: 'Digestório / Metabolismo',
+                file: 'assets/figado.jpg',
+                fallback: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=600&q=80',
+                desc: 'A maior glândula do corpo. O software expõe os lobos hepáticos, a vesícula biliar e a complexa tríade portal com transparência em tempo real.'
+            },
+            {
+                id: 'pulmoes',
+                name: 'Pulmões',
+                system: 'Sistema Respiratório',
+                file: 'assets/pulmoes.jpg',
+                fallback: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=600&q=80',
+                desc: 'Órgãos de troca gasosa. Alunos analisam a árvore brônquica, os lobos pulmonares e a expansão da caixa torácica em simulação tridimensional.'
+            },
+            {
+                id: 'boca-e-nariz',
+                name: 'Boca e Nariz',
+                system: 'Respiratório & Digestório',
+                file: 'assets/boca-e-nariz.jpg',
+                fallback: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80',
+                desc: 'Vias aéreas e digestivas superiores. O modelo em RV permite inspecionar conchas nasais, palato duro/mole, dentição e seios paranasais.'
+            },
+            {
+                id: 'coluna-vertebral',
+                name: 'Coluna Vertebral',
+                system: 'Sistema Esquelético',
+                file: 'assets/coluna-vertebral.jpg',
+                fallback: 'https://images.unsplash.com/photo-1508847154043-be5407fcaa5a?auto=format&fit=crop&w=600&q=80',
+                desc: 'Eixo de sustentação do corpo humano. Exibe as regiões cervical, torácica, lombar, sacro e cóccix com discos intervertebrais e canal medular.'
+            },
+            {
+                id: 'estomago',
+                name: 'Estômago',
+                system: 'Sistema Digestório',
+                file: 'assets/estomago.jpg',
+                fallback: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80',
+                desc: 'Reservatório do trato digestivo. Permite examinar as pregas gástricas, o esfíncter cárdia, o piloro e a irrigação arterial gástrica em alta resolução.'
+            }
+        ];
 
-  <!-- ==========================================================================
-       5. RESUMO + INSTAGRAM (PDR 3.4)
-       ========================================================================== -->
-  <section id="instagram" class="summary-instagram">
-    <div class="container">
-      <div class="summary-box reveal">
-        <h2>Tecnologia a serviço do Conhecimento</h2>
-        <p class="summary-text">
-          O NAVE (Núcleo de Atividade Virtual de Ensino) consolida a Faculdade UniFOA na vanguarda da educação médica. Com capacidade para turmas dinâmicas, os 10 óculos de RV oferecem aprendizado prático e memorável, facilitando a compreensão anatômica detalhada.
-        </p>
+        function renderOrganCards(filter = '') {
+            const grid = document.getElementById('organGrid');
+            grid.innerHTML = '';
 
-        <div class="instagram-card">
-          <i class="fa-brands fa-instagram instagram-icon"></i>
-          <div class="instagram-handle">@nave_unifoa</div>
-          <p style="font-size: 0.9rem; color: #B0C8E0; margin-bottom: 0.5rem;">Acompanhe nossas aulas, novidades e bastidores em tempo real!</p>
-          <!-- Link Oficial do PDR -->
-          <a href="https://instagram.com/nave_unifoa" target="_blank" rel="noopener noreferrer" class="instagram-btn">
-            Siga no Instagram <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+            const filteredOrgans = organsData.filter(organ => 
+                organ.name.toLowerCase().includes(filter.toLowerCase()) || 
+                organ.system.toLowerCase().includes(filter.toLowerCase())
+            );
 
-  <!-- ==========================================================================
-       6. FOOTER
-       ========================================================================== -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <h4>NAVE - UniFOA</h4>
-          <p>Núcleo de Atividade Virtual de Ensino do Centro Universitário de Volta Redonda.</p>
-        </div>
-        <div class="footer-links">
-          <h5>Navegação</h5>
-          <ul>
-            <li><a href="#hero">Início</a></li>
-            <li><a href="#apresentacao">A Sala</a></li>
-            <li><a href="#galeria">Anatomia em RV</a></li>
-            <li><a href="#tutorial">Tutorial</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h5>Institucional</h5>
-          <ul>
-            <li><a href="https://www.unifoa.edu.br" target="_blank">Portal UniFOA</a></li>
-            <li><a href="https://instagram.com/nave_unifoa" target="_blank">Instagram Oficial</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 NAVE - Núcleo de Atividade Virtual de Ensino | UniFOA. Todos os direitos reservados.</p>
-      </div>
-    </div>
-  </footer>
+            if(filteredOrgans.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <i class="fa-solid fa-circle-exclamation text-3xl mb-2 text-nave-cyan"></i>
+                        <p>Nenhum órgão encontrado com a busca "${filter}".</p>
+                    </div>
+                `;
+                return;
+            }
 
-  <!-- ==========================================================================
-       7. JAVASCRIPT LÓGICA E INTERATIVIDADE
-       ========================================================================== -->
-  <script>
-    /* --------------------------------------------------------------------------
-       7.1 DADOS DOS 13 ÓRGÃOS (LISTA DO PDR)
-       -------------------------------------------------------------------------- */
-    const organsData = [
-      {
-        id: 'bexiga',
-        filename: 'bexiga',
-        name: 'Bexiga Urinária',
-        category: 'digestivo',
-        categoryLabel: 'Excretor',
-        desc: 'Visualização da parede muscular detrusora e trígono vesical.',
-        fallbackImg: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'cerebro',
-        filename: 'cerebro',
-        name: 'Cérebro',
-        category: 'nervoso',
-        categoryLabel: 'Nervoso',
-        desc: 'Mapeamento de lobos cerebrais, córtex e conexões neuronais.',
-        fallbackImg: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'orelha',
-        filename: 'orelha',
-        name: 'Orelha & Sistema Auditivo',
-        category: 'nervoso',
-        categoryLabel: 'Sensorial',
-        desc: 'Estruturas da orelha externa, média, ossículos e cóclea em 3D.',
-        fallbackImg: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'intestinos',
-        filename: 'intestinos',
-        name: 'Intestinos (Delgado e Grosso)',
-        category: 'digestivo',
-        categoryLabel: 'Digestório',
-        desc: 'Segmentação do duodeno, jejuno, íleo e cólon em camada interativa.',
-        fallbackImg: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'rim',
-        filename: 'rim',
-        name: 'Rim',
-        category: 'digestivo',
-        categoryLabel: 'Excretor',
-        desc: 'Corte anatômico exibindo néfrons, córtex renal e pirâmides.',
-        fallbackImg: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'olho',
-        filename: 'olho',
-        name: 'Olho Humano',
-        category: 'nervoso',
-        categoryLabel: 'Sensorial',
-        desc: 'Córnea, íris, cristalino, retina e nervo óptico sob visualização em RV.',
-        fallbackImg: 'https://images.unsplash.com/photo-1516715094483-75da7dee9758?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'coracao',
-        filename: 'coracao',
-        name: 'Coração',
-        category: 'circulatorio',
-        categoryLabel: 'Circulatório',
-        desc: 'Simulação dinâmica do ciclo cardíaco, valvas e grandes vasos.',
-        fallbackImg: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'laringe',
-        filename: 'laringe',
-        name: 'Laringe',
-        category: 'circulatorio',
-        categoryLabel: 'Respiratório',
-        desc: 'Cartilagens laríngeas, epiglote e pregas vocais em detalhes.',
-        fallbackImg: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'figado',
-        filename: 'figado',
-        name: 'Fígado',
-        category: 'digestivo',
-        categoryLabel: 'Digestório',
-        desc: 'Lobos hepáticos, vesícula biliar e vascularização da veia porta.',
-        fallbackImg: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'pulmoes',
-        filename: 'pulmoes',
-        name: 'Pulmões',
-        category: 'circulatorio',
-        categoryLabel: 'Respiratório',
-        desc: 'Árvore brônquica, alvéolos e dinâmica da ventilação pulmonar.',
-        fallbackImg: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'boca-e-nariz',
-        filename: 'boca-e-nariz',
-        name: 'Cavidade Oral e Nasal',
-        category: 'circulatorio',
-        categoryLabel: 'Respiratório/Digestório',
-        desc: 'Vias aéreas superiores, seios da face e palato.',
-        fallbackImg: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'coluna-vertebral',
-        filename: 'coluna-vertebral',
-        name: 'Coluna Vertebral',
-        category: 'nervoso',
-        categoryLabel: 'Esquelético/Nervoso',
-        desc: 'Vertebras cervicais, torácicas, lombares e discos intervertebrais.',
-        fallbackImg: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&w=500&q=80'
-      },
-      {
-        id: 'estomago',
-        filename: 'estomago',
-        name: 'Estômago',
-        category: 'digestivo',
-        categoryLabel: 'Digestório',
-        desc: 'Região cárdia, fundo, corpo, piloro e pregas gástricas internas.',
-        fallbackImg: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=500&q=80'
-      }
-    ];
+            filteredOrgans.forEach((organ) => {
+                const card = document.createElement('div');
+                card.className = 'organ-card bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-md flex flex-col justify-between group reveal';
 
-    /* --------------------------------------------------------------------------
-       7.2 RENDERIZAÇÃO DOS CARDS DOS ÓRGÃOS
-       -------------------------------------------------------------------------- */
-    const organsGrid = document.getElementById('organs-grid');
+                card.innerHTML = `
+                    <div class="relative h-48 bg-nave-dark overflow-hidden">
+                        <img src="${organ.file}" 
+                             onerror="this.onerror=null; this.src='${organ.fallback}';" 
+                             alt="${organ.name}" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-90 group-hover:opacity-100">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-nave-dark via-transparent to-transparent opacity-80"></div>
+                        
+                        <span class="absolute top-3 left-3 bg-nave-dark/80 backdrop-blur-md text-nave-cyan text-[10px] font-orbitron font-semibold px-2.5 py-1 rounded-md border border-nave-cyan/40">
+                            ${organ.system}
+                        </span>
+                    </div>
 
-    function renderOrgans(list) {
-      organsGrid.innerHTML = '';
-      list.forEach((organ) => {
-        const card = document.createElement('div');
-        card.className = 'organ-card reveal active';
-        card.setAttribute('data-category', organ.category);
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <h3 class="font-montserrat font-bold text-lg text-nave-dark group-hover:text-blue-600 transition">
+                                ${organ.name}
+                            </h3>
+                            <p class="text-xs text-gray-500 line-clamp-3 mt-1 leading-relaxed">
+                                ${organ.desc}
+                            </p>
+                        </div>
+                    </div>
+                `;
 
-        // Define a extensão esperada do arquivo (jpg ou png)
-        const localImagePath = `assets/${organ.filename}.jpg`;
-
-        card.innerHTML = `
-          <div class="organ-img-wrapper">
-            <span class="organ-badge">${organ.categoryLabel}</span>
-            <img 
-              src="${localImagePath}" 
-              alt="${organ.name}" 
-              class="organ-img"
-              onerror="this.onerror=null; this.src='assets/${organ.filename}.png'; this.onerror=function(){this.src='${organ.fallbackImg}';}"
-            >
-          </div>
-          <div class="organ-content">
-            <h3 class="organ-title">${organ.name}</h3>
-            <p class="organ-desc">${organ.desc}</p>
-          </div>
-        `;
-        organsGrid.appendChild(card);
-      });
-    }
-
-    renderOrgans(organsData);
-
-    /* --------------------------------------------------------------------------
-       7.3 BUSCA E FILTRAGEM
-       -------------------------------------------------------------------------- */
-    const searchInput = document.getElementById('search-organ');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-
-    let currentFilter = 'all';
-    let currentSearch = '';
-
-    function filterData() {
-      const filtered = organsData.filter(organ => {
-        const matchesCategory = (currentFilter === 'all') || (organ.category === currentFilter);
-        const matchesSearch = organ.name.toLowerCase().includes(currentSearch.toLowerCase()) || 
-                              organ.desc.toLowerCase().includes(currentSearch.toLowerCase());
-        return matchesCategory && matchesSearch;
-      });
-      renderOrgans(filtered);
-    }
-
-    searchInput.addEventListener('input', (e) => {
-      currentSearch = e.target.value;
-      filterData();
-    });
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.getAttribute('data-filter');
-        filterData();
-      });
-    });
-
-    /* --------------------------------------------------------------------------
-       7.4 MENU MOBILE TOGGLE
-       -------------------------------------------------------------------------- */
-    const mobileToggle = document.getElementById('mobile-toggle');
-    const navLinks = document.getElementById('nav-links');
-
-    mobileToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-      const icon = mobileToggle.querySelector('i');
-      if(navLinks.classList.contains('active')) {
-        icon.className = 'fa-solid fa-xmark';
-      } else {
-        icon.className = 'fa-solid fa-bars';
-      }
-    });
-
-    document.querySelectorAll('.nav-link, .nav-cta').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        mobileToggle.querySelector('i').className = 'fa-solid fa-bars';
-      });
-    });
-
-    /* --------------------------------------------------------------------------
-       7.5 SCROLL REVEAL (ANIMAÇÕES PDR 5)
-       -------------------------------------------------------------------------- */
-    function checkReveal() {
-      const reveals = document.querySelectorAll('.reveal');
-      const windowHeight = window.innerHeight;
-      const revealPoint = 100;
-
-      reveals.forEach(el => {
-        const revealTop = el.getBoundingClientRect().top;
-        if (revealTop < windowHeight - revealPoint) {
-          el.classList.add('active');
+                grid.appendChild(card);
+            });
         }
-      });
-    }
 
-    window.addEventListener('scroll', checkReveal);
-    window.addEventListener('load', checkReveal);
+        document.getElementById('organSearch').addEventListener('input', (e) => {
+            renderOrganCards(e.target.value);
+        });
 
-    /* --------------------------------------------------------------------------
-       7.6 BACKGROUND CANVAS COM PARTICULAS INTERATIVAS
-       -------------------------------------------------------------------------- */
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
+        function initHeroCanvas() {
+            const canvas = document.getElementById('heroCanvas');
+            const ctx = canvas.getContext('2d');
 
-    let particles = [];
-    const particleCount = 40;
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+            const particles = [];
+            const particleCount = Math.min(Math.floor(window.innerWidth / 20), 60);
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+            for(let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: (Math.random() - 0.5) * 0.8,
+                    radius: Math.random() * 2 + 1
+                });
+            }
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
-        this.speedX = (Math.random() - 0.5) * 0.5;
-        this.speedY = (Math.random() - 0.5) * 0.5;
-        this.color = '#00E0FF';
-      }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
+                for(let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
 
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-      }
+                    if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#00E0FF';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#00E0FF';
+                    ctx.fill();
 
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-    }
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-
-      // Conectar partículas próximas com linhas sutis
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
-          let dx = particles[a].x - particles[b].x;
-          let dy = particles[a].y - particles[b].y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) {
-            ctx.strokeStyle = `rgba(0, 224, 255, ${0.15 - distance/1200})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-          }
+                    // Connect nearby particles
+                    for(let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                        if(dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(0, 224, 255, ${1 - dist / 120})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
         }
-      }
 
-      requestAnimationFrame(animateParticles);
-    }
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
 
-    initParticles();
-    animateParticles();
-  </script>
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(el => observer.observe(el));
+        }
+
+        window.onload = function() {
+            renderOrganCards();
+            initHeroCanvas();
+            initScrollReveal();
+        };
+    </script>
 </body>
 </html>
