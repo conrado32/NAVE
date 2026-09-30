@@ -152,6 +152,7 @@
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-200">
                 <a href="#hero" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Início</a>
                 <a href="#apresentacao" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">A Sala NAVE</a>
+                <a href="#historia" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Nossa História</a>
                 <a href="#galeria" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Órgãos em RV</a>
                 <a href="#tutorial" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Tutorial de Uso</a>
                 <a href="#sobre" class="hover:text-nave-cyan transition hover:underline underline-offset-8 decoration-nave-cyan">Contato</a>
@@ -339,13 +340,13 @@
 
                     <div class="grid grid-cols-2 gap-4">
                         <div class="rounded-xl overflow-hidden border border-nave-cyan/30 shadow-lg group">
-                            <img src="assets/sala1.jpg" 
+                            <img src="assets/sala.jpg" 
                                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=600&q=80';" 
                                  alt="Estudante utilizando RV na NAVE" 
                                  class="w-full h-44 object-cover group-hover:scale-110 transition duration-500">
                         </div>
                         <div class="rounded-xl overflow-hidden border border-nave-cyan/30 shadow-lg group">
-                            <img src="assets/sala2.jpg" 
+                            <img src="assets/sala.jpg" 
                                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80';" 
                                  alt="Sessão de aula prática com óculos RV" 
                                  class="w-full h-44 object-cover group-hover:scale-110 transition duration-500">
@@ -357,132 +358,190 @@
         </div>
     </section>
 
-    <section id="galeria" class="py-24 bg-white relative">
+    <section id="historia" class="py-24 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Gallery Title & Search Filter -->
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
-                <div>
-                    <span class="text-nave-dark font-orbitron font-bold text-sm tracking-widest uppercase bg-nave-cyan/20 px-4 py-1.5 rounded-full border border-nave-cyan">
-                        Módulos de Estudo
-                    </span>
-                    <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-nave-dark">
-                        Galeria de Órgãos em RV
-                    </h2>
-                    <p class="text-nave-slate text-sm mt-2">
-                        Selecione qualquer um dos 13 órgãos abaixo para inspecionar a visualização anatômica do aplicativo.
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <span class="text-nave-dark font-orbitron font-bold text-sm tracking-widest uppercase bg-nave-cyan/20 px-4 py-1.5 rounded-full border border-nave-cyan">
+                    Trajetória & Inovação
+                </span>
+                <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-nave-dark">
+                    A História do Laboratório N.A.V.E.
+                </h2>
+                <div class="w-24 h-1 bg-nave-cyan mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Content: History Text -->
+                <div class="lg:col-span-7 space-y-6 text-nave-darkText reveal">
+                    <p class="text-base sm:text-lg leading-relaxed text-nave-slate">
+                        A história do laboratório <strong class="text-nave-dark font-semibold">N.A.V.E. (Núcleo de Atividade Virtual de Ensino)</strong> da UniFOA começou em <span class="text-nave-dark font-bold">2019</span>. O <strong class="text-nave-dark">Dr. Walter Luiz Fonseca</strong> e o acadêmico de medicina <strong class="text-nave-dark">Danilo Devezas</strong> idealizaram um projeto utilizando a plataforma 3D Csanmek para modernizar e facilitar o ensino médico. Em <span class="text-nave-dark font-bold">2020</span>, impulsionados pela pandemia e pelo ensino remoto, perceberam que instituições internacionais já usavam óculos de Realidade Virtual (RV) para ensinar anatomia e fisiologia humana em ambientes 3D, e decidiram adotar a tecnologia.
+                    </p>
+
+                    <p class="text-base sm:text-lg leading-relaxed text-nave-slate">
+                        Em <span class="text-nave-dark font-bold">2021</span>, a primeira proposta foi apresentada ao presidente do UniFOA, <strong class="text-nave-dark">Eduardo Prado</strong>, mas o alto custo inicial inviabilizou o projeto naquele momento. Isso motivou a dupla a pesquisar alternativas. Em <span class="text-nave-dark font-bold">2022</span>, com o apoio da Pró-reitoria de Planejamento e Desenvolvimento, uma nova proposta conseguiu reduzir os custos em mais de 80%.
+                    </p>
+
+                    <p class="text-base sm:text-lg leading-relaxed text-nave-slate">
+                        Com a aprovação, o projeto <strong class="text-nave-dark">MedTech</strong> foi iniciado em meados de <span class="text-nave-dark font-bold">2023</span> e, devido à sua abrangência, deu origem ao laboratório N.A.V.E. O núcleo nasceu focado na Medicina, mas já foi estruturado para abrigar projetos de RV de outros cursos da saúde:
+                    </p>
+
+                    <!-- Course Tech Badges Grid -->
+                    <div class="flex flex-wrap gap-2.5 pt-1">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nave-light border border-nave-cyan/40 text-nave-dark font-montserrat font-bold text-xs shadow-sm">
+                            <i class="fa-solid fa-apple-whole text-nave-cyan"></i> NutriTech <span class="text-gray-500 font-normal">(Nutrição)</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nave-light border border-nave-cyan/40 text-nave-dark font-montserrat font-bold text-xs shadow-sm">
+                            <i class="fa-solid fa-tooth text-nave-cyan"></i> OdontoTech <span class="text-gray-500 font-normal">(Odontologia)</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nave-light border border-nave-cyan/40 text-nave-dark font-montserrat font-bold text-xs shadow-sm">
+                            <i class="fa-solid fa-user-nurse text-nave-cyan"></i> EnfTech <span class="text-gray-500 font-normal">(Enfermagem)</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nave-light border border-nave-cyan/40 text-nave-dark font-montserrat font-bold text-xs shadow-sm">
+                            <i class="fa-solid fa-dna text-nave-cyan"></i> BioTech <span class="text-gray-500 font-normal">(Biologia)</span>
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-nave-light border border-nave-cyan/40 text-nave-dark font-montserrat font-bold text-xs shadow-sm">
+                            <i class="fa-solid fa-dumbbell text-nave-cyan"></i> EFTech <span class="text-gray-500 font-normal">(Educação Física)</span>
+                        </span>
+                    </div>
+
+                    <p class="text-base sm:text-lg leading-relaxed text-nave-slate pt-2">
+                        A expectativa é que, futuramente, a tecnologia também seja expandida para os cursos da área de exatas da instituição.
                     </p>
                 </div>
 
+                <!-- Right Column: Image Space with Cyber Frame -->
+                <div class="lg:col-span-5 relative reveal">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Holographic Background Frame Glow -->
+                        <div class="absolute -inset-2 rounded-3xl bg-gradient-to-tr from-nave-dark via-nave-cyan to-blue-500 opacity-30 blur-xl animate-pulse-glow"></div>
+                        
+                        <div class="relative bg-nave-dark p-3 rounded-2xl border border-nave-cyan/40 shadow-2xl cyan-glow-box">
+                            <img id="historiaImage" src="assets/sala.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80';" 
+                                 alt="História e evolução do laboratório NAVE UniFOA" 
+                                 class="w-full h-[420px] object-cover rounded-xl transform hover:scale-105 transition duration-500">
+                            
+                            <!-- Overlay Caption Badge -->
+                            <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl glass-dark border border-nave-cyan/30 text-white">
+                                <span class="text-[10px] text-nave-cyan font-orbitron uppercase tracking-widest block">Desde 2019</span>
+                                <p class="text-xs font-semibold mt-0.5">Inovação e expansão contínua em saúde na UniFOA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="galeria" class="py-24 bg-nave-light relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <span class="text-nave-dark font-orbitron font-bold text-sm tracking-widest uppercase bg-nave-cyan/20 px-4 py-1.5 rounded-full border border-nave-cyan">
+                    Anatomia Virtual 3D
+                </span>
+                <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-nave-dark">
+                    Órgãos em Realidade Virtual
+                </h2>
+                <div class="w-24 h-1 bg-nave-cyan mx-auto mt-4 rounded-full"></div>
+                <p class="mt-4 text-nave-slate text-base sm:text-lg">
+                    Explore a biblioteca de estruturas anatômicas disponíveis no aplicativo imersivo da sala NAVE.
+                </p>
+
                 <!-- Search Input Bar -->
-                <div class="relative w-full md:w-72">
-                    <input type="text" id="organSearch" placeholder="Buscar órgão..." 
-                           class="w-full px-4 py-3 pl-10 rounded-xl bg-nave-light border border-gray-300 focus:border-nave-cyan focus:outline-none focus:ring-2 focus:ring-nave-cyan/40 text-sm font-medium transition">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-400"></i>
+                <div class="mt-8 max-w-md mx-auto relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-nave-slate">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="text" id="organSearch" placeholder="Buscar órgão ou sistema..." 
+                           class="w-full pl-11 pr-4 py-3 bg-white border border-nave-cyan/40 rounded-xl text-sm font-medium text-nave-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-nave-cyan focus:border-transparent shadow-sm transition">
                 </div>
             </div>
 
-            <!-- Organ Cards Grid (13 Organs) -->
-            <div id="organGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Cards injected dynamically via JS for clean component structure -->
+            <!-- Organ Cards Grid -->
+            <div id="organGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Dynamically populated via JS -->
             </div>
 
         </div>
     </section>
 
-    <section id="tutorial" class="py-24 bg-nave-dark text-white relative cyber-grid">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
-                <span class="text-nave-cyan font-orbitron font-bold text-xs tracking-widest uppercase bg-nave-cyan/10 px-4 py-1.5 rounded-full border border-nave-cyan/40">
-                    Passo a Passo
-                </span>
-                <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-white">
-                    Como Usar a Sala NAVE
-                </h2>
-                <div class="w-20 h-1 bg-nave-cyan mx-auto mt-4 rounded-full"></div>
-                <p class="mt-4 text-gray-300 text-sm sm:text-base">
-                    Assista ao vídeo tutorial rápido e aprenda a colocar os óculos de RV, ajustar os controles e iniciar o software de anatomia.
-                </p>
-            </div>
+    <section id="tutorial" class="py-20 bg-nave-dark text-white relative border-t border-nave-cyan/20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <span class="text-nave-cyan font-orbitron font-bold text-xs tracking-widest uppercase bg-nave-cyan/10 px-4 py-1.5 rounded-full border border-nave-cyan/30">
+                Guia Prático
+            </span>
+            <h2 class="mt-4 font-montserrat text-3xl sm:text-4xl font-extrabold text-white">
+                Como usar a sala NAVE
+            </h2>
+            <p class="mt-2 text-gray-300 text-sm sm:text-base max-w-2xl mx-auto mb-10">
+                Assista ao vídeo tutorial rápido e aprenda a iniciar seus estudos anatomicos com os óculos de RV.
+            </p>
 
-            <!-- YouTube Video Embed Container (Shorts Format Responsive) -->
-            <div class="max-w-xl mx-auto glass-dark rounded-3xl p-4 sm:p-6 border border-nave-cyan/40 shadow-2xl cyan-glow-box reveal">
-                <div class="relative w-full overflow-hidden rounded-2xl bg-black border border-nave-cyan/30 pt-[177.77%] sm:pt-[100%] lg:pt-[56.25%]">
-                    <iframe class="absolute top-0 left-0 w-full h-full rounded-2xl"
-                            src="https://www.youtube.com/embed/D4skQc3i6Ho" 
-                            title="Como usar a sala NAVE - UNIFOA" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
+            <!-- YouTube Video Embed Container -->
+            <div class="relative w-full max-w-xl mx-auto aspect-[9/16] sm:aspect-video rounded-2xl overflow-hidden border-2 border-nave-cyan/40 shadow-[0_0_35px_rgba(0,224,255,0.25)] bg-nave-deep">
+                <iframe class="w-full h-full" 
+                        src="https://www.youtube.com/embed/D4skQc3i6Ho" 
+                        title="Como usar a sala NAVE - UNIFOA" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="py-24 bg-nave-deep text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-60 h-60 rounded-full border-4 border-nave-cyan/20 pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
                 
-                <div class="mt-6 flex items-center justify-between text-xs text-gray-300 px-2">
-                    <span class="flex items-center gap-2 text-nave-cyan font-medium">
-                        <i class="fa-solid fa-play-circle text-base"></i> Tutorial Oficial NAVE
+                <div class="lg:col-span-8 space-y-6">
+                    <span class="inline-block font-orbitron text-xs font-semibold uppercase tracking-widest text-nave-cyan bg-nave-cyan/20 px-3.5 py-1 rounded-md border border-nave-cyan/40">
+                        Resumo & Conectividade
                     </span>
-                    <a href="https://youtube.com/shorts/D4skQc3i6Ho?si=5JWv73WBXFtdvCvd" target="_blank" class="hover:text-nave-cyan underline transition">
-                        Abrir no YouTube <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+
+                    <h2 class="font-montserrat text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                        Acompanhe nossas novidades e agendamentos
+                    </h2>
+
+                    <p class="text-gray-300 text-base leading-relaxed font-light">
+                        O <strong class="text-white">Núcleo de Atividade Virtual de Ensino (NAVE)</strong> da Faculdade UNIFOA reafirma o compromisso da instituição com a excelência acadêmica e a inovação tecnológica na formação médica e da saúde. Visite nossa sala, experimente os 10 óculos de realidade virtual e siga nosso perfil no Instagram para tutoriais extras e bastidores das aulas.
+                    </p>
+
+                    <div class="flex flex-wrap gap-6 pt-2 text-xs font-medium text-nave-cyan">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Campus Três Poços - UNIFOA</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-microscope"></i> Laboratório de Anatomia RV</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap"></i> Exclusivo para Alunos & Docentes</span>
+                    </div>
+                </div>
+
+                <!-- Instagram Call to Action Box -->
+                <div class="lg:col-span-4 text-center glass-dark p-8 rounded-2xl border border-nave-cyan/40 space-y-6">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl shadow-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+
+                    <div>
+                        <h3 class="font-montserrat font-bold text-lg text-white">Instagram Oficial</h3>
+                        <p class="text-nave-cyan text-sm font-semibold mt-1">@nave_unifoa</p>
+                    </div>
+
+                    <p class="text-xs text-gray-300">
+                        Fique por dentro das programações das aulas e bastidores dos testes anatômicos.
+                    </p>
+
+                    <a href="https://instagram.com/nave_unifoa" target="_blank" rel="noopener noreferrer" 
+                       class="block w-full py-3.5 px-6 rounded-xl bg-nave-cyan text-nave-dark font-montserrat font-bold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(0,224,255,0.4)] hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.8)] hover:scale-105 transition duration-300">
+                        Siga @nave_unifoa
                     </a>
                 </div>
-            </div>
 
-        </div>
-    </section>
-
-    <section id="sobre" class="py-24 bg-nave-light relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-br from-nave-dark to-nave-deep rounded-3xl p-8 sm:p-14 text-white shadow-2xl border border-nave-cyan/30 relative overflow-hidden reveal">
-                
-                <!-- Background Decorative Rings -->
-                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 rounded-full border-8 border-nave-cyan/10 pointer-events-none"></div>
-                <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-60 h-60 rounded-full border-4 border-nave-cyan/20 pointer-events-none"></div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
-                    
-                    <div class="lg:col-span-8 space-y-6">
-                        <span class="inline-block font-orbitron text-xs font-semibold uppercase tracking-widest text-nave-cyan bg-nave-cyan/20 px-3.5 py-1 rounded-md border border-nave-cyan/40">
-                            Resumo & Conectividade
-                        </span>
-
-                        <h2 class="font-montserrat text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-                            Acompanhe nossas novidades e agendamentos
-                        </h2>
-
-                        <p class="text-gray-300 text-base leading-relaxed font-light">
-                            O Núcleo de Atividade Virtual de Ensino (NAVE) da Faculdade UNIFOA reafirma o compromisso da instituição com a excelência acadêmica e a inovação tecnológica na formação médica. Visite nossa sala, experimente os 10 óculos de realidade virtual e siga nosso perfil no Instagram para tutoriais extras e fotos do dia a dia.
-                        </p>
-
-                        <div class="flex flex-wrap gap-6 pt-2 text-xs font-medium text-nave-cyan">
-                            <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Campus Três Poços - UNIFOA</span>
-                            <span class="flex items-center gap-2"><i class="fa-solid fa-microscope"></i> Laboratório de Anatomia RV</span>
-                            <span class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap"></i> Exclusivo para Alunos & Docentes</span>
-                        </div>
-                    </div>
-
-                    <!-- Instagram Call to Action Box -->
-                    <div class="lg:col-span-4 text-center glass-dark p-8 rounded-2xl border border-nave-cyan/40 space-y-6">
-                        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 flex items-center justify-center text-white text-3xl shadow-lg">
-                            <i class="fa-brands fa-instagram"></i>
-                        </div>
-
-                        <div>
-                            <h3 class="font-montserrat font-bold text-lg text-white">Instagram Oficial</h3>
-                            <p class="text-nave-cyan text-sm font-semibold mt-1">@nave_unifoa</p>
-                        </div>
-
-                        <p class="text-xs text-gray-300">
-                            Fique por dentro das programações das aulas e bastidores dos testes anatômicos.
-                        </p>
-
-                        <a href="https://instagram.com/nave_unifoa" target="_blank" rel="noopener noreferrer" 
-                           class="block w-full py-3.5 px-6 rounded-xl bg-nave-cyan text-nave-dark font-montserrat font-bold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(0,224,255,0.4)] hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.8)] hover:scale-105 transition duration-300">
-                            Siga @nave_unifoa
-                        </a>
-                    </div>
-
-                </div>
             </div>
         </div>
     </section>
@@ -506,116 +565,116 @@
     </footer>
 
     <script>
-        /* 13 Organs Data Array (Strictly aligned with requirements) */
         const organsData = [
             {
                 id: 'bexiga',
                 name: 'Bexiga',
                 system: 'Sistema Urinário',
+                desc: 'Órgão muscular oco responsável pelo armazenamento temporário da urina produzida pelos rins.',
                 file: 'assets/bexiga.jpg',
-                fallback: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&w=600&q=80',
-                desc: 'Órgão muscular oco responsável pelo armazenamento temporário da urina. No app em RV, alunos exploram o trígono vesical e as camadas do músculo detrusor em profundidade.'
+                fallback: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'cerebro',
                 name: 'Cérebro',
                 system: 'Sistema Nervoso Central',
+                desc: 'Centro de controle do sistema nervoso, responsável pelo processamento sensorial, cognição e controle motor.',
                 file: 'assets/cerebro.jpg',
-                fallback: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=600&q=80',
-                desc: 'O centro do sistema nervoso humano. A simulação em RV permite a dissecação virtual dos lobos cerebrais, giro pré-central, sulcos e vias ventriculares em 3D.'
+                fallback: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'orelha',
                 name: 'Orelha',
-                system: 'Sistema Sensorial',
+                system: 'Órgãos dos Sentidos',
+                desc: 'Estrutura anatômica responsável pela audição e pelo equilíbrio corporal dinâmico.',
                 file: 'assets/orelha.jpg',
-                fallback: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=80',
-                desc: 'Anatomia complexa das orelhas externa, média e interna. O app em RV destaca os ossículos (martelo, bigorna e estribo) e a cóclea em escala gigante.'
+                fallback: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'intestinos',
                 name: 'Intestinos',
                 system: 'Sistema Digestório',
+                desc: 'Compreende os intestinos delgado e grosso, responsáveis pela digestão final, absorção de nutrientes e excreção.',
                 file: 'assets/intestinos.jpg',
-                fallback: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80',
-                desc: 'Compreende o intestino delgado e grosso. Os estudantes podem navegar por alças intestinais, vilosidades e o trajeto mesentérico vascular.'
+                fallback: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'rim',
                 name: 'Rim',
                 system: 'Sistema Urinário',
+                desc: 'Órgão responsável pela filtração sanguínea, eliminação de resíduos metabólicos e regulação hídrica.',
                 file: 'assets/rim.jpg',
-                fallback: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80',
-                desc: 'Filtro sanguíneo essencial do corpo. Na RV é possível seccionar o rim ao meio para observar córtex, pirâmides renais, cálices e o néfron em corte 3D.'
+                fallback: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'olho',
                 name: 'Olho',
-                system: 'Sistema Sensorial',
+                system: 'Órgãos dos Sentidos',
+                desc: 'Órgão receptor da visão que capta a luz e converte impulsos luminosos em estímulos elétricos neurais.',
                 file: 'assets/olho.jpg',
-                fallback: 'https://images.unsplash.com/photo-1509100194014-d49809396246?auto=format&fit=crop&w=600&q=80',
-                desc: 'Estrutura ocular completa com esclera, córnea, íris, cristalino e retina. A imersão em RV demonstra a refração luminosa e musculatura extrínseca.'
+                fallback: 'https://images.unsplash.com/photo-1509100194014-d49809396dad?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'coracao',
                 name: 'Coração',
                 system: 'Sistema Cardiovascular',
+                desc: 'Bomba muscular cardíaca que impulsiona o sangue rico em oxigênio e nutrientes por todo o corpo.',
                 file: 'assets/coracao.jpg',
-                fallback: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=600&q=80',
-                desc: 'A bomba muscular do corpo humano. O modelo interativo em RV simula o sístole e diástole com corte coronal revelando átrios, ventrículos e valvas em batimento.'
+                fallback: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'laringe',
                 name: 'Laringe',
                 system: 'Sistema Respiratório',
+                desc: 'Estrutura cartilaginosa que abriga as pregas vocais e atua na produção da voz e condução de ar.',
                 file: 'assets/laringe.jpg',
-                fallback: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80',
-                desc: 'Estrutura cartilaginosa que abriga as pregas vocais. Na sala NAVE, observa-se a abertura da glote e a movimentação da epiglote durante a deglutição.'
+                fallback: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'figado',
                 name: 'Fígado',
-                system: 'Digestório / Metabolismo',
+                system: 'Sistema Digestório',
+                desc: 'A maior glândula do corpo, desempenha funções vitais no metabolismo, desintoxicação e produção de bile.',
                 file: 'assets/figado.jpg',
-                fallback: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=600&q=80',
-                desc: 'A maior glândula do corpo. O software expõe os lobos hepáticos, a vesícula biliar e a complexa tríade portal com transparência em tempo real.'
+                fallback: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'pulmoes',
                 name: 'Pulmões',
                 system: 'Sistema Respiratório',
+                desc: 'Órgãos esponjosos responsáveis pela troca gasosa (hematose), absorvendo oxigênio e eliminando CO₂.',
                 file: 'assets/pulmoes.jpg',
-                fallback: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=600&q=80',
-                desc: 'Órgãos de troca gasosa. Alunos analisam a árvore brônquica, os lobos pulmonares e a expansão da caixa torácica em simulação tridimensional.'
+                fallback: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'boca-e-nariz',
                 name: 'Boca e Nariz',
-                system: 'Respiratório & Digestório',
+                system: 'Sistema Respiratório e Digestório',
+                desc: 'Portas de entrada do ar e alimentos, envolvidos na mastigação, gustação, olfação e aquecimento do ar.',
                 file: 'assets/boca-e-nariz.jpg',
-                fallback: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80',
-                desc: 'Vias aéreas e digestivas superiores. O modelo em RV permite inspecionar conchas nasais, palato duro/mole, dentição e seios paranasais.'
+                fallback: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'coluna-vertebral',
                 name: 'Coluna Vertebral',
                 system: 'Sistema Esquelético',
+                desc: 'Eixo sustentador do esqueleto axial que protege a medula espinhal e permite articulação do tronco.',
                 file: 'assets/coluna-vertebral.jpg',
-                fallback: 'https://images.unsplash.com/photo-1508847154043-be5407fcaa5a?auto=format&fit=crop&w=600&q=80',
-                desc: 'Eixo de sustentação do corpo humano. Exibe as regiões cervical, torácica, lombar, sacro e cóccix com discos intervertebrais e canal medular.'
+                fallback: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=600&q=80'
             },
             {
                 id: 'estomago',
                 name: 'Estômago',
                 system: 'Sistema Digestório',
+                desc: 'Reservatório do trato digestivo onde o bolo alimentar é misturado com o suco gástrico e digerido.',
                 file: 'assets/estomago.jpg',
-                fallback: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80',
-                desc: 'Reservatório do trato digestivo. Permite examinar as pregas gástricas, o esfíncter cárdia, o piloro e a irrigação arterial gástrica em alta resolução.'
+                fallback: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80'
             }
         ];
 
         function renderOrganCards(filter = '') {
             const grid = document.getElementById('organGrid');
+            if(!grid) return;
             grid.innerHTML = '';
 
             const filteredOrgans = organsData.filter(organ => 
@@ -667,12 +726,16 @@
             });
         }
 
-        document.getElementById('organSearch').addEventListener('input', (e) => {
-            renderOrganCards(e.target.value);
-        });
+        const organSearchInput = document.getElementById('organSearch');
+        if (organSearchInput) {
+            organSearchInput.addEventListener('input', (e) => {
+                renderOrganCards(e.target.value);
+            });
+        }
 
         function initHeroCanvas() {
             const canvas = document.getElementById('heroCanvas');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
 
             function resize() {
@@ -711,7 +774,6 @@
                     ctx.fillStyle = '#00E0FF';
                     ctx.fill();
 
-                    // Connect nearby particles
                     for(let j = i + 1; j < particles.length; j++) {
                         const p2 = particles[j];
                         const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
